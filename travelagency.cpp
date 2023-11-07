@@ -5,6 +5,8 @@
 #include "trainticket.h"
 
 TravelAgency::TravelAgency()
+    : totalFlightBooking(0), totalHotelBooking(0), totalRentalCarReservation(0), totalTrainBooking(0),
+      totalFlightPrice(0), totalHotelPrice(0), totalRentalCarReservationPrice(0), totalTrainPrice(0)
 {
 
 }
@@ -50,8 +52,6 @@ void TravelAgency::readFile(QString fileName)
     QJsonArray jsonArray = jsonDoc.array();
 
     file.close();
-
-
 
     int lineNumber = 0;
 
