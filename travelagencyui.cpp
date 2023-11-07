@@ -13,3 +13,15 @@ TravelAgencyUi::~TravelAgencyUi()
     delete ui;
 }
 
+
+void TravelAgencyUi::on_actionEinlesen_triggered()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, "Open JSON File", "", "JSON Files (*.json)");
+    if (!filePath.isEmpty()){
+        try {
+            travelagency.readFile(filePath);
+            msgBox.information(this, "Meldung", "File opened sucessfully");
+        }catch(const std::runtime_error)
+
+}
+

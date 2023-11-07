@@ -2,6 +2,10 @@
 #define TRAVELAGENCYUI_H
 
 #include <QMainWindow>
+#include <QDialog>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <travelagency.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TravelAgencyUi; }
@@ -15,7 +19,12 @@ public:
     TravelAgencyUi(QWidget *parent = nullptr);
     ~TravelAgencyUi();
 
+private slots:
+    void on_actionEinlesen_triggered();
+
 private:
     Ui::TravelAgencyUi *ui;
+    TravelAgency travelagency;
+    QMessageBox msgBox;
 };
 #endif // TRAVELAGENCYUI_H

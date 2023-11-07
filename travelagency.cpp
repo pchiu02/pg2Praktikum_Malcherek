@@ -18,14 +18,16 @@ TravelAgency::~TravelAgency()
     bookings.clear();
 }
 
-void TravelAgency::readFile()
+void TravelAgency::readFile(QString fileName)
 {
-    QFile file("bookings.json");
+    QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly))
     {
         qWarning("Failed to open File");
         return;
     }
+
+    qDebug() <<"File open succesfully";
 
     //Read the contents of the file into a QByteArray
     QByteArray jsonData = file.readAll();
@@ -184,158 +186,4 @@ void TravelAgency::readFile()
               << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
 
 
-}
-
-void TravelAgency::readBinaryFile()
-{
-    int totalFlightBooking = 0, totalHotelBooking = 0, totalCarBooking = 0, totalTrainBooking = 0;
-    double totalFlightPrice = 0, totalHotelPrice = 0, totalCarPrice = 0, totalTrainPrice = 0;
-    std::ifstream inputFile("bookingsBinary.bin", std::ios::binary);
-    if(inputFile.is_open())
-    {
-        char bookingType;
-        while(inputFile.read(&bookingType, sizeof(bookingType)))
-        {
-            char id[39];
-            double price;
-            char fromDate[9];
-            char toDate[9];
-
-            inputFile.read(id, sizeof(id) -1);
-            inputFile.read(reinterpret_cast<char*>(&price), sizeof(price));
-            inputFile.read(fromDate, sizeof(fromDate)-1);
-            inputFile.read(toDate, sizeof(toDate)-1);
-
-            id[38] = '\0';
-            fromDate[8] = '\0';
-            toDate[8] = '\0';
-
-            std::string idStr(id);
-            std::string fromDateStr(fromDate);
-            std::string toDateStr(toDate);
-
-            if(bookingType == 'F')
-            {
-                char fromDestination[4];
-                char toDestination[4];
-                char airline[16];
-
-                inputFile.read(fromDestination, sizeof(fromDestination)-1);
-                inputFile.read(toDestination, sizeof(toDestination)-1);
-                inputFile.read(airline, sizeof(airline)-1);
-
-                fromDestination[3] = '\0';
-                toDestination[3] = '\0';
-                airline[15] = '\0';
-
-                std::string fromDestinationStr(fromDestination);
-                std::string toDestinationStr(toDestination);
-                std::string airlineStr(airline);
-
-                FlightBooking* flightBooking = new FlightBooking(idStr, price, fromDateStr,
-                                                                  toDateStr, fromDestinationStr, toDestinationStr,
-                                                                 airlineStr);
-                bookings.push_back(flightBooking);
-                std::cout << flightBooking->showDetails() << std::endl;
-                totalFlightBooking++;
-                totalFlightPrice += price;
-            }
-            else if(bookingType == 'R')
-            {
-                char pickupLocation[16];
-                char returnLocation[16];
-                char company[16];
-
-                inputFile.read(pickupLocation, sizeof(pickupLocation) - 1);
-                inputFile.read(returnLocation, sizeof(returnLocation) -1);
-                inputFile.read(company, sizeof(company) -1);
-
-                pickupLocation[15] = '\0';
-                returnLocation[15] = '\0';
-                company[15] = '\0';
-
-                std::string pickupLocationStr(pickupLocation);
-                std::string returnLocationStr(returnLocation);
-                std::string companyStr(company);
-
-                RentalCarReservation* car = new RentalCarReservation(idStr, price, fromDateStr,
-                                                                     toDateStr, pickupLocationStr, returnLocationStr,
-                                                                     companyStr);
-                bookings.push_back(car);
-                std::cout << car->showDetails() << std::endl;
-                totalCarBooking++;
-                totalCarPrice += price;
-            }
-            else if(bookingType == 'H')
-            {
-                char hotel[16];
-                char town[16];
-
-                inputFile.read(hotel, sizeof(hotel)-1);
-                inputFile.read(town, sizeof(town)-1);
-
-                hotel[15] = '\0';
-                town[15] = '\0';
-
-                std::string hotelStr(hotel);
-                std::string townStr(town);
-
-                HotelBooking* hotelBooking = new HotelBooking(idStr, price, fromDateStr, toDateStr,
-                                         hotelStr, townStr);
-                bookings.push_back(hotelBooking);
-                std::cout << hotelBooking->showDetails() << std::endl;
-                totalHotelBooking++;
-                totalHotelPrice += price;
-            }
-            else if(bookingType == 'T')
-            {
-                char fromDestination[16];
-                char toDestination[16];
-                char departureTime[6];
-                char arrivalTime[6];
-                char connectingStationsName[16];
-                int numConnectingStations = 0;
-
-                inputFile.read(fromDestination, sizeof(fromDestination)-1);
-                inputFile.read(toDestination, sizeof(toDestination)-1);
-                inputFile.read(departureTime, sizeof(departureTime)-1);
-                inputFile.read(arrivalTime, sizeof(arrivalTime)-1);
-                inputFile.read(reinterpret_cast<char*>(&numConnectingStations), sizeof(int));
-
-                fromDestination[15] = '\0';
-                toDestination[15] = '\0';
-                departureTime[5] = '\0';
-                arrivalTime[5] = '\0';
-                connectingStationsName[15] = '\0';
-
-                std::vector<std::string> connectingStations;
-                for(int i = 0; i < numConnectingStations; i++) {
-//                    inputFile.read(reinterpret_cast<char*>(&connectingStationsName), sizeof(connectingStationsName)-1);
-//                    connectingStations.push_back(connectingStationsName);
-                    inputFile.read(connectingStationsName, 15);
-                    connectingStations.push_back(std::string(connectingStationsName));
-                }
-
-                std::string fromDestinationStr(fromDestination);
-                std::string toDestinationStr(toDestination);
-                std::string departureTimeStr(departureTime);
-                std::string arrivalTimeStr(arrivalTime);
-
-                TrainTicket* train = new TrainTicket(idStr, price, fromDateStr, toDateStr,
-                                                     fromDestinationStr, toDestinationStr,
-                                                     departureTimeStr, arrivalTime, connectingStations);
-                bookings.push_back(train);
-                std::cout << train->showDetails() << std::endl;
-                totalTrainBooking++;
-                totalTrainPrice += price;
-            }
-            else {
-                std::cout << "Unindenified Booking Type" << std::endl;
-            }
-        }
-        std::cout << "Es wurden " <<  totalFlightBooking << " Flugbuchungen im Wert " << totalFlightPrice << " Euro, "
-                  << totalCarBooking << " Mietwagenbuchungen in Wert von " << totalCarPrice
-                  << " Euro, " << totalHotelBooking << " Hotelreservierungen im Wert von " << totalHotelPrice << " Euro, "
-                  << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
-    }
 }

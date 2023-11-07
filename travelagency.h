@@ -18,8 +18,7 @@ class TravelAgency
 public:
     TravelAgency();
     ~TravelAgency();
-    void readFile();
-    void readBinaryFile();
+    void readFile(QString fileName);
 
 private:
     std::vector<Booking*> bookings;
