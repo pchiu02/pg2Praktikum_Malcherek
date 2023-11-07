@@ -51,15 +51,7 @@ void TravelAgency::readFile(QString fileName)
 
     file.close();
 
-    int totalFLightBooking = 0;
-    int totalHotelBooking = 0;
-    int totalRentalCarReservation= 0;
-    int totalTrainBooking = 0;
 
-    double totalFlightPrice = 0;
-    double totalHotelPrice = 0;
-    double totalRentalCarReservationPrice = 0;
-    double totalTrainPrice = 0;
 
     int lineNumber = 0;
 
@@ -96,7 +88,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Empty flightbooking attribute in line " + std::to_string(lineNumber));
             }
 
-            if(fromDestination.length() > 3 || toDestination.length() > 3)
+            if(fromDestination.length() != 3 || toDestination.length() != 3)
             {
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
@@ -107,7 +99,7 @@ void TravelAgency::readFile(QString fileName)
             bookings.push_back(flightBooking);
             //std::cout << flightBooking->showDetails() << std::endl;
 
-            totalFLightBooking++;
+            totalFlightBooking++;
             totalFlightPrice += price;
         }else if(type == "RentalCar")
         {
@@ -180,10 +172,50 @@ void TravelAgency::readFile(QString fileName)
         }
     }
 
-    std::cout << "Es wurden " <<  totalFLightBooking << " Flugbuchungen im Wert " << totalFlightPrice << " Euro, "
+    std::cout << "Es wurden " <<  totalFlightBooking << " Flugbuchungen im Wert " << totalFlightPrice << " Euro, "
               << totalRentalCarReservation << " Mietwagenbuchungen in Wert von " << totalRentalCarReservationPrice
               << " Euro, " << totalHotelBooking << " Hotelreservierungen im Wert von " << totalHotelPrice << " Euro, "
               << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
 
 
+}
+
+int TravelAgency::getTotalFlightBooking() const
+{
+    return totalFlightBooking;
+}
+
+int TravelAgency::getTotalHotelBooking() const
+{
+    return totalHotelBooking;
+}
+
+int TravelAgency::getTotalRentalCarReservation() const
+{
+    return totalRentalCarReservation;
+}
+
+int TravelAgency::getTotalTrainBooking() const
+{
+    return totalTrainBooking;
+}
+
+double TravelAgency::getTotalFlightPrice() const
+{
+    return totalFlightPrice;
+}
+
+double TravelAgency::getTotalHotelPrice() const
+{
+    return totalHotelPrice;
+}
+
+double TravelAgency::getTotalRentalCarReservationPrice() const
+{
+    return totalRentalCarReservationPrice;
+}
+
+double TravelAgency::getTotalTrainPrice() const
+{
+    return totalTrainPrice;
 }
