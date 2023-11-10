@@ -15,6 +15,9 @@ public:
                  std::string hotel, std::string town);
     virtual std::string showDetails() override;
 
+    const std::string &getHotel() const;
+    const std::string &getTown() const;
+
 private:
     std::string hotel;
     std::string town;

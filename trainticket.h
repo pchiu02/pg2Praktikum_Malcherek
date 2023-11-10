@@ -17,6 +17,12 @@ public:
                 std::string arrivalTime, std::vector<std::string> connectingStations);
     virtual std::string showDetails() override;
 
+    const std::string &getFromDestination() const;
+    const std::string &getToDestination() const;
+    const std::string &getDepartureTime() const;
+    const std::string &getArrivalTime() const;
+    const std::vector<std::string> &getConnectingStations() const;
+
 private:
     std::string fromDestination;
     std::string toDestination;

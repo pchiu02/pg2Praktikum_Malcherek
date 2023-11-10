@@ -93,7 +93,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
 
-            FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate,
+             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate,
                                                              fromDestination, toDestination,
                                                              airline);
             bookings.push_back(flightBooking);
@@ -218,4 +218,9 @@ double TravelAgency::getTotalRentalCarReservationPrice() const
 double TravelAgency::getTotalTrainPrice() const
 {
     return totalTrainPrice;
+}
+
+const std::vector<Booking *> &TravelAgency::getBookings() const
+{
+    return bookings;
 }

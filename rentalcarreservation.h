@@ -15,6 +15,10 @@ public:
                          std::string pickupLocation, std::string returnLocation, std::string company);
     virtual std::string showDetails() override;
 
+    const std::string &getPickupLocation() const;
+    const std::string &getReturnLocation() const;
+    const std::string &getCompany() const;
+
 private:
     std::string pickupLocation;
     std::string returnLocation;

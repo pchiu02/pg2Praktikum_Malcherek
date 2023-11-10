@@ -15,6 +15,10 @@ public:
                   std::string fromDestination, std::string toDestination, std::string airline);
     virtual std::string showDetails() override;
 
+    const std::string &getFromDestination() const;
+    const std::string &getToDestination() const;
+    const std::string &getAirline() const;
+
 private:
     std::string fromDestination;
     std::string toDestination;

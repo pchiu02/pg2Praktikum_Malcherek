@@ -16,3 +16,13 @@ std::string HotelBooking::showDetails()
     return "Hotelreservierung im " + hotel + " in " + town + " vom "
             + fromDate + " bis zum " + toDate + ". Preis: " + std::to_string(price);
 }
+
+const std::string &HotelBooking::getHotel() const
+{
+    return hotel;
+}
+
+const std::string &HotelBooking::getTown() const
+{
+    return town;
+}

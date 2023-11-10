@@ -5,7 +5,13 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <travelagency.h>
+#include <vector>
+#include <QDate>
+#include <QDateEdit>
+
+#include "QtWidgets/qlistwidget.h"
+#include "travelagency.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TravelAgencyUi; }
@@ -22,9 +28,11 @@ public:
 private slots:
     void on_actionEinlesen_triggered();
 
+    void on_buchungListen_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     Ui::TravelAgencyUi *ui;
-    TravelAgency travelagency;
+    TravelAgency* travelagency;
     QMessageBox msgBox;
 };
 #endif // TRAVELAGENCYUI_H

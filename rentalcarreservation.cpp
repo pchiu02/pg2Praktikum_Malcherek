@@ -18,3 +18,18 @@ std::string RentalCarReservation::showDetails()
     return "Mietwagenreservierung mit " + company + ". Abholung am " + fromDate + " in " + pickupLocation +
             ". Rueckgabe am " + toDate + " in " + returnLocation + ". Preis: " + std::to_string(price);
 }
+
+const std::string &RentalCarReservation::getPickupLocation() const
+{
+    return pickupLocation;
+}
+
+const std::string &RentalCarReservation::getReturnLocation() const
+{
+    return returnLocation;
+}
+
+const std::string &RentalCarReservation::getCompany() const
+{
+    return company;
+}

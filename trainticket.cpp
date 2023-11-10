@@ -36,3 +36,28 @@ std::string TrainTicket::showDetails()
     details += ". Preis: " + std::to_string(price) + " Euro";
     return details;
 }
+
+const std::string &TrainTicket::getFromDestination() const
+{
+    return fromDestination;
+}
+
+const std::string &TrainTicket::getToDestination() const
+{
+    return toDestination;
+}
+
+const std::string &TrainTicket::getDepartureTime() const
+{
+    return departureTime;
+}
+
+const std::string &TrainTicket::getArrivalTime() const
+{
+    return arrivalTime;
+}
+
+const std::vector<std::string> &TrainTicket::getConnectingStations() const
+{
+    return connectingStations;
+}

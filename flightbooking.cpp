@@ -18,3 +18,18 @@ std::string FlightBooking::showDetails()
     return "Flughbuchung von " + fromDestination + " nach " + toDestination + " mit " + airline + " am " + fromDate +
             ". Preis: " + std::to_string(price) + " Euro";
 }
+
+const std::string &FlightBooking::getFromDestination() const
+{
+    return fromDestination;
+}
+
+const std::string &FlightBooking::getToDestination() const
+{
+    return toDestination;
+}
+
+const std::string &FlightBooking::getAirline() const
+{
+    return airline;
+}
