@@ -8,6 +8,8 @@
 #include <vector>
 #include <QDate>
 #include <QDateEdit>
+#include <QListView>
+#include <QStringListModel>
 
 #include "QtWidgets/qlistwidget.h"
 #include "travelagency.h"

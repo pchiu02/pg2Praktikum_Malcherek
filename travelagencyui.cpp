@@ -108,9 +108,67 @@ void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
                 ui->flightPrice->setValue(flightBooking->getPrice());
             }
 
-            if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking))
+            else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking))
             {
                 ui->bookingWidget->setCurrentWidget(ui->hotelBookingTab);
+                ui->hotelId->setText(QString::fromStdString(hotelBooking->getId()));
+                ui->hotelName->setText(QString::fromStdString(hotelBooking->getHotel()));
+                ui->hotelTownName->setText(QString::fromStdString(hotelBooking->getTown()));
+                ui->hotelFromDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getFromDate()),"yyyyMMdd"));
+                ui->hotelToDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getToDate()), "yyyyMMdd"));
+                ui->hotelPrice->setDecimals(2);
+                ui->hotelPrice->setSingleStep(0.01);
+                ui->hotelPrice->setRange(0.0, std::numeric_limits<double>::max());
+                ui->hotelPrice->setPrefix("€");
+                ui->hotelPrice->setValue(hotelBooking->getPrice());
+            }
+
+            else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking))
+            {
+                ui->bookingWidget->setCurrentWidget(ui->carBookingTab);
+                ui->carId->setText(QString::fromStdString(carBooking->getId()));
+                ui->carCompany->setText(QString::fromStdString(carBooking->getCompany()));
+                ui->carFromDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getFromDate()), "yyyyMMdd"));
+                ui->carToDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getToDate()), "yyyyMMdd"));
+                ui->carPickupLocation->setText(QString::fromStdString(carBooking->getPickupLocation()));
+                ui->carReturnLocation->setText(QString::fromStdString(carBooking->getReturnLocation()));
+                ui->carPrice->setDecimals(2);
+                ui->carPrice->setSingleStep(0.01);
+                ui->carPrice->setRange(0.0, std::numeric_limits<double>::max());
+                ui->carPrice->setPrefix("€");
+                ui->carPrice->setValue(carBooking->getPrice());
+            }
+            else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(booking))
+            {
+                ui->bookingWidget->setCurrentWidget(ui->trainBookingTab);
+                ui->trainId->setText(QString::fromStdString(trainBooking->getId()));
+                ui->trainFromStation->setText(QString::fromStdString(trainBooking->getFromDestination()));
+                ui->trainToStation->setText(QString::fromStdString(trainBooking->getToDestination()));
+                ui->trainDepartureTime->setText(QString::fromStdString(trainBooking->getDepartureTime()));
+                ui->trainArrivalTime->setText(QString::fromStdString(trainBooking->getArrivalTime()));
+                ui->trainFromDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getFromDate()), "yyyyMMdd"));
+                ui->trainToDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getToDate()), "yyyyMMdd"));
+                ui->trainPrice->setDecimals(2);
+                ui->trainPrice->setSingleStep(0.01);
+                ui->trainPrice->setRange(0.0, std::numeric_limits<double>::max());
+                ui->trainPrice->setPrefix("€");
+                ui->trainPrice->setValue(trainBooking->getPrice());
+
+                std::vector<std::string>connectingStationList = trainBooking->getConnectingStations();
+                QStringListModel *model = new QStringListModel();
+
+                //Convert the vector of strings to QStringList
+                QStringList qStringList;
+                for(std::string connectingStationLists : connectingStationList)
+                {
+                    qStringList << QString::fromStdString(connectingStationLists);
+                }
+
+                //Set the QStringList as the model data
+                model->setStringList(qStringList);
+
+                //set the model for the QListView
+                ui->connectionList->setModel(model);
             }
         }
     }

@@ -34,7 +34,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="flightBookingTab">
      <attribute name="title">
@@ -200,382 +200,198 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="carBooking">
+    <widget class="QWidget" name="carBookingTab">
      <attribute name="title">
       <string>Rental Car Reservation</string>
      </attribute>
-     <widget class="QLabel" name="carIdLabel">
+     <widget class="QWidget" name="gridLayoutWidget_3">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>58</width>
-        <height>16</height>
+        <width>441</width>
+        <height>271</height>
        </rect>
       </property>
-      <property name="text">
-       <string>ID</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carId">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>10</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carCompanyLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>58</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Company</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carCompany">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>40</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carFromDateLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>70</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>From Date</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carFromDate">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>70</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carToDate">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>100</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carToDateLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>To Date</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carPickupLocationLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>130</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Pickup Location</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carPickupLocation">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>130</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carReturnLocationLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>160</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Return Location</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carReturnLocation">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>160</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="carPriceLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>190</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Price</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="carPrice">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>190</y>
-        <width>181</width>
-        <height>21</height>
-       </rect>
-      </property>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="carCompany"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="carReturnLocationLabel">
+         <property name="text">
+          <string>Return Location</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLineEdit" name="carPickupLocation"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="carPickupLocationLabel">
+         <property name="text">
+          <string>Pickup Location</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QDateEdit" name="carFromDate"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="carToDateLabel">
+         <property name="text">
+          <string>To Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="carFromDateLabel">
+         <property name="text">
+          <string>From Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="carCompanyLabel">
+         <property name="text">
+          <string>Company</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="carId"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="carIdLabel">
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QDateEdit" name="carToDate"/>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLineEdit" name="carReturnLocation"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="carPriceLabel">
+         <property name="text">
+          <string>Price</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QDoubleSpinBox" name="carPrice"/>
+       </item>
+      </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="trainBooking">
+    <widget class="QWidget" name="trainBookingTab">
      <attribute name="title">
       <string>Train Booking</string>
      </attribute>
-     <widget class="QListView" name="connectionList">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>10</y>
-        <width>331</width>
-        <height>91</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="connectionListLabel">
+     <widget class="QWidget" name="gridLayoutWidget_4">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>40</y>
-        <width>71</width>
-        <height>16</height>
+        <y>0</y>
+        <width>431</width>
+        <height>371</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Connection</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainIdLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>58</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>ID</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainId">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>110</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainFromStationLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>From Station</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainFromStation">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>140</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainToStationLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>170</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>To Station</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainToStation">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>170</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainDepartureTimeLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>200</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Departure Time</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainDepartureTime">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>200</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainArrivalTimeLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>230</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Arrival Time</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainArrivalTime">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>230</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainFromDateLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>260</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>From Date</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainFromDate">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>260</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainToDateLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>290</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>To Date</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainToDate">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>290</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="trainPriceLabel">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>320</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Price</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="trainPrice">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>320</y>
-        <width>231</width>
-        <height>21</height>
-       </rect>
-      </property>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="4" column="0">
+        <widget class="QLabel" name="trainDepartureTimeLabel">
+         <property name="text">
+          <string>Departure Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="trainFromDateLabel">
+         <property name="text">
+          <string>From Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="connectionListLabel">
+         <property name="text">
+          <string>Connection</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="trainArrivalTimeLabel">
+         <property name="text">
+          <string>Arrival Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="trainDepartureTime"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="trainId"/>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="trainArrivalTime"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QListView" name="connectionList"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="trainIdLabel">
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="trainToStation"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="trainToStationLabel">
+         <property name="text">
+          <string>To Station</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="trainToDateLabel">
+         <property name="text">
+          <string>To Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="trainFromStationLabel">
+         <property name="text">
+          <string>From Station</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="trainFromStation"/>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="trainPriceLabel">
+         <property name="text">
+          <string>Price</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDateEdit" name="trainToDate"/>
+       </item>
+       <item row="7" column="1">
+        <widget class="QDateEdit" name="trainFromDate"/>
+       </item>
+       <item row="8" column="1">
+        <widget class="QDoubleSpinBox" name="trainPrice"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
