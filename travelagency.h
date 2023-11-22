@@ -12,6 +12,8 @@
 #include <QMessageBox>
 
 #include "booking.h"
+#include "customer.h"
+#include "travel.h"
 
 
 class TravelAgency
@@ -20,6 +22,10 @@ public:
     TravelAgency();
     ~TravelAgency();
     void readFile(QString fileName);
+    Booking* findBooking(long id);
+    Travel* findTravel(long id);
+    Customer* findCustomer(long id);
+
     int getTotalFlightBooking() const;
     int getTotalHotelBooking() const;
     int getTotalRentalCarReservation() const;
@@ -32,6 +38,8 @@ public:
 
 private:
     std::vector<Booking*> bookings;
+    std::vector<Customer*> allCustomer;
+    std::vector<Travel*> allTravel;
     int totalFlightBooking = 0;
     int totalHotelBooking = 0;
     int totalRentalCarReservation = 0;

@@ -10,21 +10,25 @@ CONFIG += c++17
 
 SOURCES += \
     booking.cpp \
+    customer.cpp \
     flightbooking.cpp \
     hotelbooking.cpp \
     main.cpp \
     rentalcarreservation.cpp \
     trainticket.cpp \
+    travel.cpp \
     travelagency.cpp \
     travelagencyui.cpp
 
 HEADERS += \
     booking.h \
+    customer.h \
     flightbooking.h \
     hotelbooking.h \
     json.hpp \
     rentalcarreservation.h \
     trainticket.h \
+    travel.h \
     travelagency.h \
     travelagencyui.h
 
