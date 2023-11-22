@@ -46,42 +46,25 @@
         <x>10</x>
         <y>10</y>
         <width>421</width>
-        <height>221</height>
+        <height>481</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="0">
-        <widget class="QLabel" name="airlineLabel">
-         <property name="text">
-          <string>Airline</string>
-         </property>
-        </widget>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="flightToDest"/>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="flightFromDestLabel">
+       <item row="2" column="1">
+        <widget class="QDateEdit" name="flightFromDate"/>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="IdLabel">
          <property name="text">
-          <string>From Destination</string>
+          <string>ID</string>
          </property>
         </widget>
        </item>
        <item row="4" column="1">
         <widget class="QLineEdit" name="flightFromDest"/>
-       </item>
-       <item row="2" column="1">
-        <widget class="QDateEdit" name="flightFromDate"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="flightFromDateLabel">
-         <property name="text">
-          <string>From Date</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="flightToDest"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="flightId"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="flightToDestLabel">
@@ -97,18 +80,21 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="flightAirline"/>
-       </item>
        <item row="3" column="1">
         <widget class="QDateEdit" name="flightToDate"/>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="IdLabel">
+       <item row="2" column="0">
+        <widget class="QLabel" name="flightFromDateLabel">
          <property name="text">
-          <string>ID</string>
+          <string>From Date</string>
          </property>
         </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="flightAirline"/>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="flightId"/>
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="flightPriceLabel">
@@ -117,8 +103,35 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="airlineLabel">
+         <property name="text">
+          <string>Airline</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="flightFromDestLabel">
+         <property name="text">
+          <string>From Destination</string>
+         </property>
+        </widget>
+       </item>
        <item row="6" column="1">
         <widget class="QDoubleSpinBox" name="flightPrice"/>
+       </item>
+       <item row="7" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -133,14 +146,17 @@
         <x>10</x>
         <y>10</y>
         <width>431</width>
-        <height>181</height>
+        <height>481</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="0">
-        <widget class="QLabel" name="hotelIdLabel">
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="hotelTownName"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="hotelPriceLabel">
          <property name="text">
-          <string>ID</string>
+          <string>Price</string>
          </property>
         </widget>
        </item>
@@ -148,6 +164,29 @@
         <widget class="QLabel" name="hotelNameLabel">
          <property name="text">
           <string>Hotel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="hotelFromDateLabel">
+         <property name="text">
+          <string>From Date</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="hotelName"/>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="hotelId"/>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDoubleSpinBox" name="hotelPrice"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="hotelIdLabel">
+         <property name="text">
+          <string>ID</string>
          </property>
         </widget>
        </item>
@@ -164,9 +203,6 @@
        <item row="4" column="1">
         <widget class="QDateEdit" name="hotelFromDate"/>
        </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="hotelName"/>
-       </item>
        <item row="5" column="0">
         <widget class="QLabel" name="hotelToDateLabel">
          <property name="text">
@@ -174,28 +210,18 @@
          </property>
         </widget>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="hotelFromDateLabel">
-         <property name="text">
-          <string>From Date</string>
+       <item row="7" column="1">
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="hotelId"/>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="hotelTownName"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="hotelPriceLabel">
-         <property name="text">
-          <string>Price</string>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QDoubleSpinBox" name="hotelPrice"/>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -210,10 +236,44 @@
         <x>10</x>
         <y>10</y>
         <width>441</width>
-        <height>271</height>
+        <height>481</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
+       <item row="5" column="2">
+        <widget class="QLineEdit" name="carReturnLocation"/>
+       </item>
+       <item row="3" column="2">
+        <widget class="QDateEdit" name="carToDate"/>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="carCompanyLabel">
+         <property name="text">
+          <string>Company</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="carPickupLocationLabel">
+         <property name="text">
+          <string>Pickup Location</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="carIdLabel">
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="carPriceLabel">
+         <property name="text">
+          <string>Price</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="2">
         <widget class="QLineEdit" name="carCompany"/>
        </item>
@@ -227,12 +287,15 @@
        <item row="4" column="2">
         <widget class="QLineEdit" name="carPickupLocation"/>
        </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="carPickupLocationLabel">
+       <item row="2" column="0">
+        <widget class="QLabel" name="carFromDateLabel">
          <property name="text">
-          <string>Pickup Location</string>
+          <string>From Date</string>
          </property>
         </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QDoubleSpinBox" name="carPrice"/>
        </item>
        <item row="2" column="2">
         <widget class="QDateEdit" name="carFromDate"/>
@@ -244,45 +307,21 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="carFromDateLabel">
-         <property name="text">
-          <string>From Date</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="carCompanyLabel">
-         <property name="text">
-          <string>Company</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2">
         <widget class="QLineEdit" name="carId"/>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="carIdLabel">
-         <property name="text">
-          <string>ID</string>
+       <item row="7" column="2">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QDateEdit" name="carToDate"/>
-       </item>
-       <item row="5" column="2">
-        <widget class="QLineEdit" name="carReturnLocation"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="carPriceLabel">
-         <property name="text">
-          <string>Price</string>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QDoubleSpinBox" name="carPrice"/>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -297,16 +336,34 @@
         <x>10</x>
         <y>0</y>
         <width>431</width>
-        <height>371</height>
+        <height>491</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="4" column="0">
-        <widget class="QLabel" name="trainDepartureTimeLabel">
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="trainId"/>
+       </item>
+       <item row="6" column="2">
+        <widget class="QDateEdit" name="trainToDate"/>
+       </item>
+       <item row="9" column="2">
+        <widget class="QDoubleSpinBox" name="trainPrice"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="trainToDateLabel">
          <property name="text">
-          <string>Departure Time</string>
+          <string>To Date</string>
          </property>
         </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="trainFromStation"/>
+       </item>
+       <item row="5" column="2">
+        <widget class="QLineEdit" name="trainArrivalTime"/>
+       </item>
+       <item row="7" column="2">
+        <widget class="QDateEdit" name="trainFromDate"/>
        </item>
        <item row="7" column="0">
         <widget class="QLabel" name="trainFromDateLabel">
@@ -322,34 +379,12 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="trainArrivalTimeLabel">
+       <item row="9" column="0">
+        <widget class="QLabel" name="trainPriceLabel">
          <property name="text">
-          <string>Arrival Time</string>
+          <string>Price</string>
          </property>
         </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QLineEdit" name="trainDepartureTime"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="trainId"/>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLineEdit" name="trainArrivalTime"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QListView" name="connectionList"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="trainIdLabel">
-         <property name="text">
-          <string>ID</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLineEdit" name="trainToStation"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="trainToStationLabel">
@@ -358,10 +393,33 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="trainToDateLabel">
+       <item row="4" column="2">
+        <widget class="QLineEdit" name="trainDepartureTime"/>
+       </item>
+       <item row="0" column="2">
+        <widget class="QListView" name="connectionList"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="trainArrivalTimeLabel">
          <property name="text">
-          <string>To Date</string>
+          <string>Arrival Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="trainIdLabel">
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="trainToStation"/>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="trainDepartureTimeLabel">
+         <property name="text">
+          <string>Departure Time</string>
          </property>
         </widget>
        </item>
@@ -372,24 +430,18 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="trainFromStation"/>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="trainPriceLabel">
-         <property name="text">
-          <string>Price</string>
+       <item row="10" column="2">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QDateEdit" name="trainToDate"/>
-       </item>
-       <item row="7" column="1">
-        <widget class="QDateEdit" name="trainFromDate"/>
-       </item>
-       <item row="8" column="1">
-        <widget class="QDoubleSpinBox" name="trainPrice"/>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -402,7 +454,7 @@
      <x>0</x>
      <y>0</y>
      <width>1177</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
