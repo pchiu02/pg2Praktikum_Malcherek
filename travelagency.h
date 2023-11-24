@@ -44,6 +44,7 @@ private:
     int totalHotelBooking = 0;
     int totalRentalCarReservation = 0;
     int totalTrainBooking = 0;
+    int travelCount = 0;
 
     double totalFlightPrice = 0;
     double totalHotelPrice = 0;

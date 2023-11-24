@@ -107,6 +107,15 @@ void TravelAgency::readFile(QString fileName)
 
             totalFlightBooking++;
             totalFlightPrice += price;
+
+            Travel* travel = findTravel(travelId);
+            if(!travel){
+                travel = new Travel(travelId, customerId);
+                allTravel.push_back(travel);
+            }
+            travelCount++;
+            travel->addBooking(flightBooking);
+
         }else if(type == "RentalCar")
         {
             //Parse Rental car specific Data
@@ -128,6 +137,14 @@ void TravelAgency::readFile(QString fileName)
 
             totalRentalCarReservation++;
             totalRentalCarReservationPrice += price;
+
+            Travel* travel = findTravel(travelId);
+            if(!travel){
+                travel = new Travel(travelId, customerId);
+                allTravel.push_back(travel);
+            }
+            travelCount++;
+            travel->addBooking(car);
         }else if(type == "Hotel")
         {
             //Parse Hotel specific Data
@@ -147,6 +164,14 @@ void TravelAgency::readFile(QString fileName)
 
             totalHotelBooking++;
             totalHotelPrice += price;
+
+            Travel* travel = findTravel(travelId);
+            if(!travel){
+                travel = new Travel(travelId, customerId);
+                allTravel.push_back(travel);
+            }
+            travelCount++;
+            travel->addBooking(hotelBooking);
         }else if(type == "Train")
         {
             std::vector<std::string> connectingStations;
@@ -178,7 +203,27 @@ void TravelAgency::readFile(QString fileName)
 
             totalTrainBooking++;
             totalTrainPrice += price;
+
+            Travel* travel = findTravel(travelId);
+            if(!travel){
+                travel = new Travel(travelId, customerId);
+                allTravel.push_back(travel);
+            }
+            travelCount++;
+            travel->addBooking(train);
         }
+        Customer* customer = findCustomer(customerId, customerFirstName, customerLastName);
+        if(!customer){
+            customer = new Customer(customerId, customerFirstName, customerLastName);
+            allCustomer.push_back(customer);
+        }
+
+        Travel* travel = findTravel(travelId);
+        if(travel && !customer->hasTravel(travel))
+        {
+            customer->addTravel(travel);
+        }
+        file.close();
     }
 
     std::cout << "Es wurden " <<  totalFlightBooking << " Flugbuchungen im Wert " << totalFlightPrice << " Euro, "
