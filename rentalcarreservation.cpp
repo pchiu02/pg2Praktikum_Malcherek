@@ -1,13 +1,15 @@
 #include "rentalcarreservation.h"
 
 
-RentalCarReservation::RentalCarReservation(std::string id, double price, std::string fromDate, std::string toDate,
-                                           std::string pickupLocation, std::string returnLocation, std::string company)
-                                            : Booking(id, price, fromDate, toDate)
+RentalCarReservation::RentalCarReservation(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
+                                           std::string pickupLocation, std::string returnLocation, std::string company,
+                                           std::string vehicleClass)
+                                            : Booking(id, price, fromDate, toDate, travelId)
 {
     this->pickupLocation = pickupLocation;
     this->returnLocation = returnLocation;
     this->company = company;
+    this->vehicleClass = vehicleClass;
 }
 
 std::string RentalCarReservation::showDetails()

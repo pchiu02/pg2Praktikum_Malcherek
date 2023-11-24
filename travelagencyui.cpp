@@ -49,7 +49,7 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
                                                                              .arg(static_cast<double>(totalTrainPrice), 0, 'f', 2));
 
             ui->buchungListen->clear();
-            std::vector<Booking*> bookings = travelagency->getBookings();
+            std::vector<Booking*> bookings = travelagency->getAllBooking();
             for (Booking* booking : bookings){
                 QString details = QString::fromStdString(booking->showDetails());
                 QListWidgetItem* item = new QListWidgetItem(details);
@@ -88,7 +88,7 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
 void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
 {
     QString text = item->text();
-    for(Booking* booking : travelagency->getBookings())
+    for(Booking* booking : travelagency->getAllBooking())
     {
         if(QString::fromStdString(booking->showDetails()) == text)
         {

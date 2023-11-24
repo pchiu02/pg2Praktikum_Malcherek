@@ -12,9 +12,10 @@
 class TrainTicket : public Booking
 {
 public:
-    TrainTicket(std::string id, double price, std::string fromDate, std::string toDate,
+    TrainTicket(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
                 std::string fromDestination, std::string toDestination, std::string departureTime,
-                std::string arrivalTime, std::vector<std::string> connectingStations);
+                std::string arrivalTime, std::vector<std::string> connectingStations,
+                std::string ticketType);
     virtual std::string showDetails() override;
 
     const std::string &getFromDestination() const;
@@ -28,6 +29,7 @@ private:
     std::string toDestination;
     std::string departureTime;
     std::string arrivalTime;
+    std::string ticketType;
     std::vector<std::string> connectingStations;
 };
 

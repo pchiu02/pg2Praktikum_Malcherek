@@ -1,11 +1,13 @@
 #include "hotelbooking.h"
 
 HotelBooking::HotelBooking(std::string id, double price, std::string fromDate,
-                           std::string toDate, std::string hotel, std::string town)
-    :Booking(id, price, fromDate, toDate)
+                           std::string toDate, long travelId, std::string hotel, std::string town,
+                           std::string roomType)
+    :Booking(id, price, fromDate, toDate, travelId)
 {
     this->hotel = hotel;
     this->town = town;
+    this->roomType = roomType;
 }
 
 std::string HotelBooking::showDetails()

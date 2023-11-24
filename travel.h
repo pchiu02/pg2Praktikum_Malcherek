@@ -10,8 +10,11 @@ using namespace std;
 class Travel
 {
 public:
-    Travel();
+    Travel(long id, long customerId);
     void addBooking(Booking* booking);
+
+    long getId() const;
+    long getCustomerId() const;
 
 private:
     long id;

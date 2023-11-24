@@ -11,8 +11,8 @@
 class HotelBooking : public Booking
 {
 public:
-    HotelBooking(std::string id, double price, std::string fromDate, std::string toDate,
-                 std::string hotel, std::string town);
+    HotelBooking(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
+                 std::string hotel, std::string town, std::string roomType);
     virtual std::string showDetails() override;
 
     const std::string &getHotel() const;
@@ -21,6 +21,7 @@ public:
 private:
     std::string hotel;
     std::string town;
+    std::string roomType;
 };
 
 #endif // HOTELBOOKING_H

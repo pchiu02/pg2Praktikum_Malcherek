@@ -13,11 +13,11 @@ TravelAgency::TravelAgency()
 
 TravelAgency::~TravelAgency()
 {
-    for(Booking* booking : bookings)
+    for(Booking* booking : allBooking)
     {
         delete booking;
     }
-    bookings.clear();
+    allBooking.clear();
 }
 
 void TravelAgency::readFile(QString fileName)
@@ -66,6 +66,11 @@ void TravelAgency::readFile(QString fileName)
         std::string toDate = obj["toDate"].toString().toStdString();
         double price = obj["price"].toDouble();
 
+        std::string customerFirstName = obj["customerFirstName"].toString().toStdString();
+        std::string customerLastName = obj["customerLastName"].toString().toStdString();
+        long customerId = obj["customerId"].toString().toLong();
+        long travelId = obj["travelId"].toString().toLong();
+
         if(id.empty() || fromDate.empty() || toDate.empty() || obj["price"].isNull())
         {
             throw std::runtime_error("Empty Attribut in " + std::to_string(lineNumber));
@@ -82,6 +87,7 @@ void TravelAgency::readFile(QString fileName)
             std::string airline = obj["airline"].toString().toStdString();
             std::string fromDestination = obj["fromDest"].toString().toStdString();
             std::string toDestination = obj["toDest"].toString().toStdString();
+            std::string bookingClass = obj["bookingClass"].toString().toStdString();
 
             if(airline.empty() || fromDestination.empty() || toDestination.empty())
             {
@@ -93,10 +99,10 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
 
-             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate,
+             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate, travelId,
                                                              fromDestination, toDestination,
-                                                             airline);
-            bookings.push_back(flightBooking);
+                                                             airline, bookingClass);
+            allBooking.push_back(flightBooking);
             //std::cout << flightBooking->showDetails() << std::endl;
 
             totalFlightBooking++;
@@ -107,16 +113,17 @@ void TravelAgency::readFile(QString fileName)
             std::string company = obj["company"].toString().toStdString();
             std::string pickupLocation = obj["pickupLocation"].toString().toStdString();
             std::string returnLocation = obj["returnLocation"].toString().toStdString();
+            std::string vehicleClass = obj["vehicleClass"].toString().toStdString();
 
             if(company.empty() || pickupLocation.empty() || returnLocation.empty())
             {
                 throw std::runtime_error("Empty carbooking attribute in line " +std::to_string(lineNumber));
             }
 
-            RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate,
+            RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate, travelId,
                                                                  company, pickupLocation,
-                                                                 returnLocation);
-            bookings.push_back(car);
+                                                                 returnLocation, vehicleClass);
+            allBooking.push_back(car);
             //std::cout << car->showDetails() << std::endl;
 
             totalRentalCarReservation++;
@@ -126,15 +133,16 @@ void TravelAgency::readFile(QString fileName)
             //Parse Hotel specific Data
             std::string hotel = obj["hotel"].toString().toStdString();
             std::string town = obj["town"].toString().toStdString();
+            std::string roomType = obj["roomType"].toString().toStdString();
 
             if(hotel.empty() || town.empty())
             {
                 throw std::runtime_error(&"Empty hotelbooking attribute in line "[lineNumber]);
             }
 
-            HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate,
-                                     hotel, town);
-            bookings.push_back(hotelBooking);
+            HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate, travelId,
+                                     hotel, town, roomType);
+            allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
 
             totalHotelBooking++;
@@ -146,6 +154,7 @@ void TravelAgency::readFile(QString fileName)
             std::string departureTime = obj["departureTime"].toString().toStdString();
             std::string fromStation = obj["fromStation"].toString().toStdString();
             std::string toStation = obj["toStation"].toString().toStdString();
+            std::string ticketType = obj["ticketType"].toString().toStdString();
 
             if(departureTime.empty() || fromStation.empty() || toStation.empty())
             {
@@ -161,10 +170,10 @@ void TravelAgency::readFile(QString fileName)
                     connectingStations.push_back(stationValue.toString().toStdString());
                 }
             }
-            TrainTicket* train = new TrainTicket(id, price, fromDate, toDate,
+            TrainTicket* train = new TrainTicket(id, price, fromDate, toDate, travelId,
                                                  fromStation, toStation, departureTime,
-                                                 arrivalTime, connectingStations);
-            bookings.push_back(train);
+                                                 arrivalTime, connectingStations, ticketType);
+            allBooking.push_back(train);
             //std::cout << train->showDetails() << std::endl;
 
             totalTrainBooking++;
@@ -178,6 +187,46 @@ void TravelAgency::readFile(QString fileName)
               << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
 
 
+}
+
+Booking *TravelAgency::findBooking(long id)
+{
+    for(Booking* booking : allBooking)
+    {
+        if(booking->getTravelId() == id)
+        {
+            return booking;
+        }
+    }
+
+    return nullptr;
+}
+
+Travel *TravelAgency::findTravel(long id)
+{
+    //check if the travel with the given Id already exist
+    for(Travel* travel : allTravel)
+    {
+        if(travel->getId() == id)
+        {
+            return travel;
+        }
+    }
+    return nullptr;
+}
+
+Customer *TravelAgency::findCustomer(long id, string firstName, string lastName)
+{
+    for(Customer *customer : allCustomer)
+    {
+        if(customer->getId() == id)
+        {
+            return customer;
+        }
+    }
+    Customer* newCustomer = new Customer(id, firstName, lastName);
+    allCustomer.push_back(newCustomer);
+    return newCustomer;
 }
 
 int TravelAgency::getTotalFlightBooking() const
@@ -220,7 +269,7 @@ double TravelAgency::getTotalTrainPrice() const
     return totalTrainPrice;
 }
 
-const std::vector<Booking *> &TravelAgency::getBookings() const
+const std::vector<Booking *> &TravelAgency::getAllBooking() const
 {
-    return bookings;
+    return allBooking;
 }

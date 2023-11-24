@@ -1,13 +1,15 @@
 #include "flightbooking.h"
 
 
-FlightBooking::FlightBooking(std::string id, double price, std::string fromDate, std::string toDate,
-                             std::string fromDestination, std::string toDestination, std::string airline)
-    :Booking(id, price, fromDate, toDate)
+FlightBooking::FlightBooking(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
+                             std::string fromDestination, std::string toDestination, std::string airline,
+                             std::string bookingClass)
+    :Booking(id, price, fromDate, toDate, travelId)
 {
     this->fromDestination = fromDestination;
     this->toDestination = toDestination;
     this->airline = airline;
+    this->bookingClass = bookingClass;
 }
 
 std::string FlightBooking::showDetails()

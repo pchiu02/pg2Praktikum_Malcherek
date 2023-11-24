@@ -12,8 +12,13 @@ using namespace std;
 class Customer
 {
 public:
-    Customer();
+    Customer(long id, string lastName, string firstName);
     void addTravel(Travel* travel);
+
+    long getId() const;
+    string getLastName() const;
+    string getFirstName() const;
+    vector<Travel *> getTravelList() const;
 
 private:
     long id;

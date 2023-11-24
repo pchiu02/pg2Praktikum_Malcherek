@@ -24,7 +24,7 @@ public:
     void readFile(QString fileName);
     Booking* findBooking(long id);
     Travel* findTravel(long id);
-    Customer* findCustomer(long id);
+    Customer* findCustomer(long id, string firstName, string lastName);
 
     int getTotalFlightBooking() const;
     int getTotalHotelBooking() const;
@@ -34,10 +34,10 @@ public:
     double getTotalHotelPrice() const;
     double getTotalRentalCarReservationPrice() const;
     double getTotalTrainPrice() const;
-    const std::vector<Booking *> &getBookings() const;
+    const std::vector<Booking *> &getAllBooking() const;
 
 private:
-    std::vector<Booking*> bookings;
+    std::vector<Booking*> allBooking;
     std::vector<Customer*> allCustomer;
     std::vector<Travel*> allTravel;
     int totalFlightBooking = 0;

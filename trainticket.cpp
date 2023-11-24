@@ -1,16 +1,17 @@
 #include "trainticket.h"
 
 
-TrainTicket::TrainTicket(std::string id, double price, std::string fromDate, std::string toDate,
+TrainTicket::TrainTicket(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
                          std::string fromDestination, std::string toDestination, std::string departureTime, std::string arrivalTime,
-                         std::vector<std::string> connectingStations)
-    :Booking(id, price, fromDate, toDate)
+                         std::vector<std::string> connectingStations, std::string ticketType)
+    :Booking(id, price, fromDate, toDate, travelId)
 {
     this->fromDestination = fromDestination;
     this->toDestination = toDestination;
     this->departureTime = departureTime;
     this->arrivalTime = arrivalTime;
     this->connectingStations = connectingStations;
+    this->ticketType = ticketType;
 }
 
 std::string TrainTicket::showDetails()
