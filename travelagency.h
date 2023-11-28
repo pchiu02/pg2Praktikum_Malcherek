@@ -25,7 +25,7 @@ public:
     QString getBookingsInfo();
     Booking* findBooking(long id);
     Travel* findTravel(long id);
-    Customer* findCustomer(long id, string firstName, string lastName);
+    Customer* findCustomer(long id, string &firstName, string &lastName);
 
     int getTotalFlightBooking() const;
     int getTotalHotelBooking() const;
@@ -46,6 +46,7 @@ private:
     int totalRentalCarReservation = 0;
     int totalTrainBooking = 0;
     int travelCount = 0;
+    int totalCustomer = 0;
 
     double totalFlightPrice = 0;
     double totalHotelPrice = 0;

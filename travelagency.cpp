@@ -5,8 +5,6 @@
 #include "trainticket.h"
 
 TravelAgency::TravelAgency()
-    : totalFlightBooking(0), totalHotelBooking(0), totalRentalCarReservation(0), totalTrainBooking(0),
-      totalFlightPrice(0), totalHotelPrice(0), totalRentalCarReservationPrice(0), totalTrainPrice(0)
 {
 
 }
@@ -17,7 +15,17 @@ TravelAgency::~TravelAgency()
     {
         delete booking;
     }
+    for(Customer* customer : allCustomer)
+    {
+        delete customer;
+    }
+    for(Travel* travel : allTravel)
+    {
+        delete travel;
+    }
     allBooking.clear();
+    allTravel.clear();
+    allCustomer.clear();
 }
 
 void TravelAgency::readFile(QString fileName)
@@ -28,13 +36,9 @@ void TravelAgency::readFile(QString fileName)
         qWarning("Failed to open File");
         return;
     }
-
     qDebug() <<"File open succesfully";
-
     //Read the contents of the file into a QByteArray
     QByteArray jsonData = file.readAll();
-
-
     //Parse the JSON data
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
     if(jsonDoc.isNull())
@@ -48,10 +52,7 @@ void TravelAgency::readFile(QString fileName)
         qWarning("JSON is not an array");
         return;
     }
-
     QJsonArray jsonArray = jsonDoc.array();
-
-    file.close();
 
     int lineNumber = 0;
 
@@ -68,8 +69,8 @@ void TravelAgency::readFile(QString fileName)
 
         std::string customerFirstName = obj["customerFirstName"].toString().toStdString();
         std::string customerLastName = obj["customerLastName"].toString().toStdString();
-        long customerId = obj["customerId"].toString().toLong();
-        long travelId = obj["travelId"].toString().toLong();
+        int customerId = obj["customerId"].toString().toInt();
+        int travelId = obj["travelId"].toString().toInt();
 
         if(id.empty() || fromDate.empty() || toDate.empty() || obj["price"].isNull())
         {
@@ -216,6 +217,7 @@ void TravelAgency::readFile(QString fileName)
         if(!customer){
             customer = new Customer(customerId, customerFirstName, customerLastName);
             allCustomer.push_back(customer);
+            totalCustomer++;
         }
 
         Travel* travel = findTravel(travelId);
@@ -223,13 +225,15 @@ void TravelAgency::readFile(QString fileName)
         {
             customer->addTravel(travel);
         }
-        file.close();
     }
 
     std::cout << "Es wurden " <<  totalFlightBooking << " Flugbuchungen im Wert " << totalFlightPrice << " Euro, "
               << totalRentalCarReservation << " Mietwagenbuchungen in Wert von " << totalRentalCarReservationPrice
               << " Euro, " << totalHotelBooking << " Hotelreservierungen im Wert von " << totalHotelPrice << " Euro, "
               << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
+
+    std::cout << "Es wurden " << allCustomer.size() << " Kunden und " << allTravel.size() << " Reisen angelegt." << std::endl;
+    file.close();
 
 
 }
@@ -238,20 +242,32 @@ QString TravelAgency::getBookingsInfo()
 {
     int totalTravels = allTravel.size();
     int totalCustomers = allCustomer.size();
-    Customer* customerId1 = findCustomer(1, " ", " ");
+    string firstName = " ";
+    string lastName = " ";
+    Customer* customerId1 = findCustomer(1, firstName, lastName);
     Travel* travelId17 = findTravel(17);
 
-    for(Booking* booking : allBooking)
+    // Initialize variables outside the loop
+    int totalFlightBooking = 0;
+    int totalHotelBooking = 0;
+    int totalRentalCarReservation = 0;
+    double totalFlightPrice = 0;
+    double totalHotelPrice = 0;
+    double totalRentalCarReservationPrice = 0;
+
+    for (Booking* booking : allBooking)
     {
-        if(FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
+        if (FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
         {
             totalFlightBooking++;
             totalFlightPrice += flight->getPrice();
-        }else if(HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
+        }
+        else if (HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
         {
             totalHotelBooking++;
             totalHotelPrice += hotel->getPrice();
-        }else if(RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
+        }
+        else if (RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
         {
             totalRentalCarReservation++;
             totalRentalCarReservationPrice += car->getPrice();
@@ -266,7 +282,7 @@ QString TravelAgency::getBookingsInfo()
         << "Der Kunde mit der ID 1 hat " << customerId1->getTravelCount() << " Reisen gebucht. "
         << "Zur Reise mit der ID 17 gehören " << travelId17->getBookingCount() << " Buchungen.";
 
-    return QString::fromStdString(oss.str());
+            return QString::fromStdString(oss.str());
 }
 
 Booking *TravelAgency::findBooking(long id)
@@ -295,15 +311,17 @@ Travel *TravelAgency::findTravel(long id)
     return nullptr;
 }
 
-Customer *TravelAgency::findCustomer(long id, string firstName, string lastName)
+Customer* TravelAgency::findCustomer(long id, string &firstName, string &lastName)
 {
-    for(Customer *customer : allCustomer)
+    for(Customer* customer : allCustomer)
     {
-        if(customer->getId() == id)
+        if(customer->getId() == id && customer->getFirstName() == firstName && customer->getLastName() == lastName)
         {
             return customer;
         }
     }
+
+           // If no matching customer is found, create a new one
     Customer* newCustomer = new Customer(id, firstName, lastName);
     allCustomer.push_back(newCustomer);
     return newCustomer;
