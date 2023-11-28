@@ -35,6 +35,8 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
 
             msgBox.information(this, "Success", "Success");
 
+            msgBox.information(this, "Datei erfolgreich eingelesen", travelagency->getBookingsInfo());
+
             msgBox.information(this, "Datei erfolgreich eingelesen", QString("Es wurden %1 Fluege im Wert von %2 Euro, "
                                                                              "%3 Hotelbuchungen im Wert von %4 Euro, "
                                                                              "%5 Mietwagenbuchungen im Wert von %6 Euro, "

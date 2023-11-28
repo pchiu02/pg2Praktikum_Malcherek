@@ -234,6 +234,41 @@ void TravelAgency::readFile(QString fileName)
 
 }
 
+QString TravelAgency::getBookingsInfo()
+{
+    int totalTravels = allTravel.size();
+    int totalCustomers = allCustomer.size();
+    Customer* customerId1 = findCustomer(1, " ", " ");
+    Travel* travelId17 = findTravel(17);
+
+    for(Booking* booking : allBooking)
+    {
+        if(FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
+        {
+            totalFlightBooking++;
+            totalFlightPrice += flight->getPrice();
+        }else if(HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
+        {
+            totalHotelBooking++;
+            totalHotelPrice += hotel->getPrice();
+        }else if(RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
+        {
+            totalRentalCarReservation++;
+            totalRentalCarReservationPrice += car->getPrice();
+        }
+    }
+
+    std::ostringstream oss;
+
+    oss << "Es wurden " << totalFlightBooking << " Flugreservierungen, " << totalHotelBooking << " Hotelbuchungen und " << totalRentalCarReservation
+        << " Mietwagenreservierungen im Gesamtwert von " << (totalFlightPrice + totalRentalCarReservationPrice + totalHotelPrice) << " eingelesen. "
+        << "Es wurden " << totalTravels << " Reisen und " << totalCustomers << " Kunden angelegt. "
+        << "Der Kunde mit der ID 1 hat " << customerId1->getTravelCount() << " Reisen gebucht. "
+        << "Zur Reise mit der ID 17 gehören " << travelId17->getBookingCount() << " Buchungen.";
+
+    return QString::fromStdString(oss.str());
+}
+
 Booking *TravelAgency::findBooking(long id)
 {
     for(Booking* booking : allBooking)

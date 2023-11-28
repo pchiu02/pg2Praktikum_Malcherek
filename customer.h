@@ -15,6 +15,7 @@ public:
     Customer(long id, string lastName, string firstName);
     void addTravel(Travel* travel);
     bool hasTravel(const Travel *travel) const;
+    int getTravelCount();
 
     long getId() const;
     string getLastName() const;

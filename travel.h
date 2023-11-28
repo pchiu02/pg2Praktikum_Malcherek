@@ -12,6 +12,7 @@ class Travel
 public:
     Travel(long id, long customerId);
     void addBooking(Booking* booking);
+    int getBookingCount();
 
     long getId() const;
     long getCustomerId() const;

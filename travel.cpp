@@ -10,6 +10,11 @@ void Travel::addBooking(Booking* booking){
     travelBookings.push_back(booking);
 }
 
+int Travel::getBookingCount()
+{
+    return travelBookings.size();
+}
+
 long Travel::getId() const
 {
     return id;

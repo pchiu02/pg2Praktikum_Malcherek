@@ -22,6 +22,11 @@ bool Customer::hasTravel(const Travel *travel) const{
     return false;
 }
 
+int Customer::getTravelCount()
+{
+    return travelList.size();
+}
+
 long Customer::getId() const
 {
     return id;
