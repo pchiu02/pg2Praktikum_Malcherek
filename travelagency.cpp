@@ -69,8 +69,8 @@ void TravelAgency::readFile(QString fileName)
 
         std::string customerFirstName = obj["customerFirstname"].toString().toStdString();
         std::string customerLastName = obj["customerLastname"].toString().toStdString();
-        int customerId = obj["customerId"].toString().toInt();
-        int travelId = obj["travelId"].toString().toInt();
+        int customerId = obj["customerId"].toInt();
+        int travelId = obj["travelId"].toInt();
 
         if(id.empty() || fromDate.empty() || toDate.empty() || obj["price"].isNull())
         {
