@@ -67,8 +67,8 @@ void TravelAgency::readFile(QString fileName)
         std::string toDate = obj["toDate"].toString().toStdString();
         double price = obj["price"].toDouble();
 
-        std::string customerFirstName = obj["customerFirstName"].toString().toStdString();
-        std::string customerLastName = obj["customerLastName"].toString().toStdString();
+        std::string customerFirstName = obj["customerFirstname"].toString().toStdString();
+        std::string customerLastName = obj["customerLastname"].toString().toStdString();
         int customerId = obj["customerId"].toString().toInt();
         int travelId = obj["travelId"].toString().toInt();
 
@@ -247,32 +247,30 @@ QString TravelAgency::getBookingsInfo()
     Customer* customerId1 = findCustomer(1, firstName, lastName);
     Travel* travelId17 = findTravel(17);
 
-    // Initialize variables outside the loop
-    int totalFlightBooking = 0;
-    int totalHotelBooking = 0;
-    int totalRentalCarReservation = 0;
-    double totalFlightPrice = 0;
-    double totalHotelPrice = 0;
-    double totalRentalCarReservationPrice = 0;
 
-    for (Booking* booking : allBooking)
-    {
-        if (FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
-        {
-            totalFlightBooking++;
-            totalFlightPrice += flight->getPrice();
-        }
-        else if (HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
-        {
-            totalHotelBooking++;
-            totalHotelPrice += hotel->getPrice();
-        }
-        else if (RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
-        {
-            totalRentalCarReservation++;
-            totalRentalCarReservationPrice += car->getPrice();
-        }
-    }
+//    for (Booking* booking : allBooking)
+//    {
+//        if (FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
+//        {
+//            totalFlightBooking++;
+//            totalFlightPrice += flight->getPrice();
+//        }
+//        else if (HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
+//        {
+//            totalHotelBooking++;
+//            totalHotelPrice += hotel->getPrice();
+//        }
+//        else if (RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
+//        {
+//            totalRentalCarReservation++;
+//            totalRentalCarReservationPrice += car->getPrice();
+//        }
+//        else if(TrainTicket* train = dynamic_cast<TrainTicket*>(booking))
+//        {
+//            totalTrainBooking++;
+//            totalTrainPrice += train->getPrice();
+//        }
+//    }
 
     std::ostringstream oss;
 
@@ -313,10 +311,11 @@ Travel *TravelAgency::findTravel(long id)
 
 Customer* TravelAgency::findCustomer(long id, string &firstName, string &lastName)
 {
-    for(Customer* customer : allCustomer)
+    for (Customer* customer : allCustomer)
     {
-        if(customer->getId() == id && customer->getFirstName() == firstName && customer->getLastName() == lastName)
+        if (customer->getId() == id)
         {
+            // Customer with the given ID already exists, so return it.
             return customer;
         }
     }
