@@ -24,3 +24,8 @@ long Travel::getCustomerId() const
 {
     return customerId;
 }
+
+const vector<Booking *> &Travel::getTravelBookings() const
+{
+    return travelBookings;
+}

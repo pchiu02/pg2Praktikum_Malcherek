@@ -36,6 +36,8 @@ public:
     double getTotalRentalCarReservationPrice() const;
     double getTotalTrainPrice() const;
     const std::vector<Booking *> &getAllBooking() const;
+    const std::vector<Customer *> &getAllCustomer() const;
+    const std::vector<Travel *> &getAllTravel() const;
 
 private:
     std::vector<Booking*> allBooking;

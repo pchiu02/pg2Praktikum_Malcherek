@@ -370,3 +370,13 @@ const std::vector<Booking *> &TravelAgency::getAllBooking() const
 {
     return allBooking;
 }
+
+const std::vector<Customer *> &TravelAgency::getAllCustomer() const
+{
+    return allCustomer;
+}
+
+const std::vector<Travel *> &TravelAgency::getAllTravel() const
+{
+    return allTravel;
+}

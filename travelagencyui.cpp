@@ -4,12 +4,23 @@
 #include "rentalcarreservation.h"
 #include "trainticket.h"
 #include "ui_travelagencyui.h"
+#include "suchendialog.h"
 
 TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     : QMainWindow(parent)
       , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency)
 {
     ui->setupUi(this);
+
+    ui->readButton->setIcon(QIcon("importFile.png"));
+    ui->readButton->setIconSize(QSize(24,24));
+    ui->readButton->setFlat(true);
+
+    ui->searchButton->setIcon(QIcon("search.svg.png"));
+    ui->searchButton->setIconSize(QSize(24,24));
+    ui->searchButton->setFlat(true);
+
+    ui->kundBox->setVisible(false);
 }
 
 TravelAgencyUi::~TravelAgencyUi()
@@ -24,39 +35,10 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
     if (!filePath.isEmpty()){
         try {
             travelagency->readFile(filePath);
-//            int totalFlightBooking = travelagency->getTotalFlightBooking();
-//            int totalHotelBooking = travelagency->getTotalFlightBooking();
-//            int totalRentalCarReservation = travelagency->getTotalRentalCarReservation();
-//            int totalTrainBooking = travelagency->getTotalTrainBooking();
-//            double totalFlightPrice = travelagency->getTotalFlightPrice();
-//            double totalHotelPrice = travelagency->getTotalHotelPrice();
-//            double totalRentalCarReservationPrice = travelagency->getTotalRentalCarReservationPrice();
-//            double totalTrainPrice = travelagency->getTotalTrainPrice();
 
             msgBox.information(this, "Success", "Success");
 
             msgBox.information(this, "Datei erfolgreich eingelesen", travelagency->getBookingsInfo());
-
-//            msgBox.information(this, "Datei erfolgreich eingelesen", QString("Es wurden %1 Fluege im Wert von %2 Euro, "
-//                                                                             "%3 Hotelbuchungen im Wert von %4 Euro, "
-//                                                                             "%5 Mietwagenbuchungen im Wert von %6 Euro, "
-//                                                                             "und %7 Zugbuchungen im Wert von %8 Euro eingelesen")
-//                                                                             .arg(totalFlightBooking)
-//                                                                             .arg(static_cast<double>(totalFlightPrice), 0, 'f', 2)
-//                                                                             .arg(totalHotelBooking)
-//                                                                             .arg(static_cast<double>(totalHotelPrice), 0, 'f', 2)
-//                                                                             .arg(totalRentalCarReservation)
-//                                                                             .arg(static_cast<double>(totalRentalCarReservationPrice), 0, 'f', 2)
-//                                                                             .arg(totalTrainBooking)
-//                                                                             .arg(static_cast<double>(totalTrainPrice), 0, 'f', 2));
-
-            ui->buchungListen->clear();
-            std::vector<Booking*> bookings = travelagency->getAllBooking();
-            for (Booking* booking : bookings){
-                QString details = QString::fromStdString(booking->showDetails());
-                QListWidgetItem* item = new QListWidgetItem(details);
-                ui->buchungListen->addItem(item);
-            }
 
         }catch(const std::runtime_error &e){
             msgBox.setIcon(QMessageBox::Critical);
@@ -87,6 +69,136 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
     }
 }
 
+void TravelAgencyUi::on_readButton_clicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(this, "Open JSON File", "", "JSON Files (*.json)");
+    if (!filePath.isEmpty()){
+        try {
+            travelagency->readFile(filePath);
+
+            msgBox.information(this, "Success", "Success");
+
+            msgBox.information(this, "Datei erfolgreich eingelesen", travelagency->getBookingsInfo());
+
+//            ui->buchungListen->clear();
+//            std::vector<Booking*> bookings = travelagency->getAllBooking();
+//            for (Booking* booking : bookings){
+//                QString details = QString::fromStdString(booking->showDetails());
+//                QListWidgetItem* item = new QListWidgetItem(details);
+//                ui->buchungListen->addItem(item);
+//            }
+
+        }catch(const std::runtime_error &e){
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowTitle("Fehler beim Einlesen der Buchungen");
+            msgBox.setText(QString::fromUtf8(e.what()));
+            msgBox.setInformativeText("Das Einlesen der Buchungen wurde in der betroffenen Zeile gestoppt."
+                           " Die vorangehenden Buchungen wurden erfolgreich angelegt.");
+            msgBox.setDetailedText("Wenn Sie die Datei bereits korrigiert haben, waehlen Sie 'Retry'."
+                                   "Waehlen Sie 'Discard', um alle Buchungen zu loeschen und 'Cancel',"
+                                   "um die vorhandenen Buchungen stehenzulassen und diesen Dialog zu verlassen");
+            msgBox.setStandardButtons(QMessageBox::Retry | QMessageBox::Discard | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Cancel);
+
+            int ret = msgBox.exec();
+
+            switch(ret){
+                case QMessageBox::Retry:
+                    on_actionEinlesen_triggered();
+                    break;
+                case QMessageBox::Discard:
+                    break;
+                case QMessageBox::Cancel:
+                    break;
+                default:
+                    msgBox.critical(this, "Error", "Error");
+            }
+        }
+    }
+}
+
+void TravelAgencyUi::on_searchButton_clicked()
+{
+    SuchenDialog suchenDialog(this);
+    ui->reisen_Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    if(suchenDialog.exec() == QDialog::Accepted)
+    {
+        ui->kundBox->setVisible(true);
+        int enteredId = suchenDialog.getId();
+        string firstName = " ";
+        string lastName = " ";
+        Customer* foundCustomer = travelagency->findCustomer(enteredId, firstName, lastName);
+        if(foundCustomer)
+        {
+            ui->id_Kund->setText(QString::number(foundCustomer->getId()));
+            ui->name_Kund->setText(QString::fromStdString(foundCustomer->getFirstName())
+                                   + " " +
+                                   QString::fromStdString(foundCustomer->getLastName()));
+            std::vector<int> addedTravelIds;
+            std::vector<int> displayedTravelIds;
+            for(Travel* travel : travelagency->getAllTravel())
+            {
+                if(travel->getCustomerId() == enteredId)
+                {
+                    int travelID = travel->getId();
+
+                    if(std::find(displayedTravelIds.begin(), displayedTravelIds.end(), travelID) != displayedTravelIds.end())
+                    {
+                        continue;
+                    }
+
+                    addedTravelIds.push_back(travelID);
+
+                    vector<Booking*> bookings = travel->getTravelBookings();
+                    if(!bookings.empty())
+                    {
+                        std::string earliestFromDate = bookings[0]->getFromDate();
+                        std::string latestToDate = bookings[0]->getToDate();
+
+                        for(const Booking* booking: bookings)
+                        {
+                            if(booking->getFromDate() < earliestFromDate)
+                            {
+                                earliestFromDate = booking->getFromDate();
+
+                            }
+                            else if(booking->getToDate() > latestToDate)
+                            {
+                                latestToDate = booking->getToDate();
+                            }
+                        }
+
+                        QString fromDate = QString::fromStdString(earliestFromDate);
+                        QString toDate = QString::fromStdString(latestToDate);
+
+                        QDate fromDateObj = QDate::fromString(fromDate, "yyyyMMdd");
+                        QDate toDateObj = QDate::fromString(toDate, "yyyyMMdd");
+
+                        QString formattedFromDate = fromDateObj.toString("dd.MM.yyyy");
+                        QString formattedToDate = toDateObj.toString("dd.MM.yyyy");
+
+                        QTableWidgetItem* fromDateItem = new QTableWidgetItem(formattedFromDate);
+                        QTableWidgetItem* toDateItem = new QTableWidgetItem(formattedToDate);
+
+                        int rowCount = ui->reisen_Table->rowCount();
+
+                        ui->reisen_Table->setRowCount(rowCount+1);
+                        ui->reisen_Table->setItem(rowCount, 0, new QTableWidgetItem(QString::number(travelID)));
+                        ui->reisen_Table->setItem(rowCount, 1, fromDateItem);
+                        ui->reisen_Table->setItem(rowCount, 2, toDateItem);
+                    }
+
+                    displayedTravelIds.push_back(travelID);
+                }
+            }
+        }
+        else
+        {
+            QMessageBox::critical(this, "Error", "Customer not found");
+        }
+    }
+}
 void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
 {
     QString text = item->text();
@@ -161,7 +273,7 @@ void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
 
                 //Convert the vector of strings to QStringList
                 QStringList qStringList;
-                for(std::string connectingStationLists : connectingStationList)
+                for(const std::string &connectingStationLists : connectingStationList)
                 {
                     qStringList << QString::fromStdString(connectingStationLists);
                 }
@@ -175,4 +287,8 @@ void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
         }
     }
 }
+
+
+
+
 

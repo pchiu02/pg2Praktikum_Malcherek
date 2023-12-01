@@ -32,6 +32,10 @@ private slots:
 
     void on_buchungListen_itemDoubleClicked(QListWidgetItem *item);
 
+    void on_readButton_clicked();
+
+    void on_searchButton_clicked();
+
 private:
     Ui::TravelAgencyUi *ui;
     TravelAgency* travelagency;

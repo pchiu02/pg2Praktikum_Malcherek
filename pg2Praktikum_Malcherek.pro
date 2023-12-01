@@ -15,6 +15,7 @@ SOURCES += \
     hotelbooking.cpp \
     main.cpp \
     rentalcarreservation.cpp \
+    suchendialog.cpp \
     trainticket.cpp \
     travel.cpp \
     travelagency.cpp \
@@ -27,12 +28,14 @@ HEADERS += \
     hotelbooking.h \
     json.hpp \
     rentalcarreservation.h \
+    suchendialog.h \
     trainticket.h \
     travel.h \
     travelagency.h \
     travelagencyui.h
 
 FORMS += \
+    suchendialog.ui \
     travelagencyui.ui
 
 # Default rules for deployment.

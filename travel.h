@@ -16,6 +16,7 @@ public:
 
     long getId() const;
     long getCustomerId() const;
+    const vector<Booking *> &getTravelBookings() const;
 
 private:
     long id;
