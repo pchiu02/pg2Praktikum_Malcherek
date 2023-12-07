@@ -1328,10 +1328,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_travelagencyui.h"
+        "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_suchendialog.h"
     ],
     "directory": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/.qtc_clangd",
-    "file": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_travelagencyui.h"
+    "file": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_suchendialog.h"
 },
 {
     "arguments": [
@@ -1386,9 +1386,9 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_suchendialog.h"
+        "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_travelagencyui.h"
     ],
     "directory": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/.qtc_clangd",
-    "file": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_suchendialog.h"
+    "file": "/Users/chiu/Documents/HDA/Sem2/PG2_Malcherek/pg2Praktikum_Malcherek/ui_travelagencyui.h"
 }
 ]

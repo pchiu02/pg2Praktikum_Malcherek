@@ -100,7 +100,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
 
-             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate, travelId,
+             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate, travelId, type,
                                                              fromDestination, toDestination,
                                                              airline, bookingClass);
             allBooking.push_back(flightBooking);
@@ -130,7 +130,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Empty carbooking attribute in line " +std::to_string(lineNumber));
             }
 
-            RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate, travelId,
+            RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate, travelId, type,
                                                                  company, pickupLocation,
                                                                  returnLocation, vehicleClass);
             allBooking.push_back(car);
@@ -158,7 +158,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error(&"Empty hotelbooking attribute in line "[lineNumber]);
             }
 
-            HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate, travelId,
+            HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate, travelId, type,
                                      hotel, town, roomType);
             allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
@@ -196,7 +196,7 @@ void TravelAgency::readFile(QString fileName)
                     connectingStations.push_back(stationValue.toString().toStdString());
                 }
             }
-            TrainTicket* train = new TrainTicket(id, price, fromDate, toDate, travelId,
+            TrainTicket* train = new TrainTicket(id, price, fromDate, toDate, travelId, type,
                                                  fromStation, toStation, departureTime,
                                                  arrivalTime, connectingStations, ticketType);
             allBooking.push_back(train);
@@ -246,31 +246,6 @@ QString TravelAgency::getBookingsInfo()
     string lastName = " ";
     Customer* customerId1 = findCustomer(1, firstName, lastName);
     Travel* travelId17 = findTravel(17);
-
-
-//    for (Booking* booking : allBooking)
-//    {
-//        if (FlightBooking* flight = dynamic_cast<FlightBooking*>(booking))
-//        {
-//            totalFlightBooking++;
-//            totalFlightPrice += flight->getPrice();
-//        }
-//        else if (HotelBooking* hotel = dynamic_cast<HotelBooking*>(booking))
-//        {
-//            totalHotelBooking++;
-//            totalHotelPrice += hotel->getPrice();
-//        }
-//        else if (RentalCarReservation* car = dynamic_cast<RentalCarReservation*>(booking))
-//        {
-//            totalRentalCarReservation++;
-//            totalRentalCarReservationPrice += car->getPrice();
-//        }
-//        else if(TrainTicket* train = dynamic_cast<TrainTicket*>(booking))
-//        {
-//            totalTrainBooking++;
-//            totalTrainPrice += train->getPrice();
-//        }
-//    }
 
     std::ostringstream oss;
 

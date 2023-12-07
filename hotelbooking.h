@@ -12,7 +12,7 @@ class HotelBooking : public Booking
 {
 public:
     HotelBooking(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
-                 std::string hotel, std::string town, std::string roomType);
+                 std::string buchungsTyp, std::string hotel, std::string town, std::string roomType);
     virtual std::string showDetails() override;
 
     const std::string &getHotel() const;

@@ -21,6 +21,7 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     ui->searchButton->setFlat(true);
 
     ui->kundBox->setVisible(false);
+    ui->reiseBox->setVisible(false);
 }
 
 TravelAgencyUi::~TravelAgencyUi()
@@ -192,13 +193,82 @@ void TravelAgencyUi::on_searchButton_clicked()
                     displayedTravelIds.push_back(travelID);
                 }
             }
-        }
-        else
-        {
+        }else{
             QMessageBox::critical(this, "Error", "Customer not found");
         }
     }
 }
+
+
+
+
+
+void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
+{
+    ui->reiseBox->setVisible(true);
+    ui->buchung_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->buchung_table->clearContents();
+    ui->buchung_table->setRowCount(0);
+
+    int selectedReiseID = item->text().toInt();
+
+    if(item != nullptr)
+    {
+        ui->reiseId->setText(item->text());
+    }
+
+    for(Travel* travel : travelagency->getAllTravel())
+    {
+        if(travel->getId() == selectedReiseID)
+        {
+          const std::vector<Booking*> bookings = travel->getTravelBookings();
+          int rowCount = bookings.size();
+          std::vector<Booking*> currentBooking = travel->getTravelBookings();
+
+          ui->buchung_table->setRowCount(rowCount);
+
+          for(int i = 0; i < rowCount; i++)
+          {
+              QString bookingTyp = QString::fromStdString(bookings[i]->getBuchungsTyp());
+              QString fromDate = QString::fromStdString(bookings[i]->getFromDate());
+              QString toDate = QString::fromStdString(bookings[i]->getToDate());
+              QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
+              QTableWidgetItem* buchungsTypItem = new QTableWidgetItem();
+              QTableWidgetItem* preisItem = new QTableWidgetItem(preis);
+
+              QDate fromDateObj = QDate::fromString(fromDate, "yyyyMMdd");
+              QDate toDateObj = QDate::fromString(toDate, "yyyyMMdd");
+
+              QString formattedFromDate = fromDateObj.toString("dd.MM.yyyy");
+              QString formattedToDate = toDateObj.toString("dd.MM.yyyy");
+
+              QTableWidgetItem* startItem = new QTableWidgetItem(formattedFromDate);
+              QTableWidgetItem* endItem = new QTableWidgetItem(formattedToDate);
+
+              if(dynamic_cast<FlightBooking*>(bookings[i]))
+              {
+                  buchungsTypItem->setIcon(QIcon("flightIcon.png"));
+              }else if(dynamic_cast<HotelBooking*>(bookings[i]))
+              {
+                  buchungsTypItem->setIcon(QIcon("hotelIcon.png"));
+              }else if(dynamic_cast<RentalCarReservation*>(bookings[i]))
+              {
+                  buchungsTypItem->setIcon(QIcon("carIcon.png"));
+              }else if(dynamic_cast<TrainTicket*>(bookings[i]))
+              {
+                  buchungsTypItem->setIcon(QIcon("trainIcon.png"));
+              }
+
+              ui->buchung_table->setItem(i, 0, buchungsTypItem);
+              ui->buchung_table->setItem(i, 1, startItem);
+              ui->buchung_table->setItem(i, 2, endItem);
+              ui->buchung_table->setItem(i, 3, preisItem);
+          }
+        }
+    }
+
+}
+
 void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
 {
     QString text = item->text();
@@ -287,8 +357,3 @@ void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
         }
     }
 }
-
-
-
-
-

@@ -9,7 +9,10 @@
 #include <QDate>
 #include <QDateEdit>
 #include <QListView>
+#include <QListWidgetItem>
 #include <QStringListModel>
+#include <QTableWidget>
+#include <QTableWidgetItem>
 
 #include "QtWidgets/qlistwidget.h"
 #include "travelagency.h"
@@ -35,6 +38,8 @@ private slots:
     void on_readButton_clicked();
 
     void on_searchButton_clicked();
+
+    void on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item);
 
 private:
     Ui::TravelAgencyUi *ui;

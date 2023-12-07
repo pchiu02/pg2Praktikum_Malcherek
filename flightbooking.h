@@ -12,7 +12,7 @@ class FlightBooking : public Booking
 {
 public:
     FlightBooking(std::string id , double price, std::string fromDate, std::string toDate, long travelId,
-                  std::string fromDestination, std::string toDestination, std::string airline,
+                  std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string airline,
                   std::string bookingClass);
     virtual std::string showDetails() override;
 

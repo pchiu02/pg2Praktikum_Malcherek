@@ -2,9 +2,9 @@
 
 
 FlightBooking::FlightBooking(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
-                             std::string fromDestination, std::string toDestination, std::string airline,
+                             std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string airline,
                              std::string bookingClass)
-    :Booking(id, price, fromDate, toDate, travelId)
+    :Booking(id, price, fromDate, toDate, travelId, buchungsTyp)
 {
     this->fromDestination = fromDestination;
     this->toDestination = toDestination;
