@@ -229,7 +229,6 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
 
           for(int i = 0; i < rowCount; i++)
           {
-              QString bookingTyp = QString::fromStdString(bookings[i]->getBuchungsTyp());
               QString fromDate = QString::fromStdString(bookings[i]->getFromDate());
               QString toDate = QString::fromStdString(bookings[i]->getToDate());
               QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
