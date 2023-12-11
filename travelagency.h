@@ -23,7 +23,7 @@ public:
     ~TravelAgency();
     void readFile(QString fileName);
     QString getBookingsInfo();
-    Booking* findBooking(long id);
+    Booking* findBooking(std::string id);
     Travel* findTravel(long id);
     Customer* findCustomer(long id, string &firstName, string &lastName);
 

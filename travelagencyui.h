@@ -15,6 +15,7 @@
 #include <QTableWidgetItem>
 
 #include "QtWidgets/qlistwidget.h"
+#include "buchungsdetails.h"
 #include "travelagency.h"
 
 
@@ -33,17 +34,18 @@ public:
 private slots:
     void on_actionEinlesen_triggered();
 
-    void on_buchungListen_itemDoubleClicked(QListWidgetItem *item);
-
     void on_readButton_clicked();
 
     void on_searchButton_clicked();
 
     void on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item);
 
+    void on_buchung_table_itemDoubleClicked(QTableWidgetItem *item);
+
 private:
     Ui::TravelAgencyUi *ui;
     TravelAgency* travelagency;
+    BuchungsDetails* buchungsDetails;
     QMessageBox msgBox;
 };
 #endif // TRAVELAGENCYUI_H

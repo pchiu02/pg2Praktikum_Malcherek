@@ -19,6 +19,7 @@ public:
     const std::string &getFromDestination() const;
     const std::string &getToDestination() const;
     const std::string &getAirline() const;
+    const std::string &getBookingClass() const;
 
 private:
     std::string fromDestination;

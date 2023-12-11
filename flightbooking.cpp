@@ -35,3 +35,8 @@ const std::string &FlightBooking::getAirline() const
 {
     return airline;
 }
+
+const std::string &FlightBooking::getBookingClass() const
+{
+    return bookingClass;
+}

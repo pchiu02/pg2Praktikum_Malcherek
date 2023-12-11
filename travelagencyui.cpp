@@ -5,6 +5,7 @@
 #include "trainticket.h"
 #include "ui_travelagencyui.h"
 #include "suchendialog.h"
+#include "buchungsdetails.h"
 
 TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     : QMainWindow(parent)
@@ -268,91 +269,102 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
 
 }
 
-void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
+//void TravelAgencyUi::on_buchungListen_itemDoubleClicked(QListWidgetItem *item)
+//{
+//    QString text = item->text();
+//    for(Booking* booking : travelagency->getAllBooking())
+//    {
+//        if(QString::fromStdString(booking->showDetails()) == text)
+//        {
+//            if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking))
+//            {
+//                ui->bookingWidget->setCurrentWidget(ui->flightBookingTab);
+//                ui->flightId->setText(QString::fromStdString(flightBooking->getId()));
+//                ui->flightAirline->setText(QString::fromStdString(flightBooking->getAirline()));
+//                ui->flightFromDate->setDate(QDate::fromString(QString::fromStdString(flightBooking->getFromDate()), "yyyyMMdd"));
+//                ui->flightToDate->setDate(QDate::fromString(QString::fromStdString(flightBooking->getFromDate()), "yyyyMMdd"));
+//                ui->flightFromDest->setText(QString::fromStdString(flightBooking->getFromDestination()));
+//                ui->flightToDest->setText(QString::fromStdString(flightBooking->getToDestination()));
+//                ui->flightPrice->setDecimals(2);
+//                ui->flightPrice->setSingleStep(0.01);
+//                ui->flightPrice->setRange(0.0, std::numeric_limits<double>::max());
+//                ui->flightPrice->setPrefix("€");
+//                ui->flightPrice->setValue(flightBooking->getPrice());
+//            }
+
+//            else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking))
+//            {
+//                ui->bookingWidget->setCurrentWidget(ui->hotelBookingTab);
+//                ui->hotelId->setText(QString::fromStdString(hotelBooking->getId()));
+//                ui->hotelName->setText(QString::fromStdString(hotelBooking->getHotel()));
+//                ui->hotelTownName->setText(QString::fromStdString(hotelBooking->getTown()));
+//                ui->hotelFromDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getFromDate()),"yyyyMMdd"));
+//                ui->hotelToDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getToDate()), "yyyyMMdd"));
+//                ui->hotelPrice->setDecimals(2);
+//                ui->hotelPrice->setSingleStep(0.01);
+//                ui->hotelPrice->setRange(0.0, std::numeric_limits<double>::max());
+//                ui->hotelPrice->setPrefix("€");
+//                ui->hotelPrice->setValue(hotelBooking->getPrice());
+//            }
+
+//            else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking))
+//            {
+//                ui->bookingWidget->setCurrentWidget(ui->carBookingTab);
+//                ui->carId->setText(QString::fromStdString(carBooking->getId()));
+//                ui->carCompany->setText(QString::fromStdString(carBooking->getCompany()));
+//                ui->carFromDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getFromDate()), "yyyyMMdd"));
+//                ui->carToDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getToDate()), "yyyyMMdd"));
+//                ui->carPickupLocation->setText(QString::fromStdString(carBooking->getPickupLocation()));
+//                ui->carReturnLocation->setText(QString::fromStdString(carBooking->getReturnLocation()));
+//                ui->carPrice->setDecimals(2);
+//                ui->carPrice->setSingleStep(0.01);
+//                ui->carPrice->setRange(0.0, std::numeric_limits<double>::max());
+//                ui->carPrice->setPrefix("€");
+//                ui->carPrice->setValue(carBooking->getPrice());
+//            }
+//            else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(booking))
+//            {
+//                ui->bookingWidget->setCurrentWidget(ui->trainBookingTab);
+//                ui->trainId->setText(QString::fromStdString(trainBooking->getId()));
+//                ui->trainFromStation->setText(QString::fromStdString(trainBooking->getFromDestination()));
+//                ui->trainToStation->setText(QString::fromStdString(trainBooking->getToDestination()));
+//                ui->trainDepartureTime->setText(QString::fromStdString(trainBooking->getDepartureTime()));
+//                ui->trainArrivalTime->setText(QString::fromStdString(trainBooking->getArrivalTime()));
+//                ui->trainFromDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getFromDate()), "yyyyMMdd"));
+//                ui->trainToDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getToDate()), "yyyyMMdd"));
+//                ui->trainPrice->setDecimals(2);
+//                ui->trainPrice->setSingleStep(0.01);
+//                ui->trainPrice->setRange(0.0, std::numeric_limits<double>::max());
+//                ui->trainPrice->setPrefix("€");
+//                ui->trainPrice->setValue(trainBooking->getPrice());
+
+//                std::vector<std::string>connectingStationList = trainBooking->getConnectingStations();
+//                QStringListModel *model = new QStringListModel();
+
+//                //Convert the vector of strings to QStringList
+//                QStringList qStringList;
+//                for(const std::string &connectingStationLists : connectingStationList)
+//                {
+//                    qStringList << QString::fromStdString(connectingStationLists);
+//                }
+
+//                //Set the QStringList as the model data
+//                model->setStringList(qStringList);
+
+//                //set the model for the QListView
+//                ui->connectionList->setModel(model);
+//            }
+//        }
+//    }
+//}
+
+void TravelAgencyUi::on_buchung_table_itemDoubleClicked(QTableWidgetItem *item)
 {
-    QString text = item->text();
-    for(Booking* booking : travelagency->getAllBooking())
-    {
-        if(QString::fromStdString(booking->showDetails()) == text)
-        {
-            if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking))
-            {
-                ui->bookingWidget->setCurrentWidget(ui->flightBookingTab);
-                ui->flightId->setText(QString::fromStdString(flightBooking->getId()));
-                ui->flightAirline->setText(QString::fromStdString(flightBooking->getAirline()));
-                ui->flightFromDate->setDate(QDate::fromString(QString::fromStdString(flightBooking->getFromDate()), "yyyyMMdd"));
-                ui->flightToDate->setDate(QDate::fromString(QString::fromStdString(flightBooking->getFromDate()), "yyyyMMdd"));
-                ui->flightFromDest->setText(QString::fromStdString(flightBooking->getFromDestination()));
-                ui->flightToDest->setText(QString::fromStdString(flightBooking->getToDestination()));
-                ui->flightPrice->setDecimals(2);
-                ui->flightPrice->setSingleStep(0.01);
-                ui->flightPrice->setRange(0.0, std::numeric_limits<double>::max());
-                ui->flightPrice->setPrefix("€");
-                ui->flightPrice->setValue(flightBooking->getPrice());
-            }
-
-            else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking))
-            {
-                ui->bookingWidget->setCurrentWidget(ui->hotelBookingTab);
-                ui->hotelId->setText(QString::fromStdString(hotelBooking->getId()));
-                ui->hotelName->setText(QString::fromStdString(hotelBooking->getHotel()));
-                ui->hotelTownName->setText(QString::fromStdString(hotelBooking->getTown()));
-                ui->hotelFromDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getFromDate()),"yyyyMMdd"));
-                ui->hotelToDate->setDate(QDate::fromString(QString::fromStdString(hotelBooking->getToDate()), "yyyyMMdd"));
-                ui->hotelPrice->setDecimals(2);
-                ui->hotelPrice->setSingleStep(0.01);
-                ui->hotelPrice->setRange(0.0, std::numeric_limits<double>::max());
-                ui->hotelPrice->setPrefix("€");
-                ui->hotelPrice->setValue(hotelBooking->getPrice());
-            }
-
-            else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking))
-            {
-                ui->bookingWidget->setCurrentWidget(ui->carBookingTab);
-                ui->carId->setText(QString::fromStdString(carBooking->getId()));
-                ui->carCompany->setText(QString::fromStdString(carBooking->getCompany()));
-                ui->carFromDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getFromDate()), "yyyyMMdd"));
-                ui->carToDate->setDate(QDate::fromString(QString::fromStdString(carBooking->getToDate()), "yyyyMMdd"));
-                ui->carPickupLocation->setText(QString::fromStdString(carBooking->getPickupLocation()));
-                ui->carReturnLocation->setText(QString::fromStdString(carBooking->getReturnLocation()));
-                ui->carPrice->setDecimals(2);
-                ui->carPrice->setSingleStep(0.01);
-                ui->carPrice->setRange(0.0, std::numeric_limits<double>::max());
-                ui->carPrice->setPrefix("€");
-                ui->carPrice->setValue(carBooking->getPrice());
-            }
-            else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(booking))
-            {
-                ui->bookingWidget->setCurrentWidget(ui->trainBookingTab);
-                ui->trainId->setText(QString::fromStdString(trainBooking->getId()));
-                ui->trainFromStation->setText(QString::fromStdString(trainBooking->getFromDestination()));
-                ui->trainToStation->setText(QString::fromStdString(trainBooking->getToDestination()));
-                ui->trainDepartureTime->setText(QString::fromStdString(trainBooking->getDepartureTime()));
-                ui->trainArrivalTime->setText(QString::fromStdString(trainBooking->getArrivalTime()));
-                ui->trainFromDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getFromDate()), "yyyyMMdd"));
-                ui->trainToDate->setDate(QDate::fromString(QString::fromStdString(trainBooking->getToDate()), "yyyyMMdd"));
-                ui->trainPrice->setDecimals(2);
-                ui->trainPrice->setSingleStep(0.01);
-                ui->trainPrice->setRange(0.0, std::numeric_limits<double>::max());
-                ui->trainPrice->setPrefix("€");
-                ui->trainPrice->setValue(trainBooking->getPrice());
-
-                std::vector<std::string>connectingStationList = trainBooking->getConnectingStations();
-                QStringListModel *model = new QStringListModel();
-
-                //Convert the vector of strings to QStringList
-                QStringList qStringList;
-                for(const std::string &connectingStationLists : connectingStationList)
-                {
-                    qStringList << QString::fromStdString(connectingStationLists);
-                }
-
-                //Set the QStringList as the model data
-                model->setStringList(qStringList);
-
-                //set the model for the QListView
-                ui->connectionList->setModel(model);
-            }
-        }
-    }
+    BuchungsDetails *buchungsDetails = new BuchungsDetails(travelagency, this);
+    int row = item->row();
+    QString QSrow = QString::number(row);
+    QString reiseID = ui->reiseId->text();
+    buchungsDetails->setBookingDetails(QSrow, reiseID);
+    buchungsDetails->show();
 }
+

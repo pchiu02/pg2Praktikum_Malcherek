@@ -258,11 +258,11 @@ QString TravelAgency::getBookingsInfo()
             return QString::fromStdString(oss.str());
 }
 
-Booking *TravelAgency::findBooking(long id)
+Booking *TravelAgency::findBooking(std::string id)
 {
     for(Booking* booking : allBooking)
     {
-        if(booking->getTravelId() == id)
+        if(booking->getId() == id)
         {
             return booking;
         }

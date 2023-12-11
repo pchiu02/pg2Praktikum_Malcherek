@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     booking.cpp \
+    buchungsdetails.cpp \
     customer.cpp \
     flightbooking.cpp \
     hotelbooking.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     booking.h \
+    buchungsdetails.h \
     customer.h \
     flightbooking.h \
     hotelbooking.h \
@@ -35,6 +37,7 @@ HEADERS += \
     travelagencyui.h
 
 FORMS += \
+    buchungsdetails.ui \
     suchendialog.ui \
     travelagencyui.ui
 
