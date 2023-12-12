@@ -13,16 +13,21 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->readButton->setIcon(QIcon("importFile.png"));
+    //ui->readButton->setIcon(QIcon("importFile.png"));
     ui->readButton->setIconSize(QSize(24,24));
     ui->readButton->setFlat(true);
 
-    ui->searchButton->setIcon(QIcon("search.svg.png"));
+    //ui->searchButton->setIcon(QIcon("search.svg.png"));
     ui->searchButton->setIconSize(QSize(24,24));
     ui->searchButton->setFlat(true);
 
+    ui->saveButton->setIconSize(QSize(24,24));
+    ui->saveButton->setFlat(true);
+
     ui->kundBox->setVisible(false);
     ui->reiseBox->setVisible(false);
+
+    ui->reiseId->setReadOnly(true);
 }
 
 TravelAgencyUi::~TravelAgencyUi()
@@ -366,5 +371,69 @@ void TravelAgencyUi::on_buchung_table_itemDoubleClicked(QTableWidgetItem *item)
     QString reiseID = ui->reiseId->text();
     buchungsDetails->setBookingDetails(QSrow, reiseID);
     buchungsDetails->show();
+}
+
+
+void TravelAgencyUi::on_saveButton_clicked()
+{
+    QJsonArray jsonArray;
+
+    for(const auto& booking : travelagency->getAllBooking()){
+        QJsonObject bookingObject;
+        std::string firstName = "";
+        std::string lastName = "";
+        Travel* travel = travelagency->findTravel(booking->getTravelId());
+        Customer* customer = travelagency->findCustomer(travel->getCustomerId(), firstName, lastName);
+        bookingObject["id"] = QString::fromStdString(booking->getId());
+        bookingObject["customerId"] = QString::number(customer->getId());
+        bookingObject["customerFirstName"] = QString::fromStdString(customer->getFirstName());
+        bookingObject["customerLastName"] = QString::fromStdString(customer->getLastName());
+        bookingObject["fromDate"] = QString::fromStdString(booking->getFromDate());
+        bookingObject["toDate"] = QString::fromStdString(booking->getToDate());
+        bookingObject["price"] = QString::number(booking->getPrice());
+        bookingObject["travelId"] = QString::number(booking->getTravelId());
+
+        if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking)){
+          bookingObject["type"] = "Flight";
+          bookingObject["airline"] = QString::fromStdString(flightBooking->getAirline());
+          bookingObject["bookingClass"] = QString::fromStdString(flightBooking->getBookingClass());
+          bookingObject["fromDest"] = QString::fromStdString(flightBooking->getFromDestination());
+          bookingObject["toDest"] = QString::fromStdString(flightBooking->getToDestination());
+        }else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking)){
+          bookingObject["type"] = "Car";
+          bookingObject["company"] = QString::fromStdString(carBooking->getCompany());
+          bookingObject["pickupLocation"] = QString::fromStdString(carBooking->getPickupLocation());
+          bookingObject["returnLocation"] = QString::fromStdString(carBooking->getReturnLocation());
+          bookingObject["vehicleClass"] = QString::fromStdString(carBooking->getVehicleClass());
+        }else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking)){
+          bookingObject["type"] = "Hotel";
+          bookingObject["hotel"] = QString::fromStdString(hotelBooking->getHotel());
+          bookingObject["town"] = QString::fromStdString(hotelBooking->getTown());
+          bookingObject["roomType"] = QString::fromStdString(hotelBooking->getRoomType());
+        }else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(booking)){
+          bookingObject["type"] = "Train";
+          bookingObject["fromDestination"] = QString::fromStdString(trainBooking->getFromDestination());
+          bookingObject["toDestination"] = QString::fromStdString(trainBooking->getToDestination());
+          bookingObject["departureTime"] = QString::fromStdString(trainBooking->getDepartureTime());
+          bookingObject["arrivalTime"] = QString::fromStdString(trainBooking->getArrivalTime());
+          bookingObject["ticketType"] = QString::fromStdString(trainBooking->getTicketType());
+
+          QJsonArray connectingStationsArray;
+          const std::vector<std::string>& connectingStations = trainBooking->getConnectingStations();
+          for(const std::string& station : connectingStations){
+              connectingStationsArray.append(QString::fromStdString(station));
+          }
+          bookingObject["connectingStations"] = connectingStationsArray;
+        }
+
+        jsonArray.append(bookingObject);
+    }
+    QJsonDocument jsonDocument(jsonArray);
+    QFile outputFile(QString::fromStdString("bookingsPraktikum3_new"));
+    if(outputFile.open(QIODevice::WriteOnly)){
+        outputFile.write(jsonDocument.toJson());
+        outputFile.close();
+        qDebug() << "Booking saved to bookingsPraktikum3_new";
+    }
 }
 

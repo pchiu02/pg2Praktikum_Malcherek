@@ -35,3 +35,28 @@ const std::string &RentalCarReservation::getCompany() const
 {
     return company;
 }
+
+std::string RentalCarReservation::getVehicleClass() const
+{
+    return vehicleClass;
+}
+
+void RentalCarReservation::setPickupLocation(const std::string &newPickupLocation)
+{
+    pickupLocation = newPickupLocation;
+}
+
+void RentalCarReservation::setReturnLocation(const std::string &newReturnLocation)
+{
+    returnLocation = newReturnLocation;
+}
+
+void RentalCarReservation::setCompany(const std::string &newCompany)
+{
+    company = newCompany;
+}
+
+void RentalCarReservation::setVehicleClass(const std::string &newVehicleClass)
+{
+    vehicleClass = newVehicleClass;
+}

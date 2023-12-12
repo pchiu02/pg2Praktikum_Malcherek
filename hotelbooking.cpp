@@ -28,3 +28,23 @@ const std::string &HotelBooking::getTown() const
 {
     return town;
 }
+
+std::string HotelBooking::getRoomType() const
+{
+    return roomType;
+}
+
+void HotelBooking::setHotel(const std::string &newHotel)
+{
+    hotel = newHotel;
+}
+
+void HotelBooking::setTown(const std::string &newTown)
+{
+    town = newTown;
+}
+
+void HotelBooking::setRoomType(const std::string &newRoomType)
+{
+    roomType = newRoomType;
+}

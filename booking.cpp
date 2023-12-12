@@ -40,3 +40,23 @@ const std::string &Booking::getBuchungsTyp() const
 {
     return buchungsTyp;
 }
+
+void Booking::setId(const std::string &newId)
+{
+    id = newId;
+}
+
+void Booking::setPrice(double newPrice)
+{
+    price = newPrice;
+}
+
+void Booking::setFromDate(const std::string &newFromDate)
+{
+    fromDate = newFromDate;
+}
+
+void Booking::setToDate(const std::string &newToDate)
+{
+    toDate = newToDate;
+}

@@ -17,6 +17,11 @@ public:
     ~BuchungsDetails();
     void setBookingDetails(QString row, QString reiseId);
 
+private slots:
+    void on_speichern_clicked();
+
+    void on_abbrechen_clicked();
+
 private:
     Ui::BuchungsDetails *ui;
     TravelAgency* travelAgency;

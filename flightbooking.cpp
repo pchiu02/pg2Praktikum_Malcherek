@@ -40,3 +40,23 @@ const std::string &FlightBooking::getBookingClass() const
 {
     return bookingClass;
 }
+
+void FlightBooking::setAirline(const std::string &newAirline)
+{
+    airline = newAirline;
+}
+
+void FlightBooking::setToDestination(const std::string &newToDestination)
+{
+    toDestination = newToDestination;
+}
+
+void FlightBooking::setFromDestination(const std::string &newFromDestination)
+{
+    fromDestination = newFromDestination;
+}
+
+void FlightBooking::setBookingClass(const std::string &newBookingClass)
+{
+    bookingClass = newBookingClass;
+}

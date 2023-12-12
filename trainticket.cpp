@@ -62,3 +62,38 @@ const std::vector<std::string> &TrainTicket::getConnectingStations() const
 {
     return connectingStations;
 }
+
+std::string TrainTicket::getTicketType() const
+{
+    return ticketType;
+}
+
+void TrainTicket::setFromDestination(const std::string &newFromDestination)
+{
+    fromDestination = newFromDestination;
+}
+
+void TrainTicket::setToDestination(const std::string &newToDestination)
+{
+    toDestination = newToDestination;
+}
+
+void TrainTicket::setDepartureTime(const std::string &newDepartureTime)
+{
+    departureTime = newDepartureTime;
+}
+
+void TrainTicket::setArrivalTime(const std::string &newArrivalTime)
+{
+    arrivalTime = newArrivalTime;
+}
+
+void TrainTicket::setTicketType(const std::string &newTicketType)
+{
+    ticketType = newTicketType;
+}
+
+void TrainTicket::setConnectingStations(const std::vector<std::string> &newConnectingStations)
+{
+    connectingStations = newConnectingStations;
+}

@@ -19,6 +19,12 @@ public:
     const std::string &getPickupLocation() const;
     const std::string &getReturnLocation() const;
     const std::string &getCompany() const;
+    std::string getVehicleClass() const;
+
+    void setPickupLocation(const std::string &newPickupLocation);
+    void setReturnLocation(const std::string &newReturnLocation);
+    void setCompany(const std::string &newCompany);
+    void setVehicleClass(const std::string &newVehicleClass);
 
 private:
     std::string pickupLocation;

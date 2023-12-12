@@ -19,6 +19,11 @@ public:
     long getTravelId() const;
     const std::string &getBuchungsTyp() const;
 
+    void setId(const std::string &newId);
+    void setPrice(double newPrice);
+    void setFromDate(const std::string &newFromDate);
+    void setToDate(const std::string &newToDate);
+
 protected:
     std::string id;
     double price;

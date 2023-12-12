@@ -26,6 +26,10 @@
     <property name="text">
      <string/>
     </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>importFile.png</normaloff>importFile.png</iconset>
+    </property>
    </widget>
    <widget class="QPushButton" name="searchButton">
     <property name="geometry">
@@ -38,6 +42,10 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>search.svg.png</normaloff>search.svg.png</iconset>
     </property>
    </widget>
    <widget class="QGroupBox" name="kundBox">
@@ -294,6 +302,23 @@
      </layout>
     </widget>
    </widget>
+   <widget class="QPushButton" name="saveButton">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>0</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>saveIcon.png</normaloff>saveIcon.png</iconset>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -301,7 +326,7 @@
      <x>0</x>
      <y>0</y>
      <width>1177</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">

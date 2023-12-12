@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>529</height>
+    <width>426</width>
+    <height>583</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,13 +71,17 @@
      <x>10</x>
      <y>140</y>
      <width>391</width>
-     <height>381</height>
+     <height>391</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="flugTab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>flightIcon.png</normaloff>flightIcon.png</iconset>
+    </attribute>
     <attribute name="title">
      <string>Flug</string>
     </attribute>
@@ -150,7 +154,7 @@
       <string>airline</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="flugBookingClass">
      <property name="geometry">
       <rect>
        <x>100</x>
@@ -175,6 +179,10 @@
     </widget>
    </widget>
    <widget class="QWidget" name="mietwagenTab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>carIcon.png</normaloff>carIcon.png</iconset>
+    </attribute>
     <attribute name="title">
      <string>Mietwagen</string>
     </attribute>
@@ -237,7 +245,7 @@
       <string>Company</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
+    <widget class="QLineEdit" name="mietwagenCompany">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -260,7 +268,7 @@
       <string>Vehicle Class</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_3">
+    <widget class="QLineEdit" name="mietwagenVehicleClass">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -272,6 +280,10 @@
     </widget>
    </widget>
    <widget class="QWidget" name="hotelTab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>hotelIcon.png</normaloff>hotelIcon.png</iconset>
+    </attribute>
     <attribute name="title">
      <string>Hotel</string>
     </attribute>
@@ -346,6 +358,10 @@
     </widget>
    </widget>
    <widget class="QWidget" name="zugTab">
+    <attribute name="icon">
+     <iconset>
+      <normaloff>trainIcon.png</normaloff>trainIcon.png</iconset>
+    </attribute>
     <attribute name="title">
      <string>Zug</string>
     </attribute>
@@ -488,6 +504,32 @@
      </property>
     </widget>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="speichern">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>550</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Speichern</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="abbrechen">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>550</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Abbrechen</string>
+   </property>
   </widget>
  </widget>
  <resources/>

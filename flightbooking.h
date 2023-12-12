@@ -21,6 +21,11 @@ public:
     const std::string &getAirline() const;
     const std::string &getBookingClass() const;
 
+    void setAirline(const std::string &newAirline);
+    void setToDestination(const std::string &newToDestination);
+    void setFromDestination(const std::string &newFromDestination);
+    void setBookingClass(const std::string &newBookingClass);
+
 private:
     std::string fromDestination;
     std::string toDestination;

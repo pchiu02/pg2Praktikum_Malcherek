@@ -17,6 +17,11 @@ public:
 
     const std::string &getHotel() const;
     const std::string &getTown() const;
+    std::string getRoomType() const;
+
+    void setHotel(const std::string &newHotel);
+    void setTown(const std::string &newTown);
+    void setRoomType(const std::string &newRoomType);
 
 private:
     std::string hotel;

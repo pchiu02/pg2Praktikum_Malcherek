@@ -42,6 +42,8 @@ private slots:
 
     void on_buchung_table_itemDoubleClicked(QTableWidgetItem *item);
 
+    void on_saveButton_clicked();
+
 private:
     Ui::TravelAgencyUi *ui;
     TravelAgency* travelagency;
