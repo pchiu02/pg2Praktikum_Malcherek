@@ -55,7 +55,19 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                     ui->flugToDest->setText(QString::fromStdString(flightBooking->getToDestination()));
                     ui->flugAirline->setText(QString::fromStdString(flightBooking->getAirline()));
                     string bookingClass;
-                    if(flightBooking->getBookingClass() == 'Y')
+                    if(flightBooking->getBookingClass() == "Y"){
+                        bookingClass = "Economy";
+                    }else if(flightBooking->getBookingClass() == "W"){
+                        bookingClass = "Premium Economy";
+                    }else if(flightBooking->getBookingClass() == "J"){
+                        bookingClass = "Business";
+                    }else if(flightBooking->getBookingClass() == "F"){
+                        bookingClass = "First";
+                    }else{
+                        bookingClass = "Undefined";
+                    }
+
+                    ui->flug
 
 
                 } else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking)){
