@@ -3,13 +3,17 @@
 
 RentalCarReservation::RentalCarReservation(std::string id, double price, std::string fromDate, std::string toDate, long travelId, std::string buchungsTyp,
                                            std::string pickupLocation, std::string returnLocation, std::string company,
-                                           std::string vehicleClass)
+                                           std::string vehicleClass, double pickupLatitude, double pickupLongitude, double returnLatitude, double returnLongitude)
                                             : Booking(id, price, fromDate, toDate, travelId, buchungsTyp)
 {
     this->pickupLocation = pickupLocation;
     this->returnLocation = returnLocation;
     this->company = company;
     this->vehicleClass = vehicleClass;
+    this->pickupLatitude = pickupLatitude;
+    this->pickupLongitude = pickupLongitude;
+    this->returnLatitude = returnLatitude;
+    this->returnLongitude = returnLongitude;
 }
 
 std::string RentalCarReservation::showDetails()

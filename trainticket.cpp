@@ -3,7 +3,8 @@
 
 TrainTicket::TrainTicket(std::string id, double price, std::string fromDate, std::string toDate, long travelId, std::string buchungsTyp,
                          std::string fromDestination, std::string toDestination, std::string departureTime, std::string arrivalTime,
-                         std::vector<std::string> connectingStations, std::string ticketType)
+                         std::vector<ConnectingStation> connectingStations, std::string ticketType, double fromStationLongitude, double fromStationLatitude,
+                         double toStationLatitude, double toStationLongitude)
     :Booking(id, price, fromDate, toDate, travelId, buchungsTyp)
 {
     this->fromDestination = fromDestination;
@@ -12,6 +13,10 @@ TrainTicket::TrainTicket(std::string id, double price, std::string fromDate, std
     this->arrivalTime = arrivalTime;
     this->connectingStations = connectingStations;
     this->ticketType = ticketType;
+    this->fromStationLatitude = fromStationLatitude;
+    this->fromStationLongitude = fromStationLongitude;
+    this->toStationLatitude = toStationLatitude;
+    this->toStationLongitude = toStationLongitude;
 }
 
 std::string TrainTicket::showDetails()
@@ -26,7 +31,8 @@ std::string TrainTicket::showDetails()
         details += " ueber ";
         for(size_t i = 0; i < connectingStations.size(); i++)
         {
-            details += connectingStations[i];
+            details += connectingStations[i].getStationName() + " (Lat: " + std::to_string(connectingStations[i].getLatitude()) +
+                       ", Lon: " + std::to_string(connectingStations[i].getLongitude()) + ")";
             if(i < connectingStations.size() - 1) //Check if its not the last station
             {
                 details += ", ";
@@ -58,7 +64,7 @@ const std::string &TrainTicket::getArrivalTime() const
     return arrivalTime;
 }
 
-const std::vector<std::string> &TrainTicket::getConnectingStations() const
+const std::vector<ConnectingStation> &TrainTicket::getConnectingStations() const
 {
     return connectingStations;
 }
@@ -93,7 +99,7 @@ void TrainTicket::setTicketType(const std::string &newTicketType)
     ticketType = newTicketType;
 }
 
-void TrainTicket::setConnectingStations(const std::vector<std::string> &newConnectingStations)
+void TrainTicket::setConnectingStations(const std::vector<ConnectingStation> &newConnectingStations)
 {
     connectingStations = newConnectingStations;
 }

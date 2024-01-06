@@ -6,6 +6,7 @@
 #include "hotelbooking.h"
 #include "rentalcarreservation.h"
 #include "trainticket.h"
+#include "connectingstation.h"
 
 #include <QIcon>
 
@@ -67,8 +68,6 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                 if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking))
                 {
                     ui->buchungWidget->setCurrentWidget(ui->flugTab);
-                    ui->flugFromDest->setText(QString::fromStdString(flightBooking->getFromDestination()));
-                    ui->flugToDest->setText(QString::fromStdString(flightBooking->getToDestination()));
                     ui->flugAirline->setText(QString::fromStdString(flightBooking->getAirline()));
                     string bookingClass;
                     if(flightBooking->getBookingClass() == "Y"){
@@ -83,6 +82,20 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                         bookingClass = "Undefined";
                     }
                     ui->flugBookingClass->setText(QString::fromStdString(bookingClass));
+
+                    std::string fromIataCode = flightBooking->getFromDestination();
+                    std::string toIataCode = flightBooking->getToDestination();
+
+                    std::shared_ptr<Airport> fromAirport = travelAgency->getAirport(fromIataCode);
+                    std::shared_ptr<Airport> toAirport = travelAgency->getAirport(toIataCode);
+
+                    ui->flugFromDest->setText(QString::fromStdString(fromAirport->getName()));
+                    ui->flugFromDest->setReadOnly(true);
+                    ui->flugToDest->setText(QString::fromStdString(toAirport->getName()));
+                    ui->flugToDest->setReadOnly(true);
+                    ui->toDestCode->setText(QString::fromStdString(flightBooking->getToDestination()));
+                    ui->fromDestCode->setText(QString::fromStdString(flightBooking->getFromDestination()));
+
                 } else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking)){
 
                     ui->buchungWidget->setCurrentWidget(ui->hotelTab);
@@ -138,12 +151,15 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                     }
                     ui->trainTicketTyp->setText(QString::fromStdString(trainTicketType));
 
-                    std::vector<std::string>connectingStationList = trainTicket->getConnectingStations();
+                    std::vector<ConnectingStation>connectingStationList = trainTicket->getConnectingStations();
                     QStringListModel *model = new QStringListModel();
                     //Convert the vector of string to QStringList
                     QStringList qStringList;
-                    for(const std::string &connectingStationLists : connectingStationList){
-                        qStringList << QString::fromStdString(connectingStationLists);
+                    for (const ConnectingStation &connectingStation : connectingStationList) {
+                        QString stationInfo = QString::fromStdString(connectingStation.getStationName()) +
+                                              " (Latitude: " + QString::number(connectingStation.getLatitude()) +
+                                              ", Longitude: " + QString::number(connectingStation.getLongitude()) + ")";
+                        qStringList << stationInfo;
                     }
                     //Set the QStringList as the model data
                     model->setStringList(qStringList);
@@ -191,6 +207,25 @@ void BuchungsDetails::on_speichern_clicked()
                 bookingClass = "Undefined";
             }
             flightBooking->setBookingClass(bookingClass);
+
+            if(travelAgency->getAirport(ui->fromDestCode->text().toStdString()) &&
+                travelAgency->getAirport(ui->toDestCode->text().toStdString())){
+                flightBooking->setFromDestination(ui->fromDestCode->text().toStdString());
+                flightBooking->setToDestination(ui->toDestCode->text().toStdString());
+            }else{
+                if(travelAgency->getAirport(ui->fromDestCode->text().toStdString()) == nullptr)
+                {
+                    ui->fromDestCode->setText("Ungultiger Iata Codes");
+                    ui->fromDestCode->setStyleSheet("color: red;");
+                }
+
+                if(travelAgency->getAirport(ui->toDestCode->text().toStdString()) == nullptr)
+                {
+                    ui->toDestCode->setText("Ungultiger Iata Codes");
+                    ui->toDestCode->setStyleSheet("color: red;");
+                }
+
+            }
         }else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(bookingToUpdate)){
             hotelBooking->setHotel(ui->hotelName->text().toStdString());
             hotelBooking->setTown(ui->townName->text().toStdString());
@@ -237,15 +272,31 @@ void BuchungsDetails::on_speichern_clicked()
                 trainTicketType = "Undefined";
             }
 
+            QStringList selectedStations;
             QModelIndexList selectedIndexes = ui->trainConnecting->selectionModel()->selectedIndexes();
-            std::vector<std::string> newConnectingStations;
 
             for (const QModelIndex &index : selectedIndexes) {
-                // Get the text of the selected item
-                QString selectedStation = index.data().toString();
+                selectedStations << index.data().toString();
+            }
 
-                // Convert it to std::string and add it to the newConnectingStations vector
-                newConnectingStations.push_back(selectedStation.toStdString());
+            std::vector<ConnectingStation> newConnectingStations;
+            for (const QString &station : selectedStations) {
+                // Parse the QString to extract the station name, latitude, and longitude
+                QStringList parts = station.split(" (Lat: ");
+                if (parts.size() == 2) {
+                    QString stationName = parts[0];
+                    QString latLon = parts[1];
+                    latLon = latLon.left(latLon.length() - 1); // Remove trailing ")"
+                    QStringList latLonParts = latLon.split(", Lon: ");
+                    if (latLonParts.size() == 2) {
+                        double latitude = latLonParts[0].toDouble();
+                        double longitude = latLonParts[1].toDouble();
+
+                        // Create a ConnectingStation object and add it to the vector
+                        ConnectingStation connectingStation{stationName.toStdString(), latitude, longitude};
+                        newConnectingStations.push_back(connectingStation);
+                    }
+                }
             }
 
             // 2. Update the TrainTicket object's connecting station list
@@ -341,12 +392,15 @@ void BuchungsDetails::on_abbrechen_clicked()
             }
             ui->trainTicketTyp->setText(QString::fromStdString(trainTicketType));
 
-            std::vector<std::string>connectingStationList = trainTicket->getConnectingStations();
+            std::vector<ConnectingStation>connectingStationList = trainTicket->getConnectingStations();
             QStringListModel *model = new QStringListModel();
             //Convert the vector of string to QStringList
             QStringList qStringList;
-            for(const std::string &connectingStationLists : connectingStationList){
-                qStringList << QString::fromStdString(connectingStationLists);
+            for(const ConnectingStation &connectingStation : connectingStationList){
+                QString stationInfo = QString::fromStdString(connectingStation.getStationName()) +
+                                      "(Latitude: " + QString::number(connectingStation.getLatitude()) +
+                                      "(Longitude: " + QString::number(connectingStation.getLongitude());
+                qStringList << stationInfo;
             }
             //Set the QStringList as the model data
             model->setStringList(qStringList);

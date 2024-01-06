@@ -17,7 +17,7 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     ui->readButton->setIconSize(QSize(24,24));
     ui->readButton->setFlat(true);
 
-    //ui->searchButton->setIcon(QIcon("search.svg.png"));
+    ui->searchButton->setIcon(QIcon("search.svg.png"));
     ui->searchButton->setIconSize(QSize(24,24));
     ui->searchButton->setFlat(true);
 
@@ -42,6 +42,7 @@ void TravelAgencyUi::on_actionEinlesen_triggered()
     if (!filePath.isEmpty()){
         try {
             travelagency->readFile(filePath);
+            travelagency->readIataCode("iatacodes.json");
 
             msgBox.information(this, "Success", "Success");
 
@@ -82,6 +83,7 @@ void TravelAgencyUi::on_readButton_clicked()
     if (!filePath.isEmpty()){
         try {
             travelagency->readFile(filePath);
+            travelagency->readIataCode("iatacodes.json");
 
             msgBox.information(this, "Success", "Success");
 
@@ -419,9 +421,13 @@ void TravelAgencyUi::on_saveButton_clicked()
           bookingObject["ticketType"] = QString::fromStdString(trainBooking->getTicketType());
 
           QJsonArray connectingStationsArray;
-          const std::vector<std::string>& connectingStations = trainBooking->getConnectingStations();
-          for(const std::string& station : connectingStations){
-              connectingStationsArray.append(QString::fromStdString(station));
+          const std::vector<ConnectingStation>& connectingStations = trainBooking->getConnectingStations();
+          for(const ConnectingStation& station : connectingStations){
+              QJsonObject stationObject;
+              stationObject["stationName"] = QString::fromStdString(station.getStationName());
+              stationObject["latitude"] = station.getLatitude();
+              stationObject["longitude"] = station.getLongitude();
+              connectingStationsArray.append(stationObject);
           }
           bookingObject["connectingStations"] = connectingStationsArray;
         }
@@ -436,4 +442,5 @@ void TravelAgencyUi::on_saveButton_clicked()
         qDebug() << "Booking saved to bookingsPraktikum3_new";
     }
 }
+
 

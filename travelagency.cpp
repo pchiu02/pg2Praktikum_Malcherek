@@ -3,6 +3,7 @@
 #include "hotelbooking.h"
 #include "rentalcarreservation.h"
 #include "trainticket.h"
+#include "connectingstation.h"
 
 TravelAgency::TravelAgency()
 {
@@ -67,8 +68,8 @@ void TravelAgency::readFile(QString fileName)
         std::string toDate = obj["toDate"].toString().toStdString();
         double price = obj["price"].toDouble();
 
-        std::string customerFirstName = obj["customerFirstname"].toString().toStdString();
-        std::string customerLastName = obj["customerLastname"].toString().toStdString();
+        std::string customerFirstName = obj["customerFirstName"].toString().toStdString();
+        std::string customerLastName = obj["customerLastName"].toString().toStdString();
         int customerId = obj["customerId"].toInt();
         int travelId = obj["travelId"].toInt();
 
@@ -89,6 +90,10 @@ void TravelAgency::readFile(QString fileName)
             std::string fromDestination = obj["fromDest"].toString().toStdString();
             std::string toDestination = obj["toDest"].toString().toStdString();
             std::string bookingClass = obj["bookingClass"].toString().toStdString();
+            double fromDestLatitude = obj["fromDestLatitude"].toDouble();
+            double fromDestLongitude = obj["fromDestLongitude"].toDouble();
+            double toDestLatitude = obj["toDestLatitude"].toDouble();
+            double toDestLongitude = obj["toDestLongitude"].toDouble();
 
             if(airline.empty() || fromDestination.empty() || toDestination.empty())
             {
@@ -102,7 +107,8 @@ void TravelAgency::readFile(QString fileName)
 
              FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate, travelId, type,
                                                              fromDestination, toDestination,
-                                                             airline, bookingClass);
+                                                             airline, bookingClass, fromDestLatitude, fromDestLongitude,
+                                                             toDestLatitude, toDestLongitude);
             allBooking.push_back(flightBooking);
             //std::cout << flightBooking->showDetails() << std::endl;
 
@@ -124,6 +130,10 @@ void TravelAgency::readFile(QString fileName)
             std::string pickupLocation = obj["pickupLocation"].toString().toStdString();
             std::string returnLocation = obj["returnLocation"].toString().toStdString();
             std::string vehicleClass = obj["vehicleClass"].toString().toStdString();
+            double pickupLatitude = obj["pickupLatitude"].toDouble();
+            double pickupLongitude = obj["pickupLongitude"].toDouble();
+            double returnLatitude = obj["returnLatitude"].toDouble();
+            double returnLongitude = obj["returnLongitude"].toDouble();
 
             if(company.empty() || pickupLocation.empty() || returnLocation.empty())
             {
@@ -132,7 +142,8 @@ void TravelAgency::readFile(QString fileName)
 
             RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate, travelId, type,
                                                                  company, pickupLocation,
-                                                                 returnLocation, vehicleClass);
+                                                                 returnLocation, vehicleClass, pickupLatitude, pickupLongitude,
+                                                                 returnLatitude, returnLongitude);
             allBooking.push_back(car);
             //std::cout << car->showDetails() << std::endl;
 
@@ -152,6 +163,8 @@ void TravelAgency::readFile(QString fileName)
             std::string hotel = obj["hotel"].toString().toStdString();
             std::string town = obj["town"].toString().toStdString();
             std::string roomType = obj["roomType"].toString().toStdString();
+            double hotelLatitude = obj["hotelLatitude"].toDouble();
+            double hotelLongitude = obj["hotelLongitude"].toDouble();
 
             if(hotel.empty() || town.empty())
             {
@@ -159,7 +172,7 @@ void TravelAgency::readFile(QString fileName)
             }
 
             HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate, travelId, type,
-                                     hotel, town, roomType);
+                                     hotel, town, roomType, hotelLatitude, hotelLongitude);
             allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
 
@@ -175,12 +188,16 @@ void TravelAgency::readFile(QString fileName)
             travel->addBooking(hotelBooking);
         }else if(type == "Train")
         {
-            std::vector<std::string> connectingStations;
+            std::vector<ConnectingStation> connectingStations;
             std::string arrivalTime = obj["arrivalTime"].toString().toStdString();
             std::string departureTime = obj["departureTime"].toString().toStdString();
             std::string fromStation = obj["fromStation"].toString().toStdString();
             std::string toStation = obj["toStation"].toString().toStdString();
             std::string ticketType = obj["ticketType"].toString().toStdString();
+            double fromStationLatitude = obj["fromStationLatitude"].toDouble();
+            double fromStationLongitude = obj["fromStationLongitude"].toDouble();
+            double toStationLatitude = obj["toStationLatitude"].toDouble();
+            double toStationLongitude = obj["toStationLongitude"].toDouble();
 
             if(departureTime.empty() || fromStation.empty() || toStation.empty())
             {
@@ -193,12 +210,24 @@ void TravelAgency::readFile(QString fileName)
 
                 for(const QJsonValue &stationValue : stationsArray)
                 {
-                    connectingStations.push_back(stationValue.toString().toStdString());
+                    if(stationValue.isObject()){
+                        QJsonObject stationObject = stationValue.toObject();
+                        if(stationObject.contains("latitude") && stationObject.contains("longitude")){
+                            double latitude = stationObject["latitude"].toDouble();
+                            double longitude = stationObject["longitude"].toDouble();
+                            std::string stationName = stationObject["stationName"].toString().toStdString();
+
+                            ConnectingStation connectingStation = ConnectingStation(stationName, latitude, longitude);
+                            connectingStations.push_back(connectingStation);
+                        }
+                    }
                 }
             }
             TrainTicket* train = new TrainTicket(id, price, fromDate, toDate, travelId, type,
                                                  fromStation, toStation, departureTime,
-                                                 arrivalTime, connectingStations, ticketType);
+                                                 arrivalTime, connectingStations, ticketType,
+                                                 fromStationLatitude, fromStationLongitude, toStationLatitude,
+                                                 toStationLongitude);
             allBooking.push_back(train);
             //std::cout << train->showDetails() << std::endl;
 
@@ -236,6 +265,49 @@ void TravelAgency::readFile(QString fileName)
     file.close();
 
 
+}
+
+void TravelAgency::readIataCode(QString fileName)
+{
+    allAirport.clear();
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        throw std::invalid_argument("Failed to open IataCodes File");
+    }
+
+    //Read the contents of the file into a QString
+    QString jsonData = file.readAll();
+    //Parse the JSON Data
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData.toUtf8());
+
+    //Checking if the JSON Document is an array
+    if(!jsonDoc.isArray()){
+        throw std::invalid_argument("Invalid JSON File");
+    }
+
+    QJsonArray airportsArray = jsonDoc.array();
+    for(int i = 0; i < airportsArray.size(); i++)
+    {
+        if(!airportsArray[i].isObject()){
+            throw std::invalid_argument("Invalid Airport in JSON File at object" + std::to_string (i + 1));
+        }
+        QJsonObject airportObject = airportsArray[i].toObject();
+
+        std::string name = airportObject["name"].toString().toStdString();
+        std::string isoCountry = airportObject["iso_country"].toString().toStdString();
+        std::string municipality = airportObject["municipality"].toString().toStdString();
+        std::string iataCode = airportObject["iata_code"].toString().toStdString();
+
+        // make an airport object
+        if(!iataCode.empty())
+        {
+            std::shared_ptr<Airport> airport = std::make_shared<Airport>(name, isoCountry, municipality,
+                                                                         iataCode);
+            allAirport[iataCode] = airport;
+        }
+    }
+    std::cout << "Airport size: " << allAirport.size() << endl;
 }
 
 QString TravelAgency::getBookingsInfo()
@@ -354,4 +426,27 @@ const std::vector<Customer *> &TravelAgency::getAllCustomer() const
 const std::vector<Travel *> &TravelAgency::getAllTravel() const
 {
     return allTravel;
+}
+
+std::map<std::string, shared_ptr<Airport> > TravelAgency::getAllAirport() const
+{
+    return allAirport;
+}
+
+std::shared_ptr<Airport> TravelAgency::getAirport(const string &iataCode)
+{
+    auto it = allAirport.find(iataCode);
+    if(it != allAirport.end())
+    {
+        return it->second;
+    }else
+    {
+        return nullptr;
+    }
+}
+
+bool TravelAgency::hasAirport(const string &iataCode) const
+{
+    auto it = allAirport.find(iataCode);
+    return it != allAirport.end();
 }

@@ -75,7 +75,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="flugTab">
     <attribute name="icon">
@@ -175,6 +175,26 @@
      </property>
      <property name="text">
       <string>booking class</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="toDestCode">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>40</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="fromDestCode">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>10</y>
+       <width>151</width>
+       <height>21</height>
+      </rect>
      </property>
     </widget>
    </widget>

@@ -1,4 +1,4 @@
-#ifndef FLIGHTBOOKING_H
+    #ifndef FLIGHTBOOKING_H
 #define FLIGHTBOOKING_H
 
 #include <iostream>
@@ -13,7 +13,7 @@ class FlightBooking : public Booking
 public:
     FlightBooking(std::string id , double price, std::string fromDate, std::string toDate, long travelId,
                   std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string airline,
-                  std::string bookingClass);
+                  std::string bookingClass, double fromDestLatitude, double fromDestLongitude, double toDestLatitude, double toDestLongitude);
     virtual std::string showDetails() override;
 
     const std::string &getFromDestination() const;
@@ -31,6 +31,10 @@ private:
     std::string toDestination;
     std::string airline;
     std::string bookingClass;
+    double fromDestLatitude;
+    double fromDestLongitude;
+    double toDestLatitude;
+    double toDestLongitude;
 };
 
 #endif // FLIGHTBOOKING_H

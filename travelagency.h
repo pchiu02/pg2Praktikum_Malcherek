@@ -14,6 +14,7 @@
 #include "booking.h"
 #include "customer.h"
 #include "travel.h"
+#include "airport.h"
 
 
 class TravelAgency
@@ -22,6 +23,7 @@ public:
     TravelAgency();
     ~TravelAgency();
     void readFile(QString fileName);
+    void readIataCode(QString fileName);
     QString getBookingsInfo();
     Booking* findBooking(std::string id);
     Travel* findTravel(long id);
@@ -38,11 +40,15 @@ public:
     const std::vector<Booking *> &getAllBooking() const;
     const std::vector<Customer *> &getAllCustomer() const;
     const std::vector<Travel *> &getAllTravel() const;
+    std::map<std::string, shared_ptr<Airport> > getAllAirport() const;
+    std::shared_ptr<Airport> getAirport(const std::string& iataCode);
+    bool hasAirport(const std::string& iataCode) const;
 
 private:
     std::vector<Booking*> allBooking;
     std::vector<Customer*> allCustomer;
     std::vector<Travel*> allTravel;
+    std::map<std::string , shared_ptr<Airport>> allAirport;
     int totalFlightBooking = 0;
     int totalHotelBooking = 0;
     int totalRentalCarReservation = 0;

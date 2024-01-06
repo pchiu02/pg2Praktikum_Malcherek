@@ -6,6 +6,8 @@
 #include <iomanip>
 #include <sstream>
 
+#include "connectingstation.h"
+
 #include "booking.h"
 
 
@@ -14,15 +16,16 @@ class TrainTicket : public Booking
 public:
     TrainTicket(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
                 std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string departureTime,
-                std::string arrivalTime, std::vector<std::string> connectingStations,
-                std::string ticketType);
+                std::string arrivalTime, std::vector<ConnectingStation> connectingStations,
+                std::string ticketType, double fromStationLatitude, double fromStationLongitude, double toStationLatitude,
+                double toStationLongitude);
     virtual std::string showDetails() override;
 
     const std::string &getFromDestination() const;
     const std::string &getToDestination() const;
     const std::string &getDepartureTime() const;
     const std::string &getArrivalTime() const;
-    const std::vector<std::string> &getConnectingStations() const;
+    const std::vector<ConnectingStation> &getConnectingStations() const;
     std::string getTicketType() const;
 
     void setFromDestination(const std::string &newFromDestination);
@@ -35,7 +38,7 @@ public:
 
     void setTicketType(const std::string &newTicketType);
 
-    void setConnectingStations(const std::vector<std::string> &newConnectingStations);
+    void setConnectingStations(const std::vector<ConnectingStation> &newConnectingStations);
 
 private:
     std::string fromDestination;
@@ -43,7 +46,11 @@ private:
     std::string departureTime;
     std::string arrivalTime;
     std::string ticketType;
-    std::vector<std::string> connectingStations;
+    std::vector<ConnectingStation> connectingStations;
+    double fromStationLatitude;
+    double fromStationLongitude;
+    double toStationLatitude;
+    double toStationLongitude;
 };
 
 #endif // TRAINTICKET_H

@@ -13,7 +13,7 @@ class RentalCarReservation : public Booking
 public:
     RentalCarReservation(std::string id, double price, std::string fromDate, std::string toDate, long travelId,
                          std::string buchungsTyp, std::string pickupLocation, std::string returnLocation, std::string company,
-                         std::string vehicleClass);
+                         std::string vehicleClass, double pickupLatitude, double pickupLongitude, double returnLatitude, double returnLongitude);
     virtual std::string showDetails() override;
 
     const std::string &getPickupLocation() const;
@@ -31,6 +31,10 @@ private:
     std::string returnLocation;
     std::string company;
     std::string vehicleClass;
+    double pickupLatitude;
+    double pickupLongitude;
+    double returnLatitude;
+    double returnLongitude;
 };
 
 #endif // RENTALCARRESERVATION_H

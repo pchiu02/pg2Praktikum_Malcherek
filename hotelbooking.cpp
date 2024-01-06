@@ -2,12 +2,14 @@
 
 HotelBooking::HotelBooking(std::string id, double price, std::string fromDate,
                            std::string toDate, long travelId, std::string buchungsTyp, std::string hotel, std::string town,
-                           std::string roomType)
+                           std::string roomType, double hotelLatitude, double hotelLongitude)
     :Booking(id, price, fromDate, toDate, travelId, buchungsTyp)
 {
     this->hotel = hotel;
     this->town = town;
     this->roomType = roomType;
+    this->hotelLatitude = hotelLatitude;
+    this->hotelLongitude = hotelLongitude;
 }
 
 std::string HotelBooking::showDetails()
