@@ -29,15 +29,10 @@ public:
     std::string getTicketType() const;
 
     void setFromDestination(const std::string &newFromDestination);
-
     void setToDestination(const std::string &newToDestination);
-
     void setDepartureTime(const std::string &newDepartureTime);
-
     void setArrivalTime(const std::string &newArrivalTime);
-
     void setTicketType(const std::string &newTicketType);
-
     void setConnectingStations(const std::vector<ConnectingStation> &newConnectingStations);
 
 private:

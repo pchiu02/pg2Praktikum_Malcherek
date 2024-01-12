@@ -10,7 +10,7 @@
 
 #include <QIcon>
 
-BuchungsDetails::BuchungsDetails(TravelAgency* travelAgency, QWidget *parent) :
+BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BuchungsDetails), travelAgency(travelAgency)
 {
@@ -31,7 +31,7 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
 {
     int row = QSrow.toInt();
     long travelId = reiseId.toInt();
-    Travel* travel = travelAgency->findTravel(travelId);
+    std::shared_ptr<Travel> travel = travelAgency->findTravel(travelId);
 
     ui->Id->setEnabled(true);
     ui->fromDate->setEnabled(true);
@@ -43,11 +43,11 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
 
      // Check if 'travel' is valid before accessing its data
      if (travel) {
-        const std::vector<Booking*>& bookings = travel->getTravelBookings();
+        const std::vector<std::shared_ptr<Booking>>& bookings = travel->getTravelBookings();
 
         // Check if 'row' is within a valid range
         if (row >= 0 && row < static_cast<int>(bookings.size())) {
-            Booking* booking = bookings[row];
+            std::shared_ptr<Booking> booking = bookings[row];
 
             // Check if 'booking' is valid before accessing its data
             if (booking) {
@@ -65,7 +65,7 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                 ui->fromDate->setDate(QDate::fromString(QString::fromStdString(fromDateStr), "yyyyMMdd"));
                 ui->toDate->setDate(QDate::fromString(QString::fromStdString(toDateStr), "yyyyMMdd"));
 
-                if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking))
+                if(auto flightBooking = std::dynamic_pointer_cast<FlightBooking>(booking))
                 {
                     ui->buchungWidget->setCurrentWidget(ui->flugTab);
                     ui->flugAirline->setText(QString::fromStdString(flightBooking->getAirline()));
@@ -96,7 +96,7 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                     ui->toDestCode->setText(QString::fromStdString(flightBooking->getToDestination()));
                     ui->fromDestCode->setText(QString::fromStdString(flightBooking->getFromDestination()));
 
-                } else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking)){
+                } else if(auto hotelBooking = std::dynamic_pointer_cast<HotelBooking>(booking)){
 
                     ui->buchungWidget->setCurrentWidget(ui->hotelTab);
                     ui->hotelName->setText(QString::fromStdString(hotelBooking->getHotel()));
@@ -116,7 +116,7 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
 
                     ui->hotelRoomType->setText(QString::fromStdString(roomType));
 
-                } else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking)){
+                } else if(auto carBooking = std::dynamic_pointer_cast<RentalCarReservation>(booking)){
 
                     ui->buchungWidget->setCurrentWidget(ui->mietwagenTab);
 
@@ -125,7 +125,7 @@ void BuchungsDetails::setBookingDetails(QString QSrow, QString reiseId)
                     ui->mietwagenCompany->setText(QString::fromStdString(carBooking->getCompany()));
                     ui->mietwagenVehicleClass->setText(QString::fromStdString(carBooking->getVehicleClass()));
 
-                } else if(TrainTicket* trainTicket = dynamic_cast<TrainTicket*>(booking)){
+                } else if(auto trainTicket = std::dynamic_pointer_cast<TrainTicket>(booking)){
 
                     ui->buchungWidget->setCurrentWidget(ui->zugTab);
 
@@ -181,14 +181,14 @@ void BuchungsDetails::on_speichern_clicked()
     QDate newToDate = ui->toDate->date();
     double newPreis = ui->preis->value();
 
-    Booking* bookingToUpdate = travelAgency->findBooking(id);
+    std::shared_ptr<Booking> bookingToUpdate = travelAgency->findBooking(id);
 
     if(bookingToUpdate){
         bookingToUpdate->setFromDate(newFromDate.toString("yyyyMMdd").toStdString());
         bookingToUpdate->setToDate(newToDate.toString("yyyyMMdd").toStdString());
         bookingToUpdate->setPrice(newPreis);
 
-        if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(bookingToUpdate)){
+        if(auto flightBooking = std::dynamic_pointer_cast<FlightBooking>(bookingToUpdate)){
             flightBooking->setAirline(ui->flugAirline->text().toStdString());
             flightBooking->setFromDestination(ui->flugFromDest->text().toStdString());
             flightBooking->setToDestination(ui->flugToDest->text().toStdString());
@@ -226,7 +226,7 @@ void BuchungsDetails::on_speichern_clicked()
                 }
 
             }
-        }else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(bookingToUpdate)){
+        }else if(auto hotelBooking = std::dynamic_pointer_cast<HotelBooking>(bookingToUpdate)){
             hotelBooking->setHotel(ui->hotelName->text().toStdString());
             hotelBooking->setTown(ui->townName->text().toStdString());
             QString roomTypeStr = ui->hotelRoomType->text();
@@ -244,12 +244,12 @@ void BuchungsDetails::on_speichern_clicked()
                 roomType = "Undefined";
             }
             hotelBooking->setRoomType(roomType);
-        }else if(RentalCarReservation *carBooking = dynamic_cast<RentalCarReservation*>(bookingToUpdate)){
+        }else if(auto carBooking = std::dynamic_pointer_cast<RentalCarReservation>(bookingToUpdate)){
             carBooking->setCompany(ui->mietwagenCompany->text().toStdString());
             carBooking->setPickupLocation(ui->mietwagenPickupLocation->text().toStdString());
             carBooking->setReturnLocation(ui->mietwagenReturnLocation->text().toStdString());
             carBooking->setVehicleClass(ui->mietwagenVehicleClass->text().toStdString());
-        }else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(bookingToUpdate)){
+        }else if(auto trainBooking = std::dynamic_pointer_cast<TrainTicket>(bookingToUpdate)){
             trainBooking->setFromDestination(ui->trainFromDest->text().toStdString());
             trainBooking->setToDestination(ui->trainToDest->text().toStdString());
             trainBooking->setDepartureTime(ui->trainTimeAbfahrt->time().toString("hh:mm").toStdString());
@@ -312,14 +312,14 @@ void BuchungsDetails::on_speichern_clicked()
 void BuchungsDetails::on_abbrechen_clicked()
 {
     std::string id = ui->Id->text().toStdString();
-    Booking* bookingToUpdate = travelAgency->findBooking(id);
+    std::shared_ptr<Booking> bookingToUpdate = travelAgency->findBooking(id);
 
     if(bookingToUpdate){
         ui->fromDate->setDate(QDate::fromString(QString::fromStdString(bookingToUpdate->getFromDate()), "yyyyMMdd"));
         ui->toDate->setDate(QDate::fromString(QString::fromStdString(bookingToUpdate->getToDate()), "yyyyMMdd"));
         ui->preis->setValue(bookingToUpdate->getPrice());
 
-        if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(bookingToUpdate)){
+        if(auto flightBooking = std::dynamic_pointer_cast<FlightBooking>(bookingToUpdate)){
             ui->buchungWidget->setCurrentWidget(ui->flugTab);
             ui->flugAirline->setText(QString::fromStdString(flightBooking->getAirline()));
             ui->flugFromDest->setText(QString::fromStdString(flightBooking->getFromDestination()));
@@ -337,7 +337,7 @@ void BuchungsDetails::on_abbrechen_clicked()
                 bookingClass = "Undefined";
             }
             ui->flugBookingClass->setText(QString::fromStdString(bookingClass));
-        } else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(bookingToUpdate)){
+        } else if(auto hotelBooking = std::dynamic_pointer_cast<HotelBooking>(bookingToUpdate)){
 
             ui->buchungWidget->setCurrentWidget(ui->hotelTab);
             ui->hotelName->setText(QString::fromStdString(hotelBooking->getHotel()));
@@ -357,7 +357,7 @@ void BuchungsDetails::on_abbrechen_clicked()
 
             ui->hotelRoomType->setText(QString::fromStdString(roomType));
 
-        } else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(bookingToUpdate)){
+        } else if(auto carBooking = std::dynamic_pointer_cast<RentalCarReservation>(bookingToUpdate)){
 
             ui->buchungWidget->setCurrentWidget(ui->mietwagenTab);
 
@@ -366,7 +366,7 @@ void BuchungsDetails::on_abbrechen_clicked()
             ui->mietwagenCompany->setText(QString::fromStdString(carBooking->getCompany()));
             ui->mietwagenVehicleClass->setText(QString::fromStdString(carBooking->getVehicleClass()));
 
-        } else if(TrainTicket* trainTicket = dynamic_cast<TrainTicket*>(bookingToUpdate)){
+        } else if(auto trainTicket = std::dynamic_pointer_cast<TrainTicket>(bookingToUpdate)){
 
             ui->buchungWidget->setCurrentWidget(ui->zugTab);
 

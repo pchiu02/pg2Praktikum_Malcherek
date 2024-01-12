@@ -2,6 +2,8 @@
 #define BUCHUNGSDETAILS_H
 
 #include <QDialog>
+#include <memory>
+
 #include "travelagency.h"
 
 namespace Ui {
@@ -23,7 +25,7 @@ private slots:
     void on_abbrechen_clicked();
 
 private:
-    Ui::BuchungsDetails *ui;
+    Ui::BuchungsDetails* ui;
     TravelAgency* travelAgency;
 };
 

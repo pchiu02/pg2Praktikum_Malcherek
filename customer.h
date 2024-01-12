@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "travel.h"
 
@@ -13,20 +14,20 @@ class Customer
 {
 public:
     Customer(long id, string lastName, string firstName);
-    void addTravel(Travel* travel);
-    bool hasTravel(const Travel *travel) const;
+    void addTravel(std::shared_ptr<Travel> travel);
+    bool hasTravel(const std::shared_ptr<Travel> travel) const;
     int getTravelCount();
 
     long getId() const;
     string getLastName() const;
     string getFirstName() const;
-    vector<Travel *> getTravelList() const;
+    vector<std::shared_ptr<Travel>> getTravelList() const;
 
 private:
     long id;
     string lastName;
     string firstName;
-    vector<Travel*> travelList;
+    vector<std::shared_ptr<Travel>> travelList;
 
 };
 

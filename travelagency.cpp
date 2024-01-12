@@ -12,18 +12,18 @@ TravelAgency::TravelAgency()
 
 TravelAgency::~TravelAgency()
 {
-    for(Booking* booking : allBooking)
-    {
-        delete booking;
-    }
-    for(Customer* customer : allCustomer)
-    {
-        delete customer;
-    }
-    for(Travel* travel : allTravel)
-    {
-        delete travel;
-    }
+    // for(Booking* booking : allBooking)
+    // {
+    //     delete booking;
+    // }
+    // for(Customer* customer : allCustomer)
+    // {
+    //     delete customer;
+    // }
+    // for(Travel* travel : allTravel)
+    // {
+    //     delete travel;
+    // }
     allBooking.clear();
     allTravel.clear();
     allCustomer.clear();
@@ -105,7 +105,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
 
-             FlightBooking* flightBooking = new FlightBooking(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<FlightBooking> flightBooking = std::make_shared<FlightBooking>(id, price, fromDate, toDate, travelId, type,
                                                              fromDestination, toDestination,
                                                              airline, bookingClass, fromDestLatitude, fromDestLongitude,
                                                              toDestLatitude, toDestLongitude);
@@ -115,9 +115,9 @@ void TravelAgency::readFile(QString fileName)
             totalFlightBooking++;
             totalFlightPrice += price;
 
-            Travel* travel = findTravel(travelId);
+            std::shared_ptr<Travel> travel = findTravel(travelId);
             if(!travel){
-                travel = new Travel(travelId, customerId);
+                travel = std::make_shared<Travel>(travelId, customerId);
                 allTravel.push_back(travel);
             }
             travelCount++;
@@ -140,7 +140,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Empty carbooking attribute in line " +std::to_string(lineNumber));
             }
 
-            RentalCarReservation* car = new RentalCarReservation(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<RentalCarReservation> car = std::make_shared<RentalCarReservation>(id, price, fromDate, toDate, travelId, type,
                                                                  company, pickupLocation,
                                                                  returnLocation, vehicleClass, pickupLatitude, pickupLongitude,
                                                                  returnLatitude, returnLongitude);
@@ -150,9 +150,9 @@ void TravelAgency::readFile(QString fileName)
             totalRentalCarReservation++;
             totalRentalCarReservationPrice += price;
 
-            Travel* travel = findTravel(travelId);
+            std::shared_ptr<Travel> travel = findTravel(travelId);
             if(!travel){
-                travel = new Travel(travelId, customerId);
+                travel = std::make_shared<Travel>(travelId, customerId);
                 allTravel.push_back(travel);
             }
             travelCount++;
@@ -171,7 +171,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error(&"Empty hotelbooking attribute in line "[lineNumber]);
             }
 
-            HotelBooking* hotelBooking = new HotelBooking(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<HotelBooking>hotelBooking = std::make_shared<HotelBooking>(id, price, fromDate, toDate, travelId, type,
                                      hotel, town, roomType, hotelLatitude, hotelLongitude);
             allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
@@ -179,9 +179,9 @@ void TravelAgency::readFile(QString fileName)
             totalHotelBooking++;
             totalHotelPrice += price;
 
-            Travel* travel = findTravel(travelId);
+            std::shared_ptr<Travel> travel = findTravel(travelId);
             if(!travel){
-                travel = new Travel(travelId, customerId);
+                travel = std::make_shared<Travel>(travelId, customerId);
                 allTravel.push_back(travel);
             }
             travelCount++;
@@ -223,7 +223,7 @@ void TravelAgency::readFile(QString fileName)
                     }
                 }
             }
-            TrainTicket* train = new TrainTicket(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<TrainTicket>train = std::make_shared<TrainTicket>(id, price, fromDate, toDate, travelId, type,
                                                  fromStation, toStation, departureTime,
                                                  arrivalTime, connectingStations, ticketType,
                                                  fromStationLatitude, fromStationLongitude, toStationLatitude,
@@ -234,22 +234,22 @@ void TravelAgency::readFile(QString fileName)
             totalTrainBooking++;
             totalTrainPrice += price;
 
-            Travel* travel = findTravel(travelId);
+            std::shared_ptr<Travel>travel = findTravel(travelId);
             if(!travel){
-                travel = new Travel(travelId, customerId);
+                travel = std::make_shared<Travel>(travelId, customerId);
                 allTravel.push_back(travel);
             }
             travelCount++;
             travel->addBooking(train);
         }
-        Customer* customer = findCustomer(customerId, customerFirstName, customerLastName);
+        std::shared_ptr<Customer> customer = findCustomer(customerId, customerFirstName, customerLastName);
         if(!customer){
-            customer = new Customer(customerId, customerFirstName, customerLastName);
+            customer = std::make_shared<Customer>(customerId, customerFirstName, customerLastName);
             allCustomer.push_back(customer);
             totalCustomer++;
         }
 
-        Travel* travel = findTravel(travelId);
+        std::shared_ptr<Travel>travel = findTravel(travelId);
         if(travel && !customer->hasTravel(travel))
         {
             customer->addTravel(travel);
@@ -316,8 +316,8 @@ QString TravelAgency::getBookingsInfo()
     int totalCustomers = allCustomer.size();
     string firstName = " ";
     string lastName = " ";
-    Customer* customerId1 = findCustomer(1, firstName, lastName);
-    Travel* travelId17 = findTravel(17);
+    std::shared_ptr<Customer> customerId1 = findCustomer(1, firstName, lastName);
+    std::shared_ptr<Travel> travelId17 = findTravel(17);
 
     std::ostringstream oss;
 
@@ -330,9 +330,9 @@ QString TravelAgency::getBookingsInfo()
             return QString::fromStdString(oss.str());
 }
 
-Booking *TravelAgency::findBooking(std::string id)
+std::shared_ptr<Booking> TravelAgency::findBooking(std::string id)
 {
-    for(Booking* booking : allBooking)
+    for(std::shared_ptr<Booking> booking : allBooking)
     {
         if(booking->getId() == id)
         {
@@ -343,10 +343,10 @@ Booking *TravelAgency::findBooking(std::string id)
     return nullptr;
 }
 
-Travel *TravelAgency::findTravel(long id)
+std::shared_ptr<Travel> TravelAgency::findTravel(long id)
 {
     //check if the travel with the given Id already exist
-    for(Travel* travel : allTravel)
+    for(std::shared_ptr<Travel>travel : allTravel)
     {
         if(travel->getId() == id)
         {
@@ -356,9 +356,9 @@ Travel *TravelAgency::findTravel(long id)
     return nullptr;
 }
 
-Customer* TravelAgency::findCustomer(long id, string &firstName, string &lastName)
+std::shared_ptr<Customer> TravelAgency::findCustomer(long id, string &firstName, string &lastName)
 {
-    for (Customer* customer : allCustomer)
+    for (std::shared_ptr<Customer> customer : allCustomer)
     {
         if (customer->getId() == id)
         {
@@ -368,7 +368,7 @@ Customer* TravelAgency::findCustomer(long id, string &firstName, string &lastNam
     }
 
            // If no matching customer is found, create a new one
-    Customer* newCustomer = new Customer(id, firstName, lastName);
+    std::shared_ptr<Customer> newCustomer = std::make_shared<Customer>(id, firstName, lastName);
     allCustomer.push_back(newCustomer);
     return newCustomer;
 }
@@ -413,17 +413,17 @@ double TravelAgency::getTotalTrainPrice() const
     return totalTrainPrice;
 }
 
-const std::vector<Booking *> &TravelAgency::getAllBooking() const
+const std::vector<std::shared_ptr<Booking>> &TravelAgency::getAllBooking() const
 {
     return allBooking;
 }
 
-const std::vector<Customer *> &TravelAgency::getAllCustomer() const
+const std::vector<std::shared_ptr<Customer> > &TravelAgency::getAllCustomer() const
 {
     return allCustomer;
 }
 
-const std::vector<Travel *> &TravelAgency::getAllTravel() const
+const std::vector<std::shared_ptr<Travel> > &TravelAgency::getAllTravel() const
 {
     return allTravel;
 }

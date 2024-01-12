@@ -137,7 +137,7 @@ void TravelAgencyUi::on_searchButton_clicked()
         int enteredId = suchenDialog.getId();
         string firstName = " ";
         string lastName = " ";
-        Customer* foundCustomer = travelagency->findCustomer(enteredId, firstName, lastName);
+        std::shared_ptr<Customer> foundCustomer = travelagency->findCustomer(enteredId, firstName, lastName);
         if(foundCustomer)
         {
             ui->id_Kund->setText(QString::number(foundCustomer->getId()));
@@ -146,7 +146,7 @@ void TravelAgencyUi::on_searchButton_clicked()
                                    QString::fromStdString(foundCustomer->getLastName()));
             std::vector<int> addedTravelIds;
             std::vector<int> displayedTravelIds;
-            for(Travel* travel : travelagency->getAllTravel())
+            for(std::shared_ptr<Travel> travel : travelagency->getAllTravel())
             {
                 if(travel->getCustomerId() == enteredId)
                 {
@@ -159,13 +159,13 @@ void TravelAgencyUi::on_searchButton_clicked()
 
                     addedTravelIds.push_back(travelID);
 
-                    vector<Booking*> bookings = travel->getTravelBookings();
+                    vector<std::shared_ptr<Booking>> bookings = travel->getTravelBookings();
                     if(!bookings.empty())
                     {
                         std::string earliestFromDate = bookings[0]->getFromDate();
                         std::string latestToDate = bookings[0]->getToDate();
 
-                        for(const Booking* booking: bookings)
+                        for(const std::shared_ptr<Booking> &booking: bookings)
                         {
                             if(booking->getFromDate() < earliestFromDate)
                             {
@@ -225,52 +225,52 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
         ui->reiseId->setText(item->text());
     }
 
-    for(Travel* travel : travelagency->getAllTravel())
+    for(std::shared_ptr<Travel> travel : travelagency->getAllTravel())
     {
         if(travel->getId() == selectedReiseID)
         {
-          const std::vector<Booking*> bookings = travel->getTravelBookings();
-          int rowCount = bookings.size();
-          std::vector<Booking*> currentBooking = travel->getTravelBookings();
+            const std::vector<std::shared_ptr<Booking>> bookings = travel->getTravelBookings();
+            int rowCount = bookings.size();
+            std::vector<std::shared_ptr<Booking>> currentBooking = travel->getTravelBookings();
 
-          ui->buchung_table->setRowCount(rowCount);
+            ui->buchung_table->setRowCount(rowCount);
 
-          for(int i = 0; i < rowCount; i++)
-          {
-              QString fromDate = QString::fromStdString(bookings[i]->getFromDate());
-              QString toDate = QString::fromStdString(bookings[i]->getToDate());
-              QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
-              QTableWidgetItem* buchungsTypItem = new QTableWidgetItem();
-              QTableWidgetItem* preisItem = new QTableWidgetItem(preis);
+            for(int i = 0; i < rowCount; i++)
+            {
+                QString fromDate = QString::fromStdString(bookings[i]->getFromDate());
+                QString toDate = QString::fromStdString(bookings[i]->getToDate());
+                 QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
+                QTableWidgetItem* buchungsTypItem = new QTableWidgetItem();
+                QTableWidgetItem* preisItem = new QTableWidgetItem(preis);
 
-              QDate fromDateObj = QDate::fromString(fromDate, "yyyyMMdd");
-              QDate toDateObj = QDate::fromString(toDate, "yyyyMMdd");
+                QDate fromDateObj = QDate::fromString(fromDate, "yyyyMMdd");
+                QDate toDateObj = QDate::fromString(toDate, "yyyyMMdd");
 
-              QString formattedFromDate = fromDateObj.toString("dd.MM.yyyy");
-              QString formattedToDate = toDateObj.toString("dd.MM.yyyy");
+                QString formattedFromDate = fromDateObj.toString("dd.MM.yyyy");
+                QString formattedToDate = toDateObj.toString("dd.MM.yyyy");
 
-              QTableWidgetItem* startItem = new QTableWidgetItem(formattedFromDate);
-              QTableWidgetItem* endItem = new QTableWidgetItem(formattedToDate);
+                QTableWidgetItem* startItem = new QTableWidgetItem(formattedFromDate);
+                QTableWidgetItem* endItem = new QTableWidgetItem(formattedToDate);
 
-              if(dynamic_cast<FlightBooking*>(bookings[i]))
-              {
-                  buchungsTypItem->setIcon(QIcon("flightIcon.png"));
-              }else if(dynamic_cast<HotelBooking*>(bookings[i]))
-              {
-                  buchungsTypItem->setIcon(QIcon("hotelIcon.png"));
-              }else if(dynamic_cast<RentalCarReservation*>(bookings[i]))
-              {
-                  buchungsTypItem->setIcon(QIcon("carIcon.png"));
-              }else if(dynamic_cast<TrainTicket*>(bookings[i]))
-              {
-                  buchungsTypItem->setIcon(QIcon("trainIcon.png"));
-              }
+                if(std::dynamic_pointer_cast<FlightBooking>(bookings[i]))
+                {
+                    buchungsTypItem->setIcon(QIcon("flightIcon.png"));
+                }else if(std::dynamic_pointer_cast<HotelBooking>(bookings[i]))
+                {
+                    buchungsTypItem->setIcon(QIcon("hotelIcon.png"));
+                }else if(std::dynamic_pointer_cast<RentalCarReservation>(bookings[i]))
+                {
+                    buchungsTypItem->setIcon(QIcon("carIcon.png"));
+                }else if(std::dynamic_pointer_cast<TrainTicket>(bookings[i]))
+                {
+                    buchungsTypItem->setIcon(QIcon("trainIcon.png"));
+                }
 
-              ui->buchung_table->setItem(i, 0, buchungsTypItem);
-              ui->buchung_table->setItem(i, 1, startItem);
-              ui->buchung_table->setItem(i, 2, endItem);
-              ui->buchung_table->setItem(i, 3, preisItem);
-          }
+                ui->buchung_table->setItem(i, 0, buchungsTypItem);
+                ui->buchung_table->setItem(i, 1, startItem);
+                ui->buchung_table->setItem(i, 2, endItem);
+                ui->buchung_table->setItem(i, 3, preisItem);
+            }
         }
     }
 
@@ -367,7 +367,7 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
 
 void TravelAgencyUi::on_buchung_table_itemDoubleClicked(QTableWidgetItem *item)
 {
-    BuchungsDetails *buchungsDetails = new BuchungsDetails(travelagency, this);
+    BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get(), this);
     int row = item->row();
     QString QSrow = QString::number(row);
     QString reiseID = ui->reiseId->text();
@@ -384,8 +384,8 @@ void TravelAgencyUi::on_saveButton_clicked()
         QJsonObject bookingObject;
         std::string firstName = "";
         std::string lastName = "";
-        Travel* travel = travelagency->findTravel(booking->getTravelId());
-        Customer* customer = travelagency->findCustomer(travel->getCustomerId(), firstName, lastName);
+        std::shared_ptr<Travel>travel = travelagency->findTravel(booking->getTravelId());
+        std::shared_ptr<Customer> customer = travelagency->findCustomer(travel->getCustomerId(), firstName, lastName);
         bookingObject["id"] = QString::fromStdString(booking->getId());
         bookingObject["customerId"] = QString::number(customer->getId());
         bookingObject["customerFirstName"] = QString::fromStdString(customer->getFirstName());
@@ -395,24 +395,24 @@ void TravelAgencyUi::on_saveButton_clicked()
         bookingObject["price"] = QString::number(booking->getPrice());
         bookingObject["travelId"] = QString::number(booking->getTravelId());
 
-        if(FlightBooking* flightBooking = dynamic_cast<FlightBooking*>(booking)){
+        if(auto flightBooking = std::dynamic_pointer_cast<FlightBooking>(booking)){
           bookingObject["type"] = "Flight";
           bookingObject["airline"] = QString::fromStdString(flightBooking->getAirline());
           bookingObject["bookingClass"] = QString::fromStdString(flightBooking->getBookingClass());
           bookingObject["fromDest"] = QString::fromStdString(flightBooking->getFromDestination());
           bookingObject["toDest"] = QString::fromStdString(flightBooking->getToDestination());
-        }else if(RentalCarReservation* carBooking = dynamic_cast<RentalCarReservation*>(booking)){
+        }else if(auto carBooking = std::dynamic_pointer_cast<RentalCarReservation>(booking)){
           bookingObject["type"] = "Car";
           bookingObject["company"] = QString::fromStdString(carBooking->getCompany());
           bookingObject["pickupLocation"] = QString::fromStdString(carBooking->getPickupLocation());
           bookingObject["returnLocation"] = QString::fromStdString(carBooking->getReturnLocation());
           bookingObject["vehicleClass"] = QString::fromStdString(carBooking->getVehicleClass());
-        }else if(HotelBooking* hotelBooking = dynamic_cast<HotelBooking*>(booking)){
+        }else if(auto hotelBooking = std::dynamic_pointer_cast<HotelBooking>(booking)){
           bookingObject["type"] = "Hotel";
           bookingObject["hotel"] = QString::fromStdString(hotelBooking->getHotel());
           bookingObject["town"] = QString::fromStdString(hotelBooking->getTown());
           bookingObject["roomType"] = QString::fromStdString(hotelBooking->getRoomType());
-        }else if(TrainTicket* trainBooking = dynamic_cast<TrainTicket*>(booking)){
+        }else if(auto trainBooking = std::dynamic_pointer_cast<TrainTicket>(booking)){
           bookingObject["type"] = "Train";
           bookingObject["fromDestination"] = QString::fromStdString(trainBooking->getFromDestination());
           bookingObject["toDestination"] = QString::fromStdString(trainBooking->getToDestination());

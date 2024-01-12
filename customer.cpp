@@ -7,12 +7,12 @@ Customer::Customer(long id, string lastName, string firstName)
     this->firstName = firstName;
 }
 
-void Customer::addTravel(Travel* travel){
+void Customer::addTravel(std::shared_ptr<Travel> travel){
     travelList.push_back(travel);
 }
 
-bool Customer::hasTravel(const Travel *travel) const{
-    for(const Travel* t : travelList)
+bool Customer::hasTravel(const std::shared_ptr<Travel> travel) const{
+    for(const std::shared_ptr<Travel>  &t : travelList)
     {
         if(t == travel)
         {
@@ -42,7 +42,7 @@ string Customer::getFirstName() const
     return firstName;
 }
 
-vector<Travel *> Customer::getTravelList() const
+vector<std::shared_ptr<Travel>> Customer::getTravelList() const
 {
     return travelList;
 }
