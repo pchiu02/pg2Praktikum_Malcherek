@@ -375,7 +375,7 @@ void TravelAgencyUi::on_buchung_table_itemDoubleClicked(QTableWidgetItem *item)
     buchungsDetails->show();
 
     std::shared_ptr<Travel> selectedTravel = travelagency->findTravel(ui->reiseId->text().toLong());
-    travelagency->displayBookingOnMap(selectedTravel);
+    travelagency->displayOnBookingMap(selectedTravel);
 }
 
 

@@ -27,6 +27,7 @@ public:
     const std::string &getArrivalTime() const;
     const std::vector<ConnectingStation> &getConnectingStations() const;
     std::string getTicketType() const;
+    std::vector<std::pair<double, double>> getAllStationCoordinates() const;
 
     void setFromDestination(const std::string &newFromDestination);
     void setToDestination(const std::string &newToDestination);

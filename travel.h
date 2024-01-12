@@ -1,6 +1,7 @@
 #ifndef TRAVEL_H
 #define TRAVEL_H
 
+#include <memory>
 #include <vector>
 #include <memory.h>
 

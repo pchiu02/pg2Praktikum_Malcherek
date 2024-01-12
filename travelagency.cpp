@@ -5,6 +5,10 @@
 #include "trainticket.h"
 #include "connectingstation.h"
 
+#include <QDesktopServices>
+#include <QUrl>
+#include <sstream>
+
 TravelAgency::TravelAgency()
 {
 
@@ -141,9 +145,9 @@ void TravelAgency::readFile(QString fileName)
             }
 
             std::shared_ptr<RentalCarReservation> car = std::make_shared<RentalCarReservation>(id, price, fromDate, toDate, travelId, type,
-                                                                 company, pickupLocation,
-                                                                 returnLocation, vehicleClass, pickupLatitude, pickupLongitude,
-                                                                 returnLatitude, returnLongitude);
+                                                                pickupLocation,
+                                                                returnLocation, company, vehicleClass, pickupLatitude, pickupLongitude,
+                                                                returnLatitude, returnLongitude);
             allBooking.push_back(car);
             //std::cout << car->showDetails() << std::endl;
 
@@ -392,7 +396,7 @@ string TravelAgency::generateLineStringGeoJson(const std::vector<std::pair<doubl
     return ss.str();
 }
 
-void TravelAgency::displayBookingOnMap(const std::shared_ptr<Travel> &travel)
+void TravelAgency::displayOnBookingMap(const std::shared_ptr<Travel> &travel)
 {
     for(const auto& booking : travel->getTravelBookings())
     {
@@ -421,7 +425,13 @@ void TravelAgency::displayBookingOnMap(const std::shared_ptr<Travel> &travel)
             }
         }else if (std::shared_ptr<TrainTicket> train = std::dynamic_pointer_cast<TrainTicket>(booking))
         {
+            std::vector<std::pair<double, double>> coords = train->getAllStationCoordinates();
+            geoJson = generateLineStringGeoJson(coords);
+        }
 
+        if(!geoJson.empty()){
+            QString url = "http://townsendjennings.com/geo/?geojson=" + QString::fromStdString(geoJson);
+            QDesktopServices::openUrl(QUrl(url));
         }
     }
 }

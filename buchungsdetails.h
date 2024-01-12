@@ -2,7 +2,6 @@
 #define BUCHUNGSDETAILS_H
 
 #include <QDialog>
-#include <memory>
 
 #include "travelagency.h"
 

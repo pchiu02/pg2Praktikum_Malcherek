@@ -74,6 +74,21 @@ std::string TrainTicket::getTicketType() const
     return ticketType;
 }
 
+std::vector<std::pair<double, double> > TrainTicket::getAllStationCoordinates() const
+{
+    std::vector<std::pair<double, double>> coordinates;
+
+    coordinates.emplace_back(fromStationLatitude, fromStationLongitude);
+
+    for(const auto& station : connectingStations){
+        coordinates.emplace_back(station.getLatitude(), station.getLongitude());
+    }
+
+    coordinates.emplace_back(toStationLatitude, toStationLongitude);
+
+    return coordinates;
+}
+
 void TrainTicket::setFromDestination(const std::string &newFromDestination)
 {
     fromDestination = newFromDestination;
