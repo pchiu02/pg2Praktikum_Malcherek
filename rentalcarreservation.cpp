@@ -64,3 +64,23 @@ void RentalCarReservation::setVehicleClass(const std::string &newVehicleClass)
 {
     vehicleClass = newVehicleClass;
 }
+
+double RentalCarReservation::getPickupLatitude() const
+{
+    return pickupLatitude;
+}
+
+double RentalCarReservation::getPickupLongitude() const
+{
+    return pickupLongitude;
+}
+
+double RentalCarReservation::getReturnLatitude() const
+{
+    return returnLatitude;
+}
+
+double RentalCarReservation::getReturnLongitude() const
+{
+    return returnLongitude;
+}

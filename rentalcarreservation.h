@@ -26,6 +26,14 @@ public:
     void setCompany(const std::string &newCompany);
     void setVehicleClass(const std::string &newVehicleClass);
 
+    double getPickupLatitude() const;
+
+    double getPickupLongitude() const;
+
+    double getReturnLatitude() const;
+
+    double getReturnLongitude() const;
+
 private:
     std::string pickupLocation;
     std::string returnLocation;

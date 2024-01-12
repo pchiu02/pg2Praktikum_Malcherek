@@ -373,6 +373,59 @@ std::shared_ptr<Customer> TravelAgency::findCustomer(long id, string &firstName,
     return newCustomer;
 }
 
+string TravelAgency::generatePointGeoJson(double latitude, double longitude)
+{
+    std::ostringstream ss;
+    ss << "{\"type\":\"Point\",\"coordinates\":[" << longitude << "," << latitude << "]}";
+    return ss.str();
+}
+
+string TravelAgency::generateLineStringGeoJson(const std::vector<std::pair<double, double> > &coordinates)
+{
+    std::ostringstream ss;
+    ss << "{\"type\":\"LineString\",\"coordinates\":[";
+    for (size_t i = 0; i < coordinates.size(); ++i) {
+        ss << "[" << coordinates[i].second << "," << coordinates[i].first << "]";
+        if (i < coordinates.size() - 1) ss << ",";
+    }
+    ss << "]}";
+    return ss.str();
+}
+
+void TravelAgency::displayBookingOnMap(const std::shared_ptr<Travel> &travel)
+{
+    for(const auto& booking : travel->getTravelBookings())
+    {
+        std::string geoJson;
+        if(std::shared_ptr<FlightBooking> flightBooking = std::dynamic_pointer_cast<FlightBooking>(booking))
+        {
+            std::vector<std::pair<double, double>> coords = {
+                {flightBooking->getFromDestLatitude(), flightBooking->getFromDestLongitude()},
+                {flightBooking->getToDestLatitude(), flightBooking->getToDestLongitude()}
+            };
+            geoJson = generateLineStringGeoJson(coords);
+        }else if(std::shared_ptr<HotelBooking> hotelBooking = std::dynamic_pointer_cast<HotelBooking>(booking))
+        {
+            geoJson = generatePointGeoJson(hotelBooking->getHotelLatitude(), hotelBooking->getHotelLongitude());
+        }else if(std::shared_ptr<RentalCarReservation> car = std::dynamic_pointer_cast<RentalCarReservation>(booking))
+        {
+            if(car->getPickupLatitude() != car->getReturnLatitude() ||
+                car->getPickupLongitude() != car->getReturnLongitude()){
+                std::vector<std::pair<double, double>> coords ={
+                    {car->getPickupLatitude(), car->getPickupLongitude()},
+                    {car->getReturnLatitude(), car->getReturnLongitude()}
+                };
+                geoJson = generateLineStringGeoJson(coords);
+            }else{
+                geoJson = generatePointGeoJson(car->getPickupLatitude(), car->getPickupLongitude());
+            }
+        }else if (std::shared_ptr<TrainTicket> train = std::dynamic_pointer_cast<TrainTicket>(booking))
+        {
+
+        }
+    }
+}
+
 int TravelAgency::getTotalFlightBooking() const
 {
     return totalFlightBooking;

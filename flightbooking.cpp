@@ -64,3 +64,23 @@ void FlightBooking::setBookingClass(const std::string &newBookingClass)
 {
     bookingClass = newBookingClass;
 }
+
+double FlightBooking::getFromDestLatitude() const
+{
+    return fromDestLatitude;
+}
+
+double FlightBooking::getFromDestLongitude() const
+{
+    return fromDestLongitude;
+}
+
+double FlightBooking::getToDestLatitude() const
+{
+    return toDestLatitude;
+}
+
+double FlightBooking::getToDestLongitude() const
+{
+    return toDestLongitude;
+}
