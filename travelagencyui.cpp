@@ -9,7 +9,7 @@
 
 TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     : QMainWindow(parent)
-      , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency)
+    , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency), check(new Check(travelagency))
 {
     ui->setupUi(this);
 
@@ -239,7 +239,7 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
             {
                 QString fromDate = QString::fromStdString(bookings[i]->getFromDate());
                 QString toDate = QString::fromStdString(bookings[i]->getToDate());
-                 QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
+                QString preis = QString::number(bookings[i]->getPrice(), 'f', 2);
                 QTableWidgetItem* buchungsTypItem = new QTableWidgetItem();
                 QTableWidgetItem* preisItem = new QTableWidgetItem(preis);
 
@@ -251,6 +251,7 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
 
                 QTableWidgetItem* startItem = new QTableWidgetItem(formattedFromDate);
                 QTableWidgetItem* endItem = new QTableWidgetItem(formattedToDate);
+
 
                 if(std::dynamic_pointer_cast<FlightBooking>(bookings[i]))
                 {
@@ -273,6 +274,7 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
             }
         }
     }
+
 
 }
 

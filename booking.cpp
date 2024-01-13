@@ -1,7 +1,7 @@
 #include "booking.h"
 
 
-Booking::Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, std::string buchungsTyp)
+Booking::Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp)
 {
     this->id = id;
     this->price = price;
@@ -9,6 +9,16 @@ Booking::Booking(std::string id, double price, std::string fromDate, std::string
     this->toDate = toDate;
     this->travelId = travelId;
     this->buchungsTyp = buchungsTyp;
+    this->customerId = customerId;
+}
+
+bool Booking::overlapsWith(const std::shared_ptr<Booking>& other) const{
+    auto thisFromDate = this->getFromDate();
+    auto thisToDate = this->getToDate();
+    auto otherFromDate = other->getFromDate();
+    auto otherToDate = other->getToDate();
+
+    return thisFromDate <= otherToDate && otherFromDate <= thisToDate;
 }
 
 const std::string &Booking::getId() const
@@ -59,4 +69,9 @@ void Booking::setFromDate(const std::string &newFromDate)
 void Booking::setToDate(const std::string &newToDate)
 {
     toDate = newToDate;
+}
+
+long Booking::getCustomerId() const
+{
+    return customerId;
 }

@@ -17,6 +17,7 @@
 #include "QtWidgets/qlistwidget.h"
 #include "buchungsdetails.h"
 #include "travelagency.h"
+#include "check.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -49,5 +50,6 @@ private:
     std::shared_ptr<TravelAgency> travelagency;
     BuchungsDetails* buchungsDetails;
     QMessageBox msgBox;
+    std::unique_ptr<Check> check;
 };
 #endif // TRAVELAGENCYUI_H

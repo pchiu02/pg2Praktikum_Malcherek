@@ -11,7 +11,7 @@
 class FlightBooking : public Booking
 {
 public:
-    FlightBooking(std::string id , double price, std::string fromDate, std::string toDate, long travelId,
+    FlightBooking(std::string id , double price, std::string fromDate, std::string toDate, long travelId, long customerId,
                   std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string airline,
                   std::string bookingClass, double fromDestLatitude, double fromDestLongitude, double toDestLatitude, double toDestLongitude);
     virtual std::string showDetails() override;
@@ -27,11 +27,8 @@ public:
     void setBookingClass(const std::string &newBookingClass);
 
     double getFromDestLatitude() const;
-
     double getFromDestLongitude() const;
-
     double getToDestLatitude() const;
-
     double getToDestLongitude() const;
 
 private:

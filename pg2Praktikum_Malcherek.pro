@@ -12,6 +12,7 @@ SOURCES += \
     airport.cpp \
     booking.cpp \
     buchungsdetails.cpp \
+    check.cpp \
     connectingstation.cpp \
     customer.cpp \
     flightbooking.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     airport.h \
     booking.h \
     buchungsdetails.h \
+    check.h \
     connectingstation.h \
     customer.h \
     flightbooking.h \

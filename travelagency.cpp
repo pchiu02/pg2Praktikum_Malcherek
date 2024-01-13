@@ -109,7 +109,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Error in destination. Line: " + std::to_string(lineNumber));
             }
 
-            std::shared_ptr<FlightBooking> flightBooking = std::make_shared<FlightBooking>(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<FlightBooking> flightBooking = std::make_shared<FlightBooking>(id, price, fromDate, toDate, travelId, customerId, type,
                                                              fromDestination, toDestination,
                                                              airline, bookingClass, fromDestLatitude, fromDestLongitude,
                                                              toDestLatitude, toDestLongitude);
@@ -144,7 +144,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error("Empty carbooking attribute in line " +std::to_string(lineNumber));
             }
 
-            std::shared_ptr<RentalCarReservation> car = std::make_shared<RentalCarReservation>(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<RentalCarReservation> car = std::make_shared<RentalCarReservation>(id, price, fromDate, toDate, travelId, customerId, type,
                                                                 pickupLocation,
                                                                 returnLocation, company, vehicleClass, pickupLatitude, pickupLongitude,
                                                                 returnLatitude, returnLongitude);
@@ -175,7 +175,7 @@ void TravelAgency::readFile(QString fileName)
                 throw std::runtime_error(&"Empty hotelbooking attribute in line "[lineNumber]);
             }
 
-            std::shared_ptr<HotelBooking>hotelBooking = std::make_shared<HotelBooking>(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<HotelBooking>hotelBooking = std::make_shared<HotelBooking>(id, price, fromDate, toDate, travelId, customerId, type,
                                      hotel, town, roomType, hotelLatitude, hotelLongitude);
             allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
@@ -227,7 +227,7 @@ void TravelAgency::readFile(QString fileName)
                     }
                 }
             }
-            std::shared_ptr<TrainTicket>train = std::make_shared<TrainTicket>(id, price, fromDate, toDate, travelId, type,
+            std::shared_ptr<TrainTicket>train = std::make_shared<TrainTicket>(id, price, fromDate, toDate, travelId, customerId, type,
                                                  fromStation, toStation, departureTime,
                                                  arrivalTime, connectingStations, ticketType,
                                                  fromStationLatitude, fromStationLongitude, toStationLatitude,
@@ -384,14 +384,27 @@ string TravelAgency::generatePointGeoJson(double latitude, double longitude)
     return ss.str();
 }
 
-string TravelAgency::generateLineStringGeoJson(const std::vector<std::pair<double, double> > &coordinates)
+string TravelAgency::generateLineStringGeoJson(const std::vector<std::pair<double, double> > &coordinates, std::vector<std::string>& labels)
 {
     std::ostringstream ss;
-    ss << "{\"type\":\"LineString\",\"coordinates\":[";
+
+    ss << "{\"type\":\"FeatureCollection\",\"features\":[";
+
+    ss << "{\"type\":\"Feature\",\"geometry\":{\"type\":\"LineString\",\"coordinates\":[";
     for (size_t i = 0; i < coordinates.size(); ++i) {
         ss << "[" << coordinates[i].second << "," << coordinates[i].first << "]";
         if (i < coordinates.size() - 1) ss << ",";
     }
+    ss << "]}},";
+
+    // Add Point features with labels
+    for (size_t i = 0; i < coordinates.size() && i < labels.size(); ++i) {
+        ss << "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":["
+           << coordinates[i].second << "," << coordinates[i].first << "]},"
+           << "\"properties\":{\"name\":\"" << labels[i] << "\"}}";
+        if (i < coordinates.size() - 1 && i < labels.size() - 1) ss << ",";
+    }
+
     ss << "]}";
     return ss.str();
 }
@@ -407,7 +420,9 @@ void TravelAgency::displayOnBookingMap(const std::shared_ptr<Travel> &travel)
                 {flightBooking->getFromDestLatitude(), flightBooking->getFromDestLongitude()},
                 {flightBooking->getToDestLatitude(), flightBooking->getToDestLongitude()}
             };
-            geoJson = generateLineStringGeoJson(coords);
+
+            std::vector<std::string> labels = {flightBooking->getFromDestination(), flightBooking->getToDestination()};
+            geoJson = generateLineStringGeoJson(coords, labels);
         }else if(std::shared_ptr<HotelBooking> hotelBooking = std::dynamic_pointer_cast<HotelBooking>(booking))
         {
             geoJson = generatePointGeoJson(hotelBooking->getHotelLatitude(), hotelBooking->getHotelLongitude());
@@ -419,18 +434,23 @@ void TravelAgency::displayOnBookingMap(const std::shared_ptr<Travel> &travel)
                     {car->getPickupLatitude(), car->getPickupLongitude()},
                     {car->getReturnLatitude(), car->getReturnLongitude()}
                 };
-                geoJson = generateLineStringGeoJson(coords);
+
+                std::vector<std::string> labels = {car->getPickupLocation(), car->getReturnLocation()};
+                geoJson = generateLineStringGeoJson(coords, labels);
             }else{
                 geoJson = generatePointGeoJson(car->getPickupLatitude(), car->getPickupLongitude());
             }
         }else if (std::shared_ptr<TrainTicket> train = std::dynamic_pointer_cast<TrainTicket>(booking))
         {
             std::vector<std::pair<double, double>> coords = train->getAllStationCoordinates();
-            geoJson = generateLineStringGeoJson(coords);
+            std::vector<std::string> labels = {train->getFromDestination(), train->getToDestination()};
+            geoJson = generateLineStringGeoJson(coords, labels);
         }
 
         if(!geoJson.empty()){
-            QString url = "http://townsendjennings.com/geo/?geojson=" + QString::fromStdString(geoJson);
+            QString QGeoJson = QString::fromStdString(geoJson);
+            QString url = "http://townsendjennings.com/geo/?geojson=" + QUrl::toPercentEncoding(QGeoJson);
+
             QDesktopServices::openUrl(QUrl(url));
         }
     }
