@@ -377,10 +377,11 @@ std::shared_ptr<Customer> TravelAgency::findCustomer(long id, string &firstName,
     return newCustomer;
 }
 
-string TravelAgency::generatePointGeoJson(double latitude, double longitude)
+string TravelAgency::generatePointGeoJson(double latitude, double longitude, std::string labels)
 {
     std::ostringstream ss;
-    ss << "{\"type\":\"Point\",\"coordinates\":[" << longitude << "," << latitude << "]}";
+    ss << "{\"type\":\"Point\",\"coordinates\":[" << longitude << "," << latitude << "]}"
+       << "\"properties\":{\"name\":\"" << labels << "\"}}";
     return ss.str();
 }
 
@@ -425,7 +426,7 @@ void TravelAgency::displayOnBookingMap(const std::shared_ptr<Travel> &travel)
             geoJson = generateLineStringGeoJson(coords, labels);
         }else if(std::shared_ptr<HotelBooking> hotelBooking = std::dynamic_pointer_cast<HotelBooking>(booking))
         {
-            geoJson = generatePointGeoJson(hotelBooking->getHotelLatitude(), hotelBooking->getHotelLongitude());
+            geoJson = generatePointGeoJson(hotelBooking->getHotelLatitude(), hotelBooking->getHotelLongitude(), hotelBooking->getHotel());
         }else if(std::shared_ptr<RentalCarReservation> car = std::dynamic_pointer_cast<RentalCarReservation>(booking))
         {
             if(car->getPickupLatitude() != car->getReturnLatitude() ||
@@ -438,7 +439,7 @@ void TravelAgency::displayOnBookingMap(const std::shared_ptr<Travel> &travel)
                 std::vector<std::string> labels = {car->getPickupLocation(), car->getReturnLocation()};
                 geoJson = generateLineStringGeoJson(coords, labels);
             }else{
-                geoJson = generatePointGeoJson(car->getPickupLatitude(), car->getPickupLongitude());
+                geoJson = generatePointGeoJson(car->getPickupLatitude(), car->getPickupLongitude(), car->getPickupLocation());
             }
         }else if (std::shared_ptr<TrainTicket> train = std::dynamic_pointer_cast<TrainTicket>(booking))
         {

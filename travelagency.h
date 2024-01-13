@@ -29,7 +29,7 @@ public:
     std::shared_ptr<Booking> findBooking(std::string id);
     std::shared_ptr<Travel> findTravel(long id);
     std::shared_ptr<Customer> findCustomer(long id, string &firstName, string &lastName);
-    std::string generatePointGeoJson(double latitude, double longitude);
+    std::string generatePointGeoJson(double latitude, double longitude, std::string labels);
     std::string generateLineStringGeoJson(const std::vector<std::pair<double, double> > &coordinates, std::vector<std::string>& labels);
     void displayOnBookingMap(const std::shared_ptr<Travel> &travel);
 
