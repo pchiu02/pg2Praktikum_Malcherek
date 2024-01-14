@@ -5,8 +5,8 @@ Check::Check(std::shared_ptr<TravelAgency> agency) : travelAgency(std::move(agen
 
 }
 
-bool Check::checkTravelDisjunct(QString &message){
-
+bool Check::operator()(QString &message)
+{
     auto bookings = travelAgency->getAllBooking();
     auto customers = travelAgency->getAllCustomer();
 
@@ -23,8 +23,10 @@ bool Check::checkTravelDisjunct(QString &message){
             for(size_t j = i + 1; j < customerBookings.size(); ++j){
                 if(customerBookings[i]->overlapsWith(customerBookings[j])){
                     std::string fullName = customer->getFirstName() + " " + customer->getLastName();
-
-                    message = QString("Overlapping trips found for customer %1.").arg(QString::fromStdString(fullName));
+                    long travelId1 = customerBookings[i]->getTravelId();
+                    long travelId2 = customerBookings[j]->getTravelId();
+                    message = QString("Overlapping trips found for customer ID %1. Conflicting travels: %2 and %3.")
+                                  .arg(customer->getId()).arg(travelId1).arg(travelId2);
                     return false;
                 }
             }

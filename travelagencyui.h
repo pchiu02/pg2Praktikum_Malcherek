@@ -45,6 +45,8 @@ private slots:
 
     void on_saveButton_clicked();
 
+    void onBookingsChanged();
+
 private:
     Ui::TravelAgencyUi *ui;
     std::shared_ptr<TravelAgency> travelagency;

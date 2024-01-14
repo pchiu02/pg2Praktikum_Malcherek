@@ -20,6 +20,7 @@ BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
     ui->abbrechen->setEnabled(false);
 
     ui->Id->setReadOnly(true);
+
 }
 
 BuchungsDetails::~BuchungsDetails()
@@ -306,6 +307,8 @@ void BuchungsDetails::on_speichern_clicked()
 
     ui->speichern->setEnabled(false);
     ui->abbrechen->setEnabled(false);
+
+    emit bookingChanged();
 }
 
 

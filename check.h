@@ -9,7 +9,7 @@ class Check
 {
 public:
     explicit Check(std::shared_ptr<TravelAgency> agency);
-    bool checkTravelDisjunct(QString& message);
+    bool operator()(QString& message);
 
 private:
     std::shared_ptr<TravelAgency> travelAgency;
