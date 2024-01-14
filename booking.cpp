@@ -1,4 +1,5 @@
 #include "booking.h"
+#include <memory>
 
 
 Booking::Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp)

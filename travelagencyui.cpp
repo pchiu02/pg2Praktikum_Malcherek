@@ -30,7 +30,6 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     ui->reiseId->setReadOnly(true);
 
     BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get(), this);
-    connect(buchungsDetails, &BuchungsDetails::bookingChanged, this, &TravelAgencyUi::onBookingsChanged);
 }
 
 TravelAgencyUi::~TravelAgencyUi()
@@ -448,14 +447,6 @@ void TravelAgencyUi::on_saveButton_clicked()
         outputFile.write(jsonDocument.toJson());
         outputFile.close();
         qDebug() << "Booking saved to bookingsPraktikum3_new";
-    }
-}
-
-void TravelAgencyUi::onBookingsChanged()
-{
-    QString errorMessage;
-    if (!(*check)(errorMessage)) {  // Using Check as a functor
-        QMessageBox::warning(this, "Booking Error", errorMessage);
     }
 }
 

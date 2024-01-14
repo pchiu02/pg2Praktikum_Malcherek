@@ -4,6 +4,7 @@
 #include <QDialog>
 
 #include "travelagency.h"
+#include "check.h"
 
 namespace Ui {
 class BuchungsDetails;
@@ -29,6 +30,7 @@ signals:
 private:
     Ui::BuchungsDetails* ui;
     TravelAgency* travelAgency;
+    std::shared_ptr<Check> checker;
 };
 
 #endif // BUCHUNGSDETAILS_H

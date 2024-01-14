@@ -21,6 +21,10 @@ BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
 
     ui->Id->setReadOnly(true);
 
+    checker = std::make_shared<Check>(std::shared_ptr<TravelAgency>(travelAgency), this);
+
+    connect(this, &BuchungsDetails::bookingChanged, checker, &Check::operator());
+
 }
 
 BuchungsDetails::~BuchungsDetails()

@@ -1,11 +1,8 @@
 #include "check.h"
 
-Check::Check(std::shared_ptr<TravelAgency> agency) : travelAgency(std::move(agency))
-{
+#include <QMessageBox>
 
-}
-
-bool Check::operator()(QString &message)
+bool Check::checkTravelDisjunct(QString &message)
 {
     auto bookings = travelAgency->getAllBooking();
     auto customers = travelAgency->getAllCustomer();
@@ -26,11 +23,20 @@ bool Check::operator()(QString &message)
                     long travelId1 = customerBookings[i]->getTravelId();
                     long travelId2 = customerBookings[j]->getTravelId();
                     message = QString("Overlapping trips found for customer ID %1. Conflicting travels: %2 and %3.")
-                                  .arg(customer->getId()).arg(travelId1).arg(travelId2);
+                                      .arg(customer->getId()).arg(travelId1).arg(travelId2);
                     return false;
                 }
             }
         }
     }
+    std::cout << "Check called" << std::endl;
     return true;
+}
+
+void Check::operator ()()
+{
+    QString errorMessage;
+    if (!checkTravelDisjunct(errorMessage)) {  // Using Check as a functor
+        QMessageBox::warning(nullptr, "Booking Error", errorMessage);
+    }
 }
