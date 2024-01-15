@@ -15,7 +15,7 @@ class BuchungsDetails : public QDialog
     Q_OBJECT
 
 public:
-    explicit BuchungsDetails(TravelAgency* travelAgency, QWidget *parent = nullptr);
+    explicit BuchungsDetails(std::shared_ptr<TravelAgency> travelAgency, QWidget *parent = nullptr);
     ~BuchungsDetails();
     void setBookingDetails(QString row, QString reiseId);
 
@@ -29,7 +29,8 @@ signals:
 
 private:
     Ui::BuchungsDetails* ui;
-    TravelAgency* travelAgency;
+    std::shared_ptr<TravelAgency> travelAgency;
+    std::unique_ptr<Check> check;
 };
 
 #endif // BUCHUNGSDETAILS_H

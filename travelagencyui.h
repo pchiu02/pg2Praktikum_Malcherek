@@ -48,7 +48,7 @@ private slots:
 private:
     Ui::TravelAgencyUi *ui;
     std::shared_ptr<TravelAgency> travelagency;
-    BuchungsDetails* buchungsDetails;
+    std::shared_ptr<BuchungsDetails> buchungsDetails;
     QMessageBox msgBox;
     std::unique_ptr<Check> check;
 };

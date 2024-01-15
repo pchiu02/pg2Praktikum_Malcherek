@@ -29,8 +29,6 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
 
     ui->reiseId->setReadOnly(true);
 
-    BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get());
-    connect(buchungsDetails, &BuchungsDetails::bookingChanged, check.get(), &Check::checkTravelDisjunct);
 }
 TravelAgencyUi::~TravelAgencyUi()
 {
@@ -371,7 +369,7 @@ void TravelAgencyUi::on_reisen_Table_itemDoubleClicked(QTableWidgetItem *item)
 
 void TravelAgencyUi::on_buchung_table_itemDoubleClicked(QTableWidgetItem *item)
 {
-    BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get(), this);
+    buchungsDetails = std::make_shared<BuchungsDetails>(travelagency);
     int row = item->row();
     QString QSrow = QString::number(row);
     QString reiseID = ui->reiseId->text();

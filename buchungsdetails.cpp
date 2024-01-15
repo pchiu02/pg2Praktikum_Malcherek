@@ -10,9 +10,9 @@
 
 #include <QIcon>
 
-BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
+BuchungsDetails::BuchungsDetails(std::shared_ptr<TravelAgency> travelAgency, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::BuchungsDetails), travelAgency(travelAgency)
+      ui(new Ui::BuchungsDetails), travelAgency(travelAgency)
 {
     ui->setupUi(this);
 
@@ -22,6 +22,8 @@ BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
     ui->Id->setReadOnly(true);
 
 
+    check = std::make_unique<Check>(travelAgency);
+    connect(this, &BuchungsDetails::bookingChanged, check.get(), &Check::checkBookings);
 
 }
 
@@ -306,11 +308,8 @@ void BuchungsDetails::on_speichern_clicked()
             trainBooking->setConnectingStations(newConnectingStations);
         }
     }
-
     ui->speichern->setEnabled(false);
     ui->abbrechen->setEnabled(false);
-
-    //QString errorMessage;
     emit bookingChanged();
 }
 
