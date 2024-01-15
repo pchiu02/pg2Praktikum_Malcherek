@@ -9,7 +9,7 @@
 
 TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency), check(new Check(travelagency))
+      , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency), check(std::make_unique<Check>(travelagency))
 {
     ui->setupUi(this);
 
@@ -29,9 +29,9 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
 
     ui->reiseId->setReadOnly(true);
 
-    BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get(), this);
+    BuchungsDetails* buchungsDetails = new BuchungsDetails(travelagency.get());
+    connect(buchungsDetails, &BuchungsDetails::bookingChanged, check.get(), &Check::checkTravelDisjunct);
 }
-
 TravelAgencyUi::~TravelAgencyUi()
 {
     delete ui;

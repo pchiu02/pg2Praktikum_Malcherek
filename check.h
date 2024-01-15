@@ -7,15 +7,16 @@
 
 #include "travelagency.h"
 
-class Check : QObject {
+class Check : QObject
+{
     Q_OBJECT
+
 public:
     explicit Check(std::shared_ptr<TravelAgency> travelAgency, QObject *parent = nullptr)
         : QObject(parent), travelAgency(travelAgency) {}
-    bool checkTravelDisjunct(QString& message);
-
 public slots:
-    void operator()();
+    void checkTravelDisjunct();
+
 
 private:
     std::shared_ptr<TravelAgency> travelAgency;

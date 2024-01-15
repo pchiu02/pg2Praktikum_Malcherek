@@ -21,9 +21,7 @@ BuchungsDetails::BuchungsDetails(TravelAgency *travelAgency, QWidget *parent) :
 
     ui->Id->setReadOnly(true);
 
-    checker = std::make_shared<Check>(std::shared_ptr<TravelAgency>(travelAgency), this);
 
-    connect(this, &BuchungsDetails::bookingChanged, checker, &Check::operator());
 
 }
 
@@ -312,6 +310,7 @@ void BuchungsDetails::on_speichern_clicked()
     ui->speichern->setEnabled(false);
     ui->abbrechen->setEnabled(false);
 
+    //QString errorMessage;
     emit bookingChanged();
 }
 

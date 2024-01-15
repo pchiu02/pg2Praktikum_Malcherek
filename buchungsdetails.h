@@ -30,7 +30,6 @@ signals:
 private:
     Ui::BuchungsDetails* ui;
     TravelAgency* travelAgency;
-    std::shared_ptr<Check> checker;
 };
 
 #endif // BUCHUNGSDETAILS_H
