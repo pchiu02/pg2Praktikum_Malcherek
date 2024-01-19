@@ -24,13 +24,13 @@ bool Check::checkTravelDisjunct(QString &message)
                     long travelId2 = customerBookings[j]->getTravelId();
                     message = QString("Overlapping trips found for customer ID %1. Conflicting travels: %2 and %3.")
                                       .arg(customer->getId()).arg(travelId1).arg(travelId2);
-                    return false;
+                    return true;
                 }
             }
         }
     }
     std::cout << "Check called" << std::endl;
-    return true;
+    return false;
 }
 
 void Check::checkBookings()
