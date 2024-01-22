@@ -15,7 +15,7 @@ class TrainTicket : public Booking
 {
 public:
     TrainTicket(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId,
-                std::string buchungsTyp, std::string fromDestination, std::string toDestination, std::string departureTime,
+                std::string buchungsTyp, std::string predecessor1, std::string predecessor2, std::string fromDestination, std::string toDestination, std::string departureTime,
                 std::string arrivalTime, std::vector<ConnectingStation> connectingStations,
                 std::string ticketType, double fromStationLatitude, double fromStationLongitude, double toStationLatitude,
                 double toStationLongitude);

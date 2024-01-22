@@ -18,6 +18,7 @@
 #include "buchungsdetails.h"
 #include "travelagency.h"
 #include "check.h"
+#include "results.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -45,11 +46,14 @@ private slots:
 
     void on_saveButton_clicked();
 
+    void on_ergebnisse_clicked();
+
 private:
     Ui::TravelAgencyUi *ui;
     std::shared_ptr<TravelAgency> travelagency;
     std::shared_ptr<BuchungsDetails> buchungsDetails;
     QMessageBox msgBox;
     std::unique_ptr<Check> check;
+    std::unique_ptr<Results> results;
 };
 #endif // TRAVELAGENCYUI_H

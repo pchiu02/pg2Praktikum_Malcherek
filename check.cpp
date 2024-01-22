@@ -33,6 +33,40 @@ bool Check::checkTravelDisjunct(QString &message)
     return false;
 }
 
+void Check::checkNoMissingHotels()
+{
+    std::vector<std::shared_ptr<Travel>> travels = travelAgency->getAllTravel();
+    QString message;
+
+    for (auto& travel: travels){
+        auto sortedBookings = travel->sortTopologically();
+
+        for(size_t i = 0; i < sortedBookings.size() - 1; ++i ){
+            auto currentBooking = sortedBookings[i];
+            auto nextBooking = sortedBookings[i+1];
+
+            //Ignore car Rentals
+            if(currentBooking->getBuchungsTyp() == "RentalCar" || nextBooking->getBuchungsTyp() == "RentalCar"){
+                continue;
+            }
+
+            //check for gaps in accomodation
+            if(currentBooking->getToDate() != nextBooking->getFromDate()){
+                message += "Gap found in travelID " + QString::number(travel->getId())
+                           + " between bookings ending on " + QString::fromStdString(currentBooking->getToDate())
+                           + " and starting on " + QString::fromStdString(nextBooking->getFromDate()) + "\n";
+
+                emit sendCheckResult(message);
+            }
+        }
+    }
+    if(!message.isEmpty()){
+        qDebug() << message;
+    } else {
+        qDebug() << "no missing hotels or gap in any travels";
+    }
+}
+
 void Check::checkBookings()
 {
     QString errorMessage;

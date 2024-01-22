@@ -2,7 +2,7 @@
 #include <memory>
 
 
-Booking::Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp)
+Booking::Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp, std::string predecessor1, std::string predecessor2)
 {
     this->id = id;
     this->price = price;
@@ -11,6 +11,8 @@ Booking::Booking(std::string id, double price, std::string fromDate, std::string
     this->travelId = travelId;
     this->buchungsTyp = buchungsTyp;
     this->customerId = customerId;
+    this->predecessor1 = predecessor1;
+    this->predecessor2 = predecessor2;
 }
 
 bool Booking::overlapsWith(const std::shared_ptr<Booking>& other) const{
@@ -75,4 +77,14 @@ void Booking::setToDate(const std::string &newToDate)
 long Booking::getCustomerId() const
 {
     return customerId;
+}
+
+std::string Booking::getPredecessor1() const
+{
+    return predecessor1;
+}
+
+std::string Booking::getPredecessor2() const
+{
+    return predecessor2;
 }

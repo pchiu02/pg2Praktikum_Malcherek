@@ -16,8 +16,13 @@ public:
         : QObject(parent), travelAgency(travelAgency) {}
     bool checkTravelDisjunct(QString& message);
 
+    void checkNoMissingHotels();
+
 public slots:
     void checkBookings();
+
+signals:
+    void sendCheckResult(const QString message);
 
 
 private:

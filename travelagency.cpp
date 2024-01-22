@@ -87,6 +87,15 @@ void TravelAgency::readFile(QString fileName)
             throw std::runtime_error("Price is not a number. Line: " + std::to_string(lineNumber));
         }
 
+        std::string pred1 = ""; //Default value for predecessor1
+        if(obj.contains("predecessor1") && !obj["predecessor1"].isNull()){
+            pred1 = obj["predecessor1"].toString().toStdString();
+        }
+        std::string pred2 = ""; //Default value for predecessor2
+        if(obj.contains("predecessor2") && !obj["predecessor2"].isNull()){
+            pred2 = obj["predecessor2"].toString().toStdString();
+        }
+
         if (type == "Flight")
         {
             //Parse Flight specific Data
@@ -110,6 +119,7 @@ void TravelAgency::readFile(QString fileName)
             }
 
             std::shared_ptr<FlightBooking> flightBooking = std::make_shared<FlightBooking>(id, price, fromDate, toDate, travelId, customerId, type,
+                                                             pred1, pred2,
                                                              fromDestination, toDestination,
                                                              airline, bookingClass, fromDestLatitude, fromDestLongitude,
                                                              toDestLatitude, toDestLongitude);
@@ -145,6 +155,7 @@ void TravelAgency::readFile(QString fileName)
             }
 
             std::shared_ptr<RentalCarReservation> car = std::make_shared<RentalCarReservation>(id, price, fromDate, toDate, travelId, customerId, type,
+                                                                pred1, pred2,
                                                                 pickupLocation,
                                                                 returnLocation, company, vehicleClass, pickupLatitude, pickupLongitude,
                                                                 returnLatitude, returnLongitude);
@@ -176,6 +187,7 @@ void TravelAgency::readFile(QString fileName)
             }
 
             std::shared_ptr<HotelBooking>hotelBooking = std::make_shared<HotelBooking>(id, price, fromDate, toDate, travelId, customerId, type,
+                                     pred1, pred2,
                                      hotel, town, roomType, hotelLatitude, hotelLongitude);
             allBooking.push_back(hotelBooking);
             //std::cout << hotelBooking->showDetails() << std::endl;
@@ -228,6 +240,7 @@ void TravelAgency::readFile(QString fileName)
                 }
             }
             std::shared_ptr<TrainTicket>train = std::make_shared<TrainTicket>(id, price, fromDate, toDate, travelId, customerId, type,
+                                                 pred1, pred2,
                                                  fromStation, toStation, departureTime,
                                                  arrivalTime, connectingStations, ticketType,
                                                  fromStationLatitude, fromStationLongitude, toStationLatitude,

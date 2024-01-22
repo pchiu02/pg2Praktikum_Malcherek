@@ -9,7 +9,8 @@
 class Booking
 {
 public:
-    Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp);
+    Booking(std::string id, double price, std::string fromDate, std::string toDate, long travelId, long customerId, std::string buchungsTyp
+            ,std::string predecessor1, std::string predecessor2);
     virtual std::string showDetails() = 0;
     virtual ~Booking() = default;
 
@@ -21,12 +22,16 @@ public:
     const std::string &getToDate() const;
     long getTravelId() const;
     const std::string &getBuchungsTyp() const;
+    std::string getPredecessor1() const;
+    std::string getPredecessor2() const;
 
     void setId(const std::string &newId);
     void setPrice(double newPrice);
     void setFromDate(const std::string &newFromDate);
     void setToDate(const std::string &newToDate);
     long getCustomerId() const;
+
+
 
 protected:
     std::string id;
@@ -36,6 +41,8 @@ protected:
     long travelId;
     long customerId;
     std::string buchungsTyp;
+    std::string predecessor1;
+    std::string predecessor2;
 };
 
 #endif // BOOKING_H

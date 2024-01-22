@@ -9,7 +9,8 @@
 
 TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     : QMainWindow(parent)
-      , ui(new Ui::TravelAgencyUi), travelagency(new TravelAgency), check(std::make_unique<Check>(travelagency))
+    , ui(new Ui::TravelAgencyUi), travelagency(std::make_unique<TravelAgency>()),
+    check(std::make_unique<Check>(travelagency))
 {
     ui->setupUi(this);
 
@@ -28,6 +29,7 @@ TravelAgencyUi::TravelAgencyUi(QWidget *parent)
     ui->reiseBox->setVisible(false);
 
     ui->reiseId->setReadOnly(true);
+
 
 }
 TravelAgencyUi::~TravelAgencyUi()
@@ -448,4 +450,14 @@ void TravelAgencyUi::on_saveButton_clicked()
     }
 }
 
+
+
+void TravelAgencyUi::on_ergebnisse_clicked()
+{
+    qDebug() << "Ergebnisse button clicked";
+    Results* resultsDialog = new Results(this);
+    connect(check.get(), &Check::sendCheckResult, resultsDialog, &Results::updateTableWidget);
+    check->checkNoMissingHotels();
+    resultsDialog->exec();
+}
 

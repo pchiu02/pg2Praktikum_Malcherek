@@ -10,15 +10,18 @@ CONFIG += c++17
 
 SOURCES += \
     airport.cpp \
+    algorithmen.cpp \
     booking.cpp \
     buchungsdetails.cpp \
     check.cpp \
     connectingstation.cpp \
     customer.cpp \
     flightbooking.cpp \
+    heap.cpp \
     hotelbooking.cpp \
     main.cpp \
     rentalcarreservation.cpp \
+    results.cpp \
     suchendialog.cpp \
     trainticket.cpp \
     travel.cpp \
@@ -33,9 +36,13 @@ HEADERS += \
     connectingstation.h \
     customer.h \
     flightbooking.h \
+    globalTypes.h \
+    graph.h \
+    heap.h \
     hotelbooking.h \
     json.hpp \
     rentalcarreservation.h \
+    results.h \
     suchendialog.h \
     trainticket.h \
     travel.h \
@@ -44,6 +51,7 @@ HEADERS += \
 
 FORMS += \
     buchungsdetails.ui \
+    results.ui \
     suchendialog.ui \
     travelagencyui.ui
 
