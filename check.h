@@ -15,14 +15,15 @@ public:
     explicit Check(std::shared_ptr<TravelAgency> travelAgency, QObject *parent = nullptr)
         : QObject(parent), travelAgency(travelAgency) {}
     bool checkTravelDisjunct(QString& message);
-
     void checkNoMissingHotels();
+    void checkNoOverlappingHotels();
+    void checkNoOverlappingRentalCars();
 
 public slots:
     void checkBookings();
 
 signals:
-    void sendCheckResult(const QString message);
+    void sendCheckResult(const QString &errorType, const QString message);
 
 
 private:

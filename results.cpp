@@ -7,6 +7,8 @@ Results::Results(QWidget *parent)
     , ui(new Ui::Results)
 {
     ui->setupUi(this);
+    ui->table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    ui->table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
 }
 
 Results::~Results()
@@ -14,14 +16,21 @@ Results::~Results()
     delete ui;
 }
 
-void Results::updateTableWidget(const QString &result)
+void Results::updateTableWidget(const QString &errorType, const QString &result)
 {
     int row = ui->table->rowCount();
     ui->table->insertRow(row);
 
     QTableWidgetItem *beschreibung = new QTableWidgetItem(result);
-    QTableWidgetItem* fehlerTyp = new QTableWidgetItem();
-    fehlerTyp->setIcon(QIcon("MissingHotel.png"));
-    ui->table->setItem(row, 0, fehlerTyp);
+    QTableWidgetItem* fehlerTypItem = new QTableWidgetItem();
+    fehlerTypItem->setText(errorType);
+    if(errorType == "Missing Hotel"){
+        fehlerTypItem->setIcon(QIcon("MissingHotel.png"));
+    }else if(errorType == "Overlapping Hotel"){
+        fehlerTypItem->setIcon(QIcon("overlappingHotel.png"));
+    }else if(errorType == "Overlapping Cars"){
+        fehlerTypItem->setIcon(QIcon("overlappingCar.png"));
+    }
+    ui->table->setItem(row, 0, fehlerTypItem);
     ui->table->setItem(row, 1, beschreibung);
 }

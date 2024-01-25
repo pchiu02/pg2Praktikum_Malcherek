@@ -16,7 +16,7 @@ public:
     ~Results();
 
 public slots:
-    void updateTableWidget(const QString &result);
+    void updateTableWidget(const QString& errorType, const QString &result);
 
 private:
     Ui::Results *ui;

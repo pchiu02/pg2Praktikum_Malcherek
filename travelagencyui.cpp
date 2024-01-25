@@ -455,9 +455,15 @@ void TravelAgencyUi::on_saveButton_clicked()
 void TravelAgencyUi::on_ergebnisse_clicked()
 {
     qDebug() << "Ergebnisse button clicked";
+    std::vector<std::shared_ptr<Travel>> travels = travelagency->getAllTravel();
+    for (auto& travel : travels) {
+        travel->createGraph();
+    }
     Results* resultsDialog = new Results(this);
     connect(check.get(), &Check::sendCheckResult, resultsDialog, &Results::updateTableWidget);
     check->checkNoMissingHotels();
+    check->checkNoOverlappingHotels();
+    check->checkNoOverlappingRentalCars();
     resultsDialog->exec();
 }
 
