@@ -26,6 +26,7 @@ public:
 
     void createGraph();
     void sortGraph(std::vector<VertexData> &data);
+    void extracted(int &index);
     std::vector<std::shared_ptr<Booking>> sortTopologically();
     void topologicalSortUtil(int v, std::vector<bool> &visited, std::stack<int> &stack);
 

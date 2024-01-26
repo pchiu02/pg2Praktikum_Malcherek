@@ -1,4 +1,6 @@
 #include "check.h"
+#include "hotelbooking.h"
+#include "rentalcarreservation.h"
 
 #include <QMessageBox>
 
@@ -33,109 +35,121 @@ bool Check::checkTravelDisjunct(QString &message)
     return false;
 }
 
-void Check::checkNoMissingHotels()
-{
-    std::vector<std::shared_ptr<Travel>> travels = travelAgency->getAllTravel();
-    QString message;
+void Check::checkNoMissingHotels() {
     QString errorType = "Missing Hotel";
+    QString message;
 
-    for (auto& travel: travels){
-        auto sortedBookings = travel->sortTopologically();
+    for (const auto& travel : travelAgency->getAllTravel()) {
+        std::vector<VertexData> data;
+        travel->sortGraph(data); // Sorts bookings by their topological order
 
-        for(size_t i = 0; i < sortedBookings.size() - 1; ++i ){
-            auto currentBooking = sortedBookings[i];
-            auto nextBooking = sortedBookings[i+1];
-            qDebug() << "Current booking to date:" << QString::fromStdString(currentBooking->getToDate());
-            qDebug() << "Next booking from date:" << QString::fromStdString(nextBooking->getFromDate());
+        // Initialize lastToDate as an empty string
+        QString lastToDate;
 
-            //Ignore car Rentals
-            if(currentBooking->getBuchungsTyp() == "RentalCar" || nextBooking->getBuchungsTyp() == "RentalCar"){
-                continue;
-            }
+        for (const VertexData& vertex : data) {
+            auto currentBooking = vertex.booking;
 
-            //check for gaps in accomodation
-            if(currentBooking->getToDate() != nextBooking->getFromDate()){
-                message += "Gap found in travelID " + QString::number(travel->getId())
-                           + " between bookings ending on " + QString::fromStdString(currentBooking->getToDate())
-                           + " and starting on " + QString::fromStdString(nextBooking->getFromDate()) + "\n";
+            // Only consider hotel bookings for gaps
+            if (std::dynamic_pointer_cast<HotelBooking>(currentBooking)) {
+                QString currentFromDate = QString::fromStdString(currentBooking->getFromDate());
 
+                // If lastToDate is not empty and currentFromDate is not the same day, we have a gap
+                if (!lastToDate.isEmpty() && lastToDate != currentFromDate) {
+                    message = "Gap found in travelID " + QString::number(travel->getId())
+                               + " between bookings ending on " + lastToDate
+                               + " and starting on " + currentFromDate + ".\n";
+                    // Emit the message for this specific gap
+                    emit sendCheckResult(errorType, message);
+                }
 
+                // Update lastToDate to the current booking's toDate
+                lastToDate = QString::fromStdString(currentBooking->getToDate());
             }
         }
     }
-    emit sendCheckResult(errorType, message);
-    if(!message.isEmpty()){
+
+    if (!message.isEmpty()) {
         qDebug() << message;
     } else {
-        qDebug() << "no missing hotels or gap in any travels";
+        qDebug() << "No missing hotel bookings in any travels.";
     }
 }
 
-void Check::checkNoOverlappingHotels()
-{
-    std::vector<std::shared_ptr<Travel>> travels = travelAgency->getAllTravel();
-    QString message;
+
+void Check::checkNoOverlappingHotels() {
     QString errorType = "Overlapping Hotel";
+    QString message;
 
-    for(auto& travel : travels){
-        auto sortedBookings = travel->sortTopologically();
+    for (const auto& travel : travelAgency->getAllTravel()) {
+        std::vector<VertexData> data;
+        travel->sortGraph(data); // Sorts bookings by their topological order
 
-        for(size_t i = 0; i < sortedBookings.size() - 1; ++i){
-            auto currentBooking = sortedBookings[i];
-            auto nextBooking = sortedBookings[i+1];
+        for (size_t i = 0; i < data.size() - 1; ++i) {
+            auto currentBooking = data[i].booking;
+            auto nextBooking = data[i + 1].booking;
 
-            //Ignore car Rentals
-            if(currentBooking->getBuchungsTyp() == "RentalCar" || nextBooking->getBuchungsTyp() == "RentalCar"){
-                continue;
-            }
+            // Only consider hotel bookings for overlaps
+            if (std::dynamic_pointer_cast<HotelBooking>(currentBooking) && std::dynamic_pointer_cast<HotelBooking>(nextBooking)) {
+                QDate toDateCurrent = QDate::fromString(QString::fromStdString(currentBooking->getToDate()), "yyyyMMdd");
+                QDate fromDateNext = QDate::fromString(QString::fromStdString(nextBooking->getFromDate()), "yyyyMMdd");
 
-            // Check for overlapping bookings
-            if(currentBooking->getToDate() > nextBooking->getFromDate()){
-                message += "Overlap found in travelID " + QString::number(travel->getId())
-                           + " between bookings ending on " + QString::fromStdString(currentBooking->getToDate())
-                           + " and starting on " + QString::fromStdString(nextBooking->getFromDate()) + "\n";
+                // If the toDate of the current booking is after the fromDate of the next, we have an overlap
+                if (toDateCurrent > fromDateNext) {
+                    message = "Overlap found in travelID " + QString::number(travel->getId())
+                               + " between hotel bookings ending on " + toDateCurrent.toString("yyyyMMdd")
+                               + " and starting on " + fromDateNext.toString("yyyyMMdd") + ".\n";
+                    // Emit the message for this specific overlap
+                    emit sendCheckResult(errorType, message);
+                }
             }
         }
     }
-    emit sendCheckResult(errorType, message);
-    if(!message.isEmpty()){
+
+    if (!message.isEmpty()) {
         qDebug() << message;
-    }else{
-        qDebug() << "No overlapping hotels in any travels";
+    } else {
+        qDebug() << "No overlapping hotel bookings in any travels.";
     }
 }
 
-void Check::checkNoOverlappingRentalCars()
-{
-    std::vector<std::shared_ptr<Travel>> travels = travelAgency->getAllTravel();
-    QString message;
+void Check::checkNoOverlappingRentalCars() {
     QString errorType = "Overlapping Cars";
+    QString message;
 
-    for(auto& travel : travels){
-        auto sortedBookings = travel->sortTopologically();
+    for (const auto& travel : travelAgency->getAllTravel()) {
+        std::vector<VertexData> data;
+        travel->sortGraph(data); // Assuming this method sorts the bookings and fills 'data'
 
-        for(size_t i = 0; i < sortedBookings.size() - 1; ++i){
-            auto currentBooking = sortedBookings[i];
-            auto nextBooking = sortedBookings[i+1];
+        std::shared_ptr<Booking> lastCarBooking = nullptr;
 
-            //Ignore car Rentals
-            if(currentBooking->getBuchungsTyp() == "Hotel" || nextBooking->getBuchungsTyp() == "Hotel"){
-                continue;
-            }
+        for (const VertexData& vertex : data) {
+            auto currentBooking = vertex.booking;
 
-            // Check for overlapping bookings
-            if(currentBooking->getToDate() > nextBooking->getFromDate()){
-                message += "Overlap found in travelID " + QString::number(travel->getId())
-                           + " between bookings ending on " + QString::fromStdString(currentBooking->getToDate())
-                           + " and starting on " + QString::fromStdString(nextBooking->getFromDate()) + "\n";
+            // Only consider rental car bookings for overlap
+            if (std::dynamic_pointer_cast<RentalCarReservation>(currentBooking)) {
+                if (lastCarBooking) {
+                    QDate toDateLast = QDate::fromString(QString::fromStdString(lastCarBooking->getToDate()), "yyyyMMdd");
+                    QDate fromDateCurrent = QDate::fromString(QString::fromStdString(currentBooking->getFromDate()), "yyyyMMdd");
+
+                    // If the end date of the last car booking is later than the start date of the current, it's an overlap
+                    if (toDateLast > fromDateCurrent) {
+                        message = "Overlap found in travelID " + QString::number(travel->getId())
+                                   + " between car rental bookings ending on " + toDateLast.toString("yyyyMMdd")
+                                   + " and starting on " + fromDateCurrent.toString("yyyyMMdd") + ".\n";
+                        // Emit the message for this specific overlap
+                        emit sendCheckResult(errorType, message);
+                        break; // Since we found an overlap, we break out of the loop
+                    }
+                }
+                lastCarBooking = currentBooking; // Update the last car booking
             }
         }
     }
-    emit sendCheckResult(errorType, message);
-    if(!message.isEmpty()){
+
+    if (!message.isEmpty()) {
         qDebug() << message;
-    }else{
-        qDebug() << "No overlapping Car in any travels";
+    } else {
+        qDebug() << "No overlapping car rentals in any travels.";
     }
 }
 

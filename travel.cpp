@@ -34,20 +34,8 @@ const vector<std::shared_ptr<Booking>> &Travel::getTravelBookings() const
 }
 
 void Travel::createGraph(){
-    //delete old graph
-    //reset all the shared pointers in the vertices, this will release the Booking object
-    for(int i = 0; i < graph.getNumVertices(); ++i){
-        auto vertexValue = graph.getVertexValue(i);
-        if(vertexValue != nullptr) //check if shared_ptr is valid
-            graph.getVertexValue(i).reset(); //reset only if its a valid sharedptr
-    }
-
-    graph.insertVertex(-1, nullptr);
-
-    int index = 0;
-    for (auto booking : travelBookings){
-        graph.insertVertex(index, booking);
-        index++;
+    for(size_t index = 0; index < travelBookings.size(); ++index){
+        graph.insertVertex(index, travelBookings[index]);
     }
 
     //connect bookings based on predecessor
@@ -74,17 +62,9 @@ void Travel::sortGraph(std::vector<VertexData> & data){
         data.push_back(vertexData);
     }
 
-    for(unsigned int step = 0; step < data.size() - 1; step++)
-    {
-        int max = step;
-        for(unsigned int i = step + 1; i < data.size(); i++){
-            if(data[i].endTime > data[max].endTime)
-                max = i;
-        }
-        VertexData temp = data[max];
-        data[max] = data[step];
-        data[step] = temp;
-    }
+    std::sort(data.begin(), data.end(), [](const VertexData &a, const VertexData &b) {
+        return a.endTime > b.endTime;
+    });
 }
 
 std::vector<std::shared_ptr<Booking> > Travel::sortTopologically()
@@ -112,7 +92,7 @@ void Travel::topologicalSortUtil(int v, std::vector<bool> &visited, std::stack<i
     visited[v] = true;
 
     // Recur for all the vertices adjacent to this vertex
-    for(auto i = 0; i < 100; i++){
+    for(int i = 0; i < graph.getNumVertices(); i++){
         //check if there is an edge from v to i
         if(graph.isEdge(v,i) && !visited[i]){
             topologicalSortUtil(i, visited, stack);
