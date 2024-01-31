@@ -279,9 +279,8 @@ void TravelAgency::readFile(QString fileName)
               << " und " << totalTrainBooking  << " Zugbuchungen im Wert von " << totalTrainPrice << " Euro" << std::endl;
 
     std::cout << "Es wurden " << allCustomer.size() << " Kunden und " << allTravel.size() << " Reisen angelegt." << std::endl;
+    emit consistencyCheckNeeded();
     file.close();
-
-
 }
 
 void TravelAgency::readIataCode(QString fileName)

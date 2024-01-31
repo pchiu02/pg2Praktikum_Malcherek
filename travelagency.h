@@ -48,6 +48,10 @@ public:
     std::shared_ptr<Airport> getAirport(const std::string& iataCode);
     bool hasAirport(const std::string& iataCode) const;
 
+signals:
+
+    void consistencyCheckNeeded();
+
 private:
     std::vector<std::shared_ptr<Booking>> allBooking;
     std::vector<std::shared_ptr<Customer>> allCustomer;

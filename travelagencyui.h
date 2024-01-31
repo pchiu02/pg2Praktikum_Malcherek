@@ -48,6 +48,9 @@ private slots:
 
     void on_ergebnisse_clicked();
 
+public slots:
+    void performConsistencyChecks();
+
 private:
     Ui::TravelAgencyUi *ui;
     std::shared_ptr<TravelAgency> travelagency;

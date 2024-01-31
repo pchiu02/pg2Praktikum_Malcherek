@@ -15,6 +15,7 @@ SOURCES += \
     buchungsdetails.cpp \
     check.cpp \
     connectingstation.cpp \
+    consistencycheck.cpp \
     customer.cpp \
     flightbooking.cpp \
     heap.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     buchungsdetails.h \
     check.h \
     connectingstation.h \
+    consistencycheck.h \
     customer.h \
     flightbooking.h \
     globalTypes.h \
@@ -51,6 +53,7 @@ HEADERS += \
 
 FORMS += \
     buchungsdetails.ui \
+    consistencycheck.ui \
     results.ui \
     suchendialog.ui \
     travelagencyui.ui

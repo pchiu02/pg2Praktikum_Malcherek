@@ -467,3 +467,8 @@ void TravelAgencyUi::on_ergebnisse_clicked()
     resultsDialog->exec();
 }
 
+void TravelAgencyUi::performConsistencyChecks()
+{
+
+}
+
